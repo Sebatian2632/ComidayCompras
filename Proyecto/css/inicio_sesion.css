@@ -104,6 +104,21 @@ input[type=button], input[type=submit], input[type=reset]  {
   transition: all 0.3s ease-in-out;
 }
 
+input[type=button], input[type=submit2] {
+  background-color: #900C3F;
+  border: none;
+  color: white;
+  padding: 8px 40px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 13px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+
+}
+
 input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
   background-color: #e7395f;
 }
