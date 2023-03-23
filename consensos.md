@@ -6,9 +6,9 @@ prueba
 FRONTS COMPLETOS:                   ¿Encargado del BACK END?        FECHA LÍMITE
 - createReceta.html --------------- TAMAYO ------------------------ Domingo 4:00 PM
 - readReceta.html ----------------- EMMANUEL ---------------------- Viernes
+- login --------------------------- DANAE ------------------------- Completado
+- registroUsuario ----------------- BRAULIO ----------------------- Completado
 
 FRONTS PENDIENTES:
-- updateReceta.html --------------- EMMANUEL ---------------------- Domingo 4:00 PM
+- updateReceta.html --------------- ??? ---------------------- ---- Domingo 4:00 PM
 - searchReceta.html --------------- ??? --------------------------- ???
-- login --------------------------- DANAE ------------------------- Viernes
-- registroUsuario ----------------- BRAULIO ----------------------- Jueves
