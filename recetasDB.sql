@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `recetasDB`.`Ingredientes` (
   `idIngredientes` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `unidad_medida` VARCHAR(45) NOT NULL,
-  `Usuarios_correo` VARCHAR(255) NOT NULL,
+  `Usuarios_correo` VARCHAR(255),
   PRIMARY KEY (`idIngredientes`, `Usuarios_correo`),
   INDEX `fk_Ingredientes_Usuarios1_idx` (`Usuarios_correo` ASC),
   CONSTRAINT `fk_Ingredientes_Usuarios1`
