@@ -10,5 +10,5 @@ FRONTS COMPLETOS:                   ¿Encargado del BACK END?        FECHA LÍMI
 - registroUsuario ----------------- BRAULIO ----------------------- Jueves
 
 FRONTS PENDIENTES:
-- updateReceta.html --------------- EMMANUEL ---------------------- Domingo 4:00 PM
+- updateReceta.html --------------- ??? ---------------------- Domingo 4:00 PM
 - searchReceta.html --------------- ??? --------------------------- ???
