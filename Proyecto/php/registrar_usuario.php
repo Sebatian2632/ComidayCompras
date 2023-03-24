@@ -5,16 +5,33 @@ $usuario=$_POST['usuario'];
 $correo=$_POST['correo'];
 $contrasena=$_POST['clave'];
 
-$query = "INSERT INTO usuarios(correo,clave,nombre) VALUES ('$correo','$contrasena','$usuario')";
-$resultado = mysqli_query($conex,$query);
+$consulta = "SELECT * FROM usuarios WHERE correo = '$correo'";
+$rconsulta = mysqli_query($conex,$consulta);
 
-if($resultado)
+if($rconsulta !== false)
 {
-    echo '
+    echo "
     <script>
-        alert("Usuario registrado exitosamente");
+        alert('El correo ya se encuentra asociado a un usuario');
+        window.location = '../html/registrarusuarios.html';
     </script>
-    ';
-    include("../html/index.html");
+    ";
 }
+else
+{
+    $query = "INSERT INTO usuarios(correo,clave,nombre) VALUES ('$correo','$contrasena','$usuario')";
+    $resultado = mysqli_query($conex,$query);
+
+    if($resultado)
+{
+    echo "
+    <script>
+        alert('Usuario registrado exitosamente');
+        window.location = '../html/index.html';
+    </script>
+    ";
+
+}
+}
+
 ?>
