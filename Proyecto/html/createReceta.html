@@ -116,7 +116,7 @@
 											<label class="col-form-label col-md-12 col-sm-12 "></label>
 											<div class="col-md-12 col-sm-12 ">
                                                 <label for="fullname">Nombre de la receta</label>
-												<input type="text" class="form-control" placeholder="Nombre de la receta">
+												<input type="text" class="form-control" placeholder="Nombre de la receta" id="nombrereceta">
 											</div>
 										</div>
 
@@ -130,15 +130,15 @@
 														<label class="col-form-label col-md-12 col-sm-12 "></label>
 														<div class="col-md-6 col-sm-6 ">
 															<label for="fullname">Cantidad</label>
-															<input type="text" class="form-control" placeholder="Cantidad del ingrediente">
+															<input type="text" class="form-control" id="cantidad" placeholder="Cantidad del ingrediente">
 														</div>
 														<div class="col-md-6 col-sm-6 ">
 															<label for="fullname">Unidad de medida</label>
 															<select id="unidad_medida" class="form-control">
 																<option value="">Elige...</option>
-																<option value="press">Gramos (gr.)</option>
-																<option value="net">Piezas (pzs)</option>
-																<option value="mouth">Litros (l)</option>
+																<option value="Gramos">Gramos (gr.)</option>
+																<option value="Piezas">Piezas (pzs)</option>
+																<option value="Litros">Litros (l)</option>
 															</select>
 														</div>
 													</div>
@@ -147,14 +147,19 @@
 															
 														</div>
 														<div class="col-md-6 col-sm-6 " align="right">
-															<button type="button" class="btn btn-primary">Agregar</button>
+															<button type="button" id="agregarin" class="btn btn-primary">Agregar</button>
 														</div>                                                      
 													</div>
 												          
 											</div>
                                             <div class="col-md-6 col-sm-6 ">
                                                 <label for="fullname">Lista de ingredientes</label>
-                                                <textarea class="form-control" rows="6" placeholder=" "></textarea>
+												<table class="col-md-12 col-sm-12 " id="listaingredientes">
+													<tr>
+														
+													</tr>
+													
+												</table>
 											</div>
 										</div>
 
@@ -165,29 +170,33 @@
                                                 <div class="form-group row">
                                                     <div class="col-md-4 col-sm-4 ">
                                                         <label for="fullname">No. de paso</label>
-                                                        <input type="text" class="form-control" placeholder="No. de paso">
+                                                        <input type="text" class="form-control" id="nopaso" placeholder="No. de paso">
                                                     </div>
                                                     <div class="col-md-8 col-sm-8 ">
                                                         <label for="fullname">Imagen de apoyo</label>
-                                                        <input type="file">
+                                                        <input type="file" id="imgpaso">
                                                     </div>
                                                 </div>
                                                 <label for="fullname">Paso</label>
-												<textarea class="form-control" rows="2" placeholder=" "></textarea>
+												<textarea class="form-control" rows="2" id="paso" placeholder=" "></textarea>
                                                 
                                                 <div class="form-group row"></div>
                                                 <div class="form-group row">
                                                     <div class="col-md-6 col-sm-6 ">
                                                     </div>
                                                     <div class="col-md-6 col-sm-6 " align="right">
-                                                        <button type="button" class="btn btn-primary">Agregar</button>
-                                                    </div>                                                      
+                                                        <button type="button" id="agregarpro" class="btn btn-primary">Agregar</button>
+                                                    </div>
                                                 </div>                                     
 											</div>
-                                            
+
                                             <div class="col-md-6 col-sm-6 ">
                                                 <label for="fullname">Procedimiento</label>
-                                                <textarea class="form-control" rows="7" placeholder=" "></textarea>
+                                                <table class="col-md-12 col-sm-12 " id="procedimiento" >
+													<tr>
+														
+													</tr>
+												</table>
 											</div>
 										</div>
 
@@ -314,5 +323,7 @@
 	<!--<script src="../../gentelella-master/build/js/custom.min.js"></script>-->
 	<!-- Input de ingredientes autocompletar-->
 	<script src="../js/ingredientes.js"></script>
+	<!-- Input de procedimiento para añadir a tabla-->
+	<script src="../js/procedimiento.js"></script>
 
 </body></html>
