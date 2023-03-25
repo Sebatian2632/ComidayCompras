@@ -15,10 +15,10 @@ try {
 	$conn->query($sql);
 
 	// Enviar respuesta al cliente (mensaje de confirmación)
-	echo "Ingrediente insertado en la base de datos.";
+	echo "SQL ejecutado";
 
 	// Cerrar conexión a la base de datos
-	$conn->close();
+	
 	} catch(PDOException $e) {
 	echo "Error: " . $e->getMessage();
 }

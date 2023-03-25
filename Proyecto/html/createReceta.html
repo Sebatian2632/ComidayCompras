@@ -128,7 +128,7 @@
 											<div class="col-md-6 col-sm-6 ">
 												<label for="fullname">Ingrediente</label>
 												<input type="text" name="ingredientes" id="autocomplete-custom-append"
-													class="form-control">
+													class="form-control" placeholder="Nombre del ingrediente">
 												<ul class="list"></ul>
 												<div class="form-group row">
 													<label class="col-form-label col-md-12 col-sm-12 "></label>
@@ -186,7 +186,7 @@
 												</div>
 												<label for="fullname">Paso</label>
 												<textarea class="form-control" rows="2" id="paso"
-													placeholder=" "></textarea>
+													placeholder="Explicacion"></textarea>
 
 												<div class="form-group row"></div>
 												<div class="form-group row">
@@ -296,7 +296,8 @@
 			<!-- /footer content -->
 		</div>
 	</div>
-
+	<iframe src="../php/session.php" style="display: none;"></iframe>
+	
 	<!-- jQuery -->
 	<script src="../../gentelella-master/vendors/jquery/dist/jquery.min.js"></script>
 	<!-- Bootstrap -->
@@ -340,7 +341,15 @@
 	<script src="../js/procedimiento.js"></script>
 	<!-- Input de procedimiento para añadir a tabla-->
 	<script src="../js/receta.js"></script>
-	<script>const correo = "<?php echo $_SESSION['correo']; ?>";</script>
+	
+	<div id="ModalIngredientes" class="modal">
+		<div class="modal-content">
+			<span class="cerrar">&times;</span>
+			<h2>Ingredientes!!!</h2>
+			<p>Agregue los datos de los ingredientes</p>
+		</div>
+	  </div>
+	
 </body>
 
 </html>
