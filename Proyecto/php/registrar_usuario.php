@@ -6,9 +6,10 @@ $correo=$_POST['correo'];
 $contrasena=$_POST['clave'];
 
 $consulta = "SELECT * FROM usuarios WHERE correo = '$correo'";
-$rconsulta = mysqli_query($conex,$consulta);
+$resultado = mysqli_query($conex,$consulta);
+$rconsulta = mysqli_num_rows($resultado);
 
-if($rconsulta !== false)
+if($rconsulta)
 {
     echo "
     <script>
