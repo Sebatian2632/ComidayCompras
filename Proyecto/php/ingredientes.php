@@ -13,7 +13,7 @@ try {
     $sql = "SELECT nombre FROM ingredientes";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-    
+
   
     // Recuperar los resultados y convertirlos en un objeto JSON
     $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -23,7 +23,7 @@ try {
     header('Content-Type: application/json');
    
     echo $json;
-  
+    
   } catch(PDOException $e) {
     echo "Error: " . $e->getMessage();
   }

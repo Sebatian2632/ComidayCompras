@@ -1,31 +1,37 @@
-
 let ADDpro = document.getElementById("agregarpro");
-ADDpro.onclick = function(){
+ADDpro.onclick = function () {
+    
     let NStep = document.getElementById("nopaso").value;
-    let Stepimg = document.getElementById("imgpaso").files[0];;
+    let Stepimg = document.getElementById("imgpaso").files[0];
+    console.dir(Stepimg);
     let Step = document.getElementById("paso").value;
     //agregar valores a la tabla de listado de ingredientes con el icono para eliminar
-    let explicacion = NStep + " " + Step + " " + Stepimg;  //Encadenamos para formar el texto a plasmar
-    const tr=document.createElement("tr");              //Creamos el TR
-    const tdRemove=document.createElement("td");        //Creamos el TD
-    tdRemove.className = "col-md-1 col-sm-1";           //Damos clase al TD
-    const icon = document.createElement('i');           //Creamos el i
-    icon.classList.add('fa', 'fa-times-circle-o');      //Damos clase al i
-    icon.style.color = 'rgb(255, 0, 89)';               //Asignamos color al i
-    icon.style.textAlign = 'right';                     //Asignamos posicion al i
-    icon.onclick=eliminarFila;                          //Asignamos evento o funcion al clickar
-    const tdtext=document.createElement("td");          //Creamos el TD de texto
-    tdtext.className = "col-md-11 col-sm-11";           //Damos clase al TD de texto
-    let txt = document.createTextNode(explicacion);    //Inicializamos un nodo con el texto a plasmar
-    tdtext.appendChild(txt);                            //Agregamos el textro al TD
-    tdRemove.appendChild(icon);                         //Agregamos el icono al TD
-    tr.appendChild(tdRemove);                           //Agregamos el TD al TR
-    tr.appendChild(tdtext);                             //Agregamos el TD al TR
+    let inicio = "Paso ";
+    let explicacion = inicio + NStep + ". " + Step + " " + Stepimg.getAttribute('name'); //Encadenamos para formar el texto a plasmar
+    const tr = document.createElement("tr"); //Creamos el TR
+    const tdRemove = document.createElement("td"); //Creamos el TD
+    tdRemove.className = "col-md-1 col-sm-1"; //Damos clase al TD
+    const icon = document.createElement("i"); //Creamos el i
+    icon.classList.add("fa", "fa-times-circle-o"); //Damos clase al i
+    icon.style.color = "rgb(255, 0, 89)"; //Asignamos color al i
+    icon.style.textAlign = "right"; //Asignamos posicion al i
+    icon.style.cursor = "pointer"; //Asignamos el pointer al cursor, como si estuviera en un boton
+    icon.onclick = eliminarFila; //Asignamos evento o funcion al clickar
+    const tdtext = document.createElement("td"); //Creamos el TD de texto
+    tdtext.className = "col-md-11 col-sm-11"; //Damos clase al TD de texto
+    let txt = document.createTextNode(explicacion); //Inicializamos un nodo con el texto a plasmar
+    tdtext.appendChild(txt); //Agregamos el textro al TD
+    tdRemove.appendChild(icon); //Agregamos el icono al TD
+    tr.appendChild(tdRemove); //Agregamos el TD al TR
+    tr.appendChild(tdtext); //Agregamos el TD al TR
     console.log(explicacion);
-    const tbody=document.getElementById("procedimiento").querySelector("tbody").appendChild(tr);  //Agragamos al TBody ambos TR
-}
+    const tbody = document
+        .getElementById("procedimiento")
+        .querySelector("tbody")
+        .appendChild(tr); //Agragamos al TBody ambos TR
+};
 //Para eliminar
-function eliminarFila(){
+function eliminarFila() {
     const tr = this.closest("tr");
     tr.remove();
     console.log("Se clico");

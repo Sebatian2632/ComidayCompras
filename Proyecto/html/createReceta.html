@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<!-- Meta, title, CSS, favicons, etc. -->
 	<meta charset="utf-8">
@@ -15,8 +16,8 @@
 	<link href="../../gentelella-master/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 	<!-- NProgress -->
 	<link href="../../gentelella-master/vendors/nprogress/nprogress.css" rel="stylesheet">
-    <!-- Dropzone.js -->
-    <link href="../../gentelella-master/vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
+	<!-- Dropzone.js -->
+	<link href="../../gentelella-master/vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
 	<!-- iCheck -->
 	<link href="../../gentelella-master/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
 	<!-- bootstrap-wysiwyg -->
@@ -48,7 +49,8 @@
 					<!-- menu profile quick info -->
 					<div class="profile clearfix">
 						<div class="profile_pic">
-							<img src="../../gentelella-master/production/images/img.jpg" alt="..." class="img-circle profile_img">
+							<img src="../../gentelella-master/production/images/img.jpg" alt="..."
+								class="img-circle profile_img">
 						</div>
 						<div class="profile_info">
 							<span>Bienvenido</span>
@@ -64,7 +66,7 @@
 						<div class="menu_section">
 							<ul class="nav side-menu">
 								<li><a href="#"><i class="fa fa-home"></i> Inicio</a></li>
-                                <li><a><i class="fa fa-birthday-cake"></i> Mis recetas</a></li>
+								<li><a><i class="fa fa-birthday-cake"></i> Mis recetas</a></li>
 								<li><a><i class="fa fa-group"></i> Grupos <span class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu">
 										<li><a href="#">Familia</a></li>
@@ -72,7 +74,7 @@
 									</ul>
 								</li>
 								<li><a><i class="fa fa-list-alt"></i> Planeación de recetas</a></li>
-                                <li><a><i class="fa fa-money"></i> Lista de compras</a></li>
+								<li><a><i class="fa fa-money"></i> Lista de compras</a></li>
 							</ul>
 						</div>
 					</div>
@@ -111,157 +113,168 @@
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
-									<form id="demo-form" data-parsley-validate>                                        
-                                        <div class="form-group row">
+									<form id="demo-form" data-parsley-validate>
+										<div class="form-group row">
 											<label class="col-form-label col-md-12 col-sm-12 "></label>
 											<div class="col-md-12 col-sm-12 ">
-                                                <label for="fullname">Nombre de la receta</label>
-												<input type="text" class="form-control" placeholder="Nombre de la receta" id="nombrereceta">
+												<label for="fullname">Nombre de la receta</label>
+												<input type="text" class="form-control"
+													placeholder="Nombre de la receta" id="nombrereceta">
 											</div>
 										</div>
 
-                                        <div class="form-group row">
+										<div class="form-group row">
 											<label class="col-form-label col-md-12 col-sm-12 "></label>
 											<div class="col-md-6 col-sm-6 ">
-													<label for="fullname">Ingrediente</label>
-													<input type="text" name="ingredientes" id="autocomplete-custom-append" class="form-control" >
-													<ul class="list"></ul> 
-													<div class="form-group row">
-														<label class="col-form-label col-md-12 col-sm-12 "></label>
-														<div class="col-md-6 col-sm-6 ">
-															<label for="fullname">Cantidad</label>
-															<input type="text" class="form-control" id="cantidad" placeholder="Cantidad del ingrediente">
-														</div>
-														<div class="col-md-6 col-sm-6 ">
-															<label for="fullname">Unidad de medida</label>
-															<select id="unidad_medida" class="form-control">
-																<option value="">Elige...</option>
-																<option value="Gramos">Gramos (gr.)</option>
-																<option value="Piezas">Piezas (pzs)</option>
-																<option value="Litros">Litros (l)</option>
-															</select>
-														</div>
+												<label for="fullname">Ingrediente</label>
+												<input type="text" name="ingredientes" id="autocomplete-custom-append"
+													class="form-control">
+												<ul class="list"></ul>
+												<div class="form-group row">
+													<label class="col-form-label col-md-12 col-sm-12 "></label>
+													<div class="col-md-6 col-sm-6 ">
+														<label for="fullname">Cantidad</label>
+														<input type="text" class="form-control" id="cantidad"
+															placeholder="Cantidad del ingrediente">
 													</div>
-													<div class="form-group row">
-														<div class="col-md-6 col-sm-6 ">
-															
-														</div>
-														<div class="col-md-6 col-sm-6 " align="right">
-															<button type="button" id="agregarin" class="btn btn-primary">Agregar</button>
-														</div>                                                      
+													<div class="col-md-6 col-sm-6 ">
+														<label for="fullname">Unidad de medida</label>
+														<select id="unidad_medida" class="form-control">
+															<option value="">Elige...</option>
+															<option value="Gramos">Gramos (gr.)</option>
+															<option value="Piezas">Piezas (pzs)</option>
+															<option value="Litros">Litros (l)</option>
+														</select>
 													</div>
-												          
+												</div>
+												<div class="form-group row">
+													<div class="col-md-6 col-sm-6 ">
+
+													</div>
+													<div class="col-md-6 col-sm-6 " align="right">
+														<button type="button" id="agregarin"
+															class="btn btn-primary">Agregar</button>
+													</div>
+												</div>
+
 											</div>
-                                            <div class="col-md-6 col-sm-6 ">
-                                                <label for="fullname">Lista de ingredientes</label>
+											<div class="col-md-6 col-sm-6 ">
+												<label for="fullname">Lista de ingredientes</label>
 												<table class="col-md-12 col-sm-12 " id="listaingredientes">
 													<tr>
-														
+
 													</tr>
-													
+
 												</table>
 											</div>
 										</div>
 
-                                        
 
-                                        <div class="form-group row">
+
+										<div class="form-group row">
 											<div class="col-md-6 col-sm-6 ">
-                                                <div class="form-group row">
-                                                    <div class="col-md-4 col-sm-4 ">
-                                                        <label for="fullname">No. de paso</label>
-                                                        <input type="text" class="form-control" id="nopaso" placeholder="No. de paso">
-                                                    </div>
-                                                    <div class="col-md-8 col-sm-8 ">
-                                                        <label for="fullname">Imagen de apoyo</label>
-                                                        <input type="file" id="imgpaso">
-                                                    </div>
-                                                </div>
-                                                <label for="fullname">Paso</label>
-												<textarea class="form-control" rows="2" id="paso" placeholder=" "></textarea>
-                                                
-                                                <div class="form-group row"></div>
-                                                <div class="form-group row">
-                                                    <div class="col-md-6 col-sm-6 ">
-                                                    </div>
-                                                    <div class="col-md-6 col-sm-6 " align="right">
-                                                        <button type="button" id="agregarpro" class="btn btn-primary">Agregar</button>
-                                                    </div>
-                                                </div>                                     
+												<div class="form-group row">
+													<div class="col-md-4 col-sm-4 ">
+														<label for="fullname">No. de paso</label>
+														<input type="text" class="form-control" id="nopaso"
+															placeholder="No. de paso">
+													</div>
+													<div class="col-md-8 col-sm-8 ">
+														<label for="fullname">Imagen de apoyo</label>
+														<input type="file" id="imgpaso">
+													</div>
+												</div>
+												<label for="fullname">Paso</label>
+												<textarea class="form-control" rows="2" id="paso"
+													placeholder=" "></textarea>
+
+												<div class="form-group row"></div>
+												<div class="form-group row">
+													<div class="col-md-6 col-sm-6 ">
+													</div>
+													<div class="col-md-6 col-sm-6 " align="right">
+														<button type="button" id="agregarpro"
+															class="btn btn-primary">Agregar</button>
+													</div>
+												</div>
 											</div>
 
-                                            <div class="col-md-6 col-sm-6 ">
-                                                <label for="fullname">Procedimiento</label>
-                                                <table class="col-md-12 col-sm-12 " id="procedimiento" >
+											<div class="col-md-6 col-sm-6 ">
+												<label for="fullname">Procedimiento</label>
+												<table class="col-md-12 col-sm-12 " id="procedimiento">
 													<tr>
-														
+
 													</tr>
 												</table>
 											</div>
 										</div>
 
-                                        <div class="form-group row">
+										<div class="form-group row">
 											<div class="col-md-6 col-sm-6 ">
-                                                <label class="col-form-label col-md-3 col-sm-3 ">Duración</label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <input type="text" id="rduracion" class="form-control" placeholder="Tiempo total de preparación">
-                                                </div>                               
+												<label class="col-form-label col-md-3 col-sm-3 ">Duración</label>
+												<div class="col-md-9 col-sm-9 ">
+													<input type="text" id="rduracion" class="form-control"
+														placeholder="Tiempo total de preparación">
+												</div>
 											</div>
-                                            
-                                            <div class="col-md-6 col-sm-6 ">
-                                                <label class="col-form-label col-md-3 col-sm-3 ">Porciones</label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <input type="text" id="rporcion" class="form-control" placeholder="Número total de porciones">
-                                                </div>                               
+
+											<div class="col-md-6 col-sm-6 ">
+												<label class="col-form-label col-md-3 col-sm-3 ">Porciones</label>
+												<div class="col-md-9 col-sm-9 ">
+													<input type="text" id="rporcion" class="form-control"
+														placeholder="Número total de porciones">
+												</div>
 											</div>
 										</div>
 
-                                        <div class="form-group row">
+										<div class="form-group row">
 											<div class="col-md-6 col-sm-6 ">
-                                                <label class="col-form-label col-md-3 col-sm-3 ">Tiempo de comida</label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <select id="rtiempo" class="form-control">
-                                                        <option value="">Elige...</option>
-                                                        <option value="Desayuno">Desayuno</option>
-                                                        <option value="Almuerzo">Almuerzo</option>
-                                                        <option value="Comida">Comida</option>
-                                                        <option value="Merienda">Merienda</option>
-                                                        <option value="Cena">Cena</option>
-                                                    </select>
-                                                </div>                               
+												<label class="col-form-label col-md-3 col-sm-3 ">Tiempo de
+													comida</label>
+												<div class="col-md-9 col-sm-9 ">
+													<select id="rtiempo" class="form-control">
+														<option value="">Elige...</option>
+														<option value="Desayuno">Desayuno</option>
+														<option value="Almuerzo">Almuerzo</option>
+														<option value="Comida">Comida</option>
+														<option value="Merienda">Merienda</option>
+														<option value="Cena">Cena</option>
+													</select>
+												</div>
 											</div>
-                                            
-                                            <div class="col-md-6 col-sm-6 ">
-                                                <label class="col-form-label col-md-3 col-sm-3 ">Tipo de receta</label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <select id="rtipo" class="form-control">
-                                                        <option value="">Elige...</option>
-                                                        <option value="Entrada">Entrada</option>
-                                                        <option value="Principal">Principal</option>
-                                                        <option value="Botanas">Botanas</option>
-                                                        <option value="Bebidas">Bebidas</option>
-                                                        <option value="Sopas y ensaladas">Sopas y ensaladas</option>
-                                                        <option value="Postres">Postres</option>
-                                                        <option value="Aperitivos">Aperitivos</option>
-                                                    </select>  
-                                                </div>                               
+
+											<div class="col-md-6 col-sm-6 ">
+												<label class="col-form-label col-md-3 col-sm-3 ">Tipo de receta</label>
+												<div class="col-md-9 col-sm-9 ">
+													<select id="rtipo" class="form-control">
+														<option value="">Elige...</option>
+														<option value="Entrada">Entrada</option>
+														<option value="Principal">Principal</option>
+														<option value="Botanas">Botanas</option>
+														<option value="Bebidas">Bebidas</option>
+														<option value="Sopas y ensaladas">Sopas y ensaladas</option>
+														<option value="Postres">Postres</option>
+														<option value="Aperitivos">Aperitivos</option>
+													</select>
+												</div>
 											</div>
 										</div>
-                                        
-                                        <div class="form-group row"></div>
-                                        <div class="form-group row">
+
+										<div class="form-group row"></div>
+										<div class="form-group row">
 											<div class="col-md-6 col-sm-6 ">
-                                                <label class="col-form-label col-md-3 col-sm-3 ">Producto final</label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <input type="file" id="rimg">
-                                                </div>                               
+												<label class="col-form-label col-md-3 col-sm-3 ">Producto final</label>
+												<div class="col-md-9 col-sm-9 ">
+													<input type="file" id="rimg">
+												</div>
 											</div>
-                                            
-                                            <div class="col-md-6 col-sm-6 ">
-                                                <label class="col-form-label col-md-3 col-sm-3 "></label>
-                                                <div class="col-md-9 col-sm-9 "align="right">
-                                                    <button type="button" class="btn btn-success" id="guardarreceta">Guardar receta</button>                                                    
-                                                </div>                               
+
+											<div class="col-md-6 col-sm-6 ">
+												<label class="col-form-label col-md-3 col-sm-3 "></label>
+												<div class="col-md-9 col-sm-9 " align="right">
+													<button type="button" class="btn btn-success"
+														id="guardarreceta">Guardar receta</button>
+												</div>
 											</div>
 										</div>
 									</form>
@@ -292,8 +305,8 @@
 	<script src="../../gentelella-master/vendors/fastclick/lib/fastclick.js"></script>
 	<!-- NProgress -->
 	<script src="../../gentelella-master/vendors/nprogress/nprogress.js"></script>
-    <!-- Dropzone.js -->
-    <script src="../../gentelella-master/vendors/dropzone/dist/min/dropzone.min.js"></script>
+	<!-- Dropzone.js -->
+	<script src="../../gentelella-master/vendors/dropzone/dist/min/dropzone.min.js"></script>
 	<!-- bootstrap-progressbar -->
 	<script src="../../gentelella-master/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
 	<!-- iCheck -->
@@ -327,5 +340,7 @@
 	<script src="../js/procedimiento.js"></script>
 	<!-- Input de procedimiento para añadir a tabla-->
 	<script src="../js/receta.js"></script>
+	<script>const correo = "<?php echo $_SESSION['correo']; ?>";</script>
+</body>
 
-</body></html>
+</html>
