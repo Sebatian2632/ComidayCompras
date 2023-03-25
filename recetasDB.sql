@@ -24,7 +24,7 @@ USE `recetasDB` ;
 DROP TABLE IF EXISTS `recetasDB`.`ingredientes` ;
 
 CREATE TABLE IF NOT EXISTS `recetasDB`.`ingredientes` (
-  `idIngredientes` INT(11) NOT NULL,
+  `idIngredientes` INT(11) NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idIngredientes`))
 ENGINE = InnoDB
@@ -51,7 +51,7 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `recetasDB`.`recetas` ;
 
 CREATE TABLE IF NOT EXISTS `recetasDB`.`recetas` (
-  `idRecetas` INT(11) NOT NULL,
+  `idRecetas` INT(11) NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `duracion` VARCHAR(45) NOT NULL,
   `tiempo_comida` VARCHAR(45) NOT NULL,
