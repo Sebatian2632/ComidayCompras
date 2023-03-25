@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `recetasDB`.`ingredientes` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-
+ 
 -- -----------------------------------------------------
 -- Table `recetasDB`.`usuarios`
 -- -----------------------------------------------------
