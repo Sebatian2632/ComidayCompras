@@ -12,14 +12,18 @@ try {
 	$sql = $_POST['sql'];
 
 	// Ejecutar la sentencia SQL en la base de datos
-	$conn->query($sql);
+	$resultado = $conn->query($sql);
 
-	// Enviar respuesta al cliente (mensaje de confirmación)
-	echo "SQL ejecutado";
+	// Obtener los datos del resultado y convertirlos a un array asociativo
+	$datos = $resultado->fetchAll(PDO::FETCH_ASSOC);
+
+	// Enviar respuesta al cliente en formato JSON
+	header('Content-Type: application/json');
+	echo json_encode($datos);
 
 	// Cerrar conexión a la base de datos
-	
-	} catch(PDOException $e) {
+	$conn = null;
+} catch(PDOException $e) {
 	echo "Error: " . $e->getMessage();
 }
 ?>

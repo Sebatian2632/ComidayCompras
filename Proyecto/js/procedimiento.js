@@ -1,5 +1,6 @@
 let ADDpro = document.getElementById("agregarpro");
 ADDpro.onclick = function () {
+    
     let NStep = document.getElementById("nopaso").value;
     let Step = document.getElementById("paso").value;
     let Stepimg = document.getElementById("imgpaso");
@@ -26,7 +27,7 @@ ADDpro.onclick = function () {
         tdRemove.appendChild(icon); //Agregamos el icono al TD
         tr.appendChild(tdRemove); //Agregamos el TD al TR
         tr.appendChild(tdtext); //Agregamos el TD al TR
-        console.log(explicacion);
+
         const tbody = document
             .getElementById("procedimiento")
             .querySelector("tbody")
@@ -54,7 +55,7 @@ ADDpro.onclick = function () {
         tdRemove.appendChild(icon); //Agregamos el icono al TD
         tr.appendChild(tdRemove); //Agregamos el TD al TR
         tr.appendChild(tdtext); //Agregamos el TD al TR
-        console.log(explicacion);
+
         const tbody = document
             .getElementById("procedimiento")
             .querySelector("tbody")
@@ -66,7 +67,6 @@ ADDpro.onclick = function () {
 function eliminarFila() {
     const tr = this.closest("tr");
     tr.remove();
-    console.log("Se clico");
 }
 function limpiar() {
     document.getElementById("nopaso").value = "";

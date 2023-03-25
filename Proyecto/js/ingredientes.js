@@ -9,6 +9,7 @@ fetch("../php/ingredientes.php")
 
 let Addingre = document.getElementById("agregarin");
 Addingre.onclick = function () {
+    
     let NIName = document.getElementById("autocomplete-custom-append").value;
     let NIQuantity = document.getElementById("cantidad").value;
     let NIUnit = document.getElementById("unidad_medida").value;
@@ -38,35 +39,16 @@ Addingre.onclick = function () {
             .getElementById("listaingredientes")
             .querySelector("tbody")
             .appendChild(tr); //Agragamos al TBody ambos TR
-        limpiar();
+        limpiaringre();
     }
 };
 //Para eliminar
 function eliminarFila() {
     const tr = this.closest("tr");
     tr.remove();
-    console.log("Se clico");
 }
-function faltandatos() {
-    //Modal para datos no agregados
-    // Ventana modal
-    var modal = document.getElementById("Modalingredientes");
-    // Hace referencia al elemento <span> que tiene la X que cierra la ventana
-    var span = document.getElementsByClassName("cerrar")[0];
-    // Si el usuario hace clic en la x, la ventana se cierra
-    span.addEventListener("click", function () {
-        modal.style.display = "none";
-    });
-    // Si el usuario hace clic fuera de la ventana, se cierra.
-    window.addEventListener("click", function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    });
-}
-function limpiar() {
+function limpiaringre() {
     document.getElementById("autocomplete-custom-append").value = "";
     document.getElementById("cantidad").value = "";
     document.getElementById("unidad_medida").value = "";
-  }
-  
+}

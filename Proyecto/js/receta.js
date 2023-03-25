@@ -15,8 +15,7 @@ ADDrecipe.onclick = function () {
     let RTime = document.getElementById("rtiempo").value;
     let RType = document.getElementById("rtipo").value;
     let RImg = document.getElementById("rimg");
-    let namerimg = RImg.files[0];
-    let namerimges = namerimg.name;
+
     if (
         RName === "" ||
         RDuration === "" ||
@@ -27,6 +26,8 @@ ADDrecipe.onclick = function () {
     ) {
         alert("Por favor, complete todos los campos y seleccione una imagen.");
     } else {
+        let namerimg = RImg.files[0];
+        let namerimges = namerimg.name;
         //Agregar la receta
         fetch("../php/insertarDB.php", {
             //Peticion php para guardar cosas en DB
@@ -52,10 +53,9 @@ ADDrecipe.onclick = function () {
                 correo +
                 '")',
         })
-            .then((response) =>
-                console.log("Receta insertada en la base de datos.")
-            ) //Mostrar en la consola que se añadio
+            .then((response) => console.log()) //Mostrar en la consola que se añadio
             .catch((error) => console.error(error)); //Mostrar el error si es que hubo
+
         //Retomar el ID de la receta creada
         fetch("../php/insertarDB.php", {
             //Peticion php para guardar cosas en DB
@@ -73,9 +73,12 @@ ADDrecipe.onclick = function () {
         })
             .then((response) => response.json())
             .then((data) => {
-                recetaid = data.map((obj) => obj.idRecetas);
+                temp = data.map((obj) => obj.idRecetas);
+                recetaid = temp;
+                console.log(temp);
             })
             .catch((error) => console.error(error)); //Mostrar el error si es que hubo
+
         //revisamos ingredientes para insertar los que no existan
         const table = document.querySelector("#listaingredientes"); // Obtener la tabla
         const tds = table.querySelectorAll("td:not(.col-md-1)"); // Obtener todos los td que no tienen clase "col-md-1"
@@ -102,38 +105,61 @@ ADDrecipe.onclick = function () {
             const filaproce = textspro[i]; //Del array obtener la cadena de la posicion i
             const regex = /^Paso\s(\d+)\.\s(.+)\s(\S+)$/;
             const partes = filaproce.match(regex); //Comparar las cadenas para saber las partes
-            const numeroPaso = partes[1]; //numero de paso. Paso 1., obtiene el 1
-            const descripcion = partes[2]; //Obtiene toda la descripcion
-            const nombreArchivo = partes[3]; //Obtiene el nombre del archivo
-            fetch("../php/insertarDB.php", {
-                //Peticion php para guardar cosas en DB
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body:
-                    'sql=INSERT INTO pasos (idPasos, paso, imagen, Recetas_idRecetas) VALUES ("' +
-                    numeroPaso +
-                    '", "' +
-                    descripcion +
-                    '", "' +
-                    nombreArchivo +
-                    '", "' +
-                    recetaid +
-                    '")',
-            })
-                .then((response) =>
-                    console.log("Paso insertado en la base de datos.")
-                ) //Mostrar en la consola que se añadio
-                .catch((error) => console.error(error)); //Mostrar el error si es que hubo
+            if (partes === null || partes[3] === undefined) {
+                const regex = /^Paso\s(\d+)\.\s(.+)$/;
+                const partes = filaproce.match(regex); //Comparar las cadenas para saber las partes
+                const numeroPaso = partes[1];
+                const descripcion = partes[2];
+                fetch("../php/insertarDB.php", {
+                    //Peticion php para guardar cosas en DB
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body:
+                        'sql=INSERT INTO pasos (idPasos, paso, Recetas_idRecetas) VALUES ("' +
+                        numeroPaso +
+                        '", "' +
+                        descripcion +
+                        '", "' +
+                        recetaid +
+                        '")',
+                })
+                    .then((response) => console.log()) //Mostrar en la consola que se añadio
+                    .catch((error) => console.error(error)); //Mostrar el error si es que hubo
+            } else {
+                const numeroPaso = partes[1];
+                const descripcion = partes[2];
+                const nombreArchivo = partes[3];
+                fetch("../php/insertarDB.php", {
+                    //Peticion php para guardar cosas en DB
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body:
+                        'sql=INSERT INTO pasos (idPasos, paso, imagen, Recetas_idRecetas) VALUES ("' +
+                        numeroPaso +
+                        '", "' +
+                        descripcion +
+                        '", "' +
+                        nombreArchivo +
+                        '", "' +
+                        recetaid +
+                        '")',
+                })
+                    .then((response) => console.log()) //Mostrar en la consola que se añadio
+                    .catch((error) => console.error(error)); //Mostrar el error si es que hubo
+            }
         }
         //Insertar ingredientes de la receta
         for (let i = 0; i < texts.length; i++) {
             const ingredienteahora = texts[i]; //Del array obtener la cadena de la posicion i
-            let UnitMedida = split[2];
-            let Quantity = split[1];
+            const split = ingredienteahora.split(" "); //Partimos la cadena donde existan ' '
             const indiceDee = split.indexOf("de"); //Obtenemos la posicion del "de"
             const ingredientee = split.slice(indiceDee + 1).join(" "); //De la posicion del primer "de" se obtiene la cadena de despues
+            let UnitMedida = split[2];
+            let Quantity = split[1];
             let nombreingre = ingredientee;
             fetch("../php/insertarDB.php", {
                 //Peticion php para guardar cosas en DB
@@ -169,14 +195,13 @@ ADDrecipe.onclick = function () {
                             UnitMedida +
                             '")',
                     })
-                        .then((response) =>
-                            console.log("Paso insertado en la base de datos.")
-                        ) //Mostrar en la consola que se añadio
+                        .then((response) => console.log()) //Mostrar en la consola que se añadio
                         .catch((error) => console.error(error)); //Mostrar el error si es que hubo
                 })
                 .catch((error) => console.error(error)); //Mostrar el error si es que hubo
         }
         alert("La receta se a creado");
+        limpiarreceta();
     }
 };
 
@@ -202,27 +227,16 @@ function existe(ingrediente) {
                         Insertaringre +
                         '")', //Sentencia para enviar el nuevo ingrediente
                 })
-                    .then((response) =>
-                        console.log(
-                            "Ingrediente insertado en la base de datos."
-                        )
-                    ) //Mostrar en la consola que se añadio
+                    .then((response) => console.log()) //Mostrar en la consola que se añadio
                     .catch((error) => console.error(error)); //Mostrar el error si es que hubo
             }
         })
         .catch((error) => console.error(error));
 }
-function limpiar(){
-    document.getElementById("autocomplete-custom-append").value = "";
-    document.getElementById("cantidad").value = "";
-    document.getElementById("unidad_medida").value = "";
-    document.getElementById("nopaso").value = "";
-    document.getElementById("paso").value = "";
-    document.getElementById("imgpaso").value = null;
+function limpiarreceta() {
     document.getElementById("nombrereceta").value = "";
     document.getElementById("rduracion").value = "";
     document.getElementById("rporcion").value = "";
     document.getElementById("rtiempo").value = "";
     document.getElementById("rtipo").value = "";
-    document.getElementById("rimg") = null;
 }
