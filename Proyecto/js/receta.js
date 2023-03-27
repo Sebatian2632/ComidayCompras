@@ -1,4 +1,5 @@
 var correo;
+let recetaid; //Variable para el id de la receta
 fetch("../php/session.php")
     .then((response) => response.json())
     .then((data) => {
@@ -8,7 +9,7 @@ fetch("../php/session.php")
 
 let ADDrecipe = document.getElementById("guardarreceta");
 ADDrecipe.onclick = function () {
-    var recetaid; //Variable para el id de la receta
+    
     let RName = document.getElementById("nombrereceta").value;
     let RDuration = document.getElementById("rduracion").value;
     let RPortion = document.getElementById("rporcion").value;
@@ -71,42 +72,24 @@ ADDrecipe.onclick = function () {
                 correo +
                 '";',
         })
-            .then((response) => response.json())
-            .then((data) => {
-                temp = data.map((obj) => obj.idRecetas);
-                recetaid = temp;
-                console.log(temp);
-            })
-            .catch((error) => console.error(error)); //Mostrar el error si es que hubo
-
-        //revisamos ingredientes para insertar los que no existan
-        const table = document.querySelector("#listaingredientes"); // Obtener la tabla
-        const tds = table.querySelectorAll("td:not(.col-md-1)"); // Obtener todos los td que no tienen clase "col-md-1"
-        const texts = Array.from(tds).map((td) => td.textContent); // Obtener la cadena de texto de cada td y guardarlos en un array
-        //Iterar el array y separarlo
-        for (let i = 0; i < texts.length; i++) {
-            const fila = texts[i]; //Del array obtener la cadena de la posicion i
-            const split = fila.split(" "); //Partimos la cadena donde existan ' '
-            const indiceDe = split.indexOf("de"); //Obtenemos la posicion del "de"
-            const ingrediente = split.slice(indiceDe + 1).join(" "); //De la posicion del primer "de" se obtiene la cadena de despues
-            existe(ingrediente); //Checar si existe el ingrediente
-            for (let j = i + 1; j < texts.length; j++) {
-                //Checamos que no se repita el ingrediente en toda la lista para evitar dobles en DB
-                if (fila == texts[j]) {
-                    i++;
-                }
-            }
-        }
+        .then((response) => response.json())
+        .then((data) => {
+            temp = data.map((obj) => obj.idRecetas);
+            recetaid = temp;
+            console.log(recetaid);
+        })
+        .catch((error) => console.log(error));
+        
         //Procedimiento de la receta
         const tablepro = document.querySelector("#procedimiento"); // Obtener la tabla
         const tdspro = tablepro.querySelectorAll("td:not(.col-md-1)"); // Obtener todos los td que no tienen clase "col-md-1"
         const textspro = Array.from(tdspro).map((td) => td.textContent); // Obtener la cadena de texto de cada td y guardarlos en un array
         for (let i = 0; i < textspro.length; i++) {
             const filaproce = textspro[i]; //Del array obtener la cadena de la posicion i
-            const regex = /^Paso\s(\d+)\.\s(.+)\s(\S+)$/;
-            const partes = filaproce.match(regex); //Comparar las cadenas para saber las partes
-            if (partes === null || partes[3] === undefined) {
-                const regex = /^Paso\s(\d+)\.\s(.+)$/;
+            const regex = /^Paso\s(\d+)\.\s(.+)\.$/
+            console.log(filaproce);
+            if (regex.test(filaproce)) {
+                console.log("Entro prim");
                 const partes = filaproce.match(regex); //Comparar las cadenas para saber las partes
                 const numeroPaso = partes[1];
                 const descripcion = partes[2];
@@ -117,7 +100,7 @@ ADDrecipe.onclick = function () {
                         "Content-Type": "application/x-www-form-urlencoded",
                     },
                     body:
-                        'sql=INSERT INTO pasos (idPasos, paso, Recetas_idRecetas) VALUES ("' +
+                        'sql=INSERT INTO pasos (nopaso, paso, Recetas_idRecetas) VALUES ("' +
                         numeroPaso +
                         '", "' +
                         descripcion +
@@ -128,6 +111,8 @@ ADDrecipe.onclick = function () {
                     .then((response) => console.log()) //Mostrar en la consola que se añadio
                     .catch((error) => console.error(error)); //Mostrar el error si es que hubo
             } else {
+                console.log("entro aqui");
+                const partes = filaproce.match(regex); //Comparar las cadenas para saber las partes
                 const numeroPaso = partes[1];
                 const descripcion = partes[2];
                 const nombreArchivo = partes[3];
@@ -152,6 +137,26 @@ ADDrecipe.onclick = function () {
                     .catch((error) => console.error(error)); //Mostrar el error si es que hubo
             }
         }
+
+        //revisamos ingredientes para insertar los que no existan
+        const table = document.querySelector("#listaingredientes"); // Obtener la tabla
+        const tds = table.querySelectorAll("td:not(.col-md-1)"); // Obtener todos los td que no tienen clase "col-md-1"
+        const texts = Array.from(tds).map((td) => td.textContent); // Obtener la cadena de texto de cada td y guardarlos en un array
+        //Iterar el array y separarlo
+        for (let i = 0; i < texts.length; i++) {
+            const fila = texts[i]; //Del array obtener la cadena de la posicion i
+            const split = fila.split(" "); //Partimos la cadena donde existan ' '
+            const indiceDe = split.indexOf("de"); //Obtenemos la posicion del "de"
+            const ingrediente = split.slice(indiceDe + 1).join(" "); //De la posicion del primer "de" se obtiene la cadena de despues
+            existe(ingrediente); //Checar si existe el ingrediente
+            for (let j = i + 1; j < texts.length; j++) {
+                //Checamos que no se repita el ingrediente en toda la lista para evitar dobles en DB
+                if (fila == texts[j]) {
+                    i++;
+                }
+            }
+        }
+        
         //Insertar ingredientes de la receta
         for (let i = 0; i < texts.length; i++) {
             const ingredienteahora = texts[i]; //Del array obtener la cadena de la posicion i

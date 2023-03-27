@@ -10,7 +10,7 @@ ADDpro.onclick = function () {
     } else if (Stepimg.files.length === 0) {
         //agregar valores a la tabla de listado de ingredientes con el icono para eliminar
         let inicio = "Paso ";
-        let explicacion = inicio + NStep + ". " + Step; //Encadenamos para formar el texto a plasmar
+        let explicacion = inicio + NStep + ". " + Step + "."; //Encadenamos para formar el texto a plasmar
         const tr = document.createElement("tr"); //Creamos el TR
         const tdRemove = document.createElement("td"); //Creamos el TD
         tdRemove.className = "col-md-1 col-sm-1"; //Damos clase al TD
@@ -38,7 +38,7 @@ ADDpro.onclick = function () {
         let namestepimg = nameimg.name;
         //agregar valores a la tabla de listado de ingredientes con el icono para eliminar
         let inicio = "Paso ";
-        let explicacion = inicio + NStep + ". " + Step + " " + namestepimg; //Encadenamos para formar el texto a plasmar
+        let explicacion = inicio + NStep + ". " + Step + ". " + namestepimg; //Encadenamos para formar el texto a plasmar
         const tr = document.createElement("tr"); //Creamos el TR
         const tdRemove = document.createElement("td"); //Creamos el TD
         tdRemove.className = "col-md-1 col-sm-1"; //Damos clase al TD
