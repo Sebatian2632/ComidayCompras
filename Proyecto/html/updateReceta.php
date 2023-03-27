@@ -138,7 +138,7 @@ mysqli_close($conn);
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
-									<form id="demo-form" data-parsley-validate action="actualizar.php" method="post">                                        
+									<form id="demo-form" data-parsley-validate action="\\ComidayCompras/Proyecto/php/actualizar.php" method="post">                                        
                                         <div class="form-group row">
 											<label class="col-form-label col-md-12 col-sm-12 "></label>
 											<div class="col-md-10 col-sm-10 ">
@@ -148,7 +148,7 @@ mysqli_close($conn);
 											</div>
                                             <div class="col-md-2 col-sm-2 " align="center">
 												<label for="fullname">¿Ya no te interesa?</label>
-												<button type="button" class="btn btn-danger" action=eliminar_receta.php>Eliminar receta</button>
+												<button type="button" class="btn btn-danger" onclick="window.location.href='\\ComidayCompras/Proyecto/php/eliminar_receta.php';">Eliminar receta</button>
 											</div>
 										</div>
 
@@ -274,7 +274,7 @@ mysqli_close($conn);
 											<div class="col-md-6 col-sm-6 ">
                                                 <label class="col-form-label col-md-3 col-sm-3 ">Tiempo de comida</label>
                                                 <div class="col-md-9 col-sm-9 ">
-                                                    <select id="unidad_medida" class="form-control">
+                                                    <select id="unidad_medida" name="tiempo_comida" class="form-control">
                                                         <option value="">Elige...</option>
                                                         <option value="Desayuno">Desayuno</option>
                                                         <option value="Almuerzo">Almuerzo</option>
@@ -288,7 +288,7 @@ mysqli_close($conn);
                                             <div class="col-md-6 col-sm-6 ">
                                                 <label class="col-form-label col-md-3 col-sm-3 ">Tipo de receta</label>
                                                 <div class="col-md-9 col-sm-9 ">
-                                                    <select id="unidad_medida" class="form-control">
+                                                    <select id="unidad_medida" name="tipo_comida" class="form-control">
                                                         <option value="">Elige...</option>
                                                         <option value="Entrada">Entrada</option>
                                                         <option value="Principal">Principal</option>
@@ -314,7 +314,7 @@ mysqli_close($conn);
                                             <div class="col-md-6 col-sm-6 ">
                                                 <label class="col-form-label col-md-3 col-sm-3 "></label>
                                                 <div class="col-md-9 col-sm-9 "align="right">
-                                                    <button type="button" class="btn btn-success">Actualizar receta</button>                                                    
+                                                    <button type="button" class="btn btn-success" >Actualizar receta</button>                                                    
                                                 </div>                               
 											</div>
 										</div>
