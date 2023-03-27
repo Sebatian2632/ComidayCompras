@@ -5,6 +5,7 @@
     var x = document.forms["registrar"]["correo"].value;
     var x1 = document.forms["registrar"]["clave"].value;
     var x2 = document.forms["registrar"]["usuario"].value;
+    var x3 = document.forms["registrar"]["clavec"].value;
 
 
       if(x==""|| x1=="" || x2==""){
@@ -12,6 +13,11 @@
         alert("Campos incompletos");
         return false;
 
+      }
+      else if(x1 != x3)
+      {
+        alert("Las contrase\u00f1as son diferentes");
+        return false;
       }
     }
   </script>
@@ -35,6 +41,7 @@
       <input type="text" id="usuario" class="fadeIn second" name="usuario" placeholder="Usuario">
       <input type="text" id="login" class="fadeIn second" name="correo" placeholder="Correo">
       <input type="password" id="password" class="fadeIn third" name="clave" placeholder="Contrase&ntilde;a">
+      <input type="password" id="passwordc" class="fadeIn third" name="clavec" placeholder="Confirmar contrase&ntilde;a">
       <input type="submit" class="fadeIn fourth" value="Registrarse" >
     </form>
 
