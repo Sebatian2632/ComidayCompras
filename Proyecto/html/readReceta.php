@@ -13,7 +13,7 @@ $resultadoduracion = mysqli_query($conn, "SELECT duracion FROM recetas WHERE idR
 $resultadoporcion = mysqli_query($conn, "SELECT porciones FROM recetas WHERE idRecetas = 1");
 $resultadoingrediente = mysqli_query($conn, "SELECT * FROM ingredientes INNER JOIN recetas_has_ingredientes ON recetas_has_ingredientes.Ingredientes_idIngredientes= ingredientes.idIngredientes WHERE recetas_has_ingredientes.Recetas_idRecetas=1");
 $resultadopasos = mysqli_query($conn, "SELECT paso FROM pasos WHERE Recetas_idRecetas=1");
-
+ 
 
 //IMAGEN
 $qimagen = "SELECT imagen FROM recetas WHERE idRecetas = 4";
