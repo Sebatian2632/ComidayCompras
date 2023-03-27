@@ -1,3 +1,39 @@
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "recetasDB";
+
+// Conexión a la base de datos
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+
+// Realizar la consultas
+$resultadonombre = mysqli_query($conn, "SELECT nombre FROM recetas WHERE idRecetas = 1");
+$resultadoduracion = mysqli_query($conn, "SELECT duracion FROM recetas WHERE idRecetas = 1");
+$resultadoporcion = mysqli_query($conn, "SELECT porciones FROM recetas WHERE idRecetas = 1");
+$resultadoingrediente = mysqli_query($conn, "SELECT * FROM ingredientes INNER JOIN recetas_has_ingredientes ON recetas_has_ingredientes.Ingredientes_idIngredientes= ingredientes.idIngredientes WHERE recetas_has_ingredientes.Recetas_idRecetas=1");
+$resultadopasos = mysqli_query($conn, "SELECT paso FROM pasos WHERE Recetas_idRecetas=1");
+
+
+//IMAGEN
+$qimagen = "SELECT imagen FROM recetas WHERE idRecetas = 4";
+$resultadoimagen = $conn->query($qimagen);
+$imagen = mysqli_fetch_assoc($resultadoimagen)["imagen"];
+$imagen_base64 = base64_encode($imagen);
+
+
+// Obtener el valor de la columna y guardarlo en una variable
+$nombre = mysqli_fetch_assoc($resultadonombre)["nombre"];
+$duracion = mysqli_fetch_assoc($resultadoduracion)["duracion"];
+$porciones = mysqli_fetch_assoc($resultadoporcion)["porciones"];
+$ingredientes = mysqli_fetch_assoc($resultadoingrediente)["nombre"];
+$pasos = mysqli_fetch_assoc($resultadopasos)["paso"];
+
+
+// Cerrar la conexión a la base de datos
+mysqli_close($conn);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -93,7 +129,7 @@
 					<div class="col-md-12 col-sm-12 ">
 						<div class="x_panel">
 							<div class="x_title">
-								<h3>Nombre de la receta</h3>
+								<h3> <?php echo $nombre; ?> </h3>
 								<div class="clearfix"></div>
 							</div>
                   <div class="x_content">
@@ -102,17 +138,17 @@
                       	<div class="form-group row">
 							<div class="col-md-3 col-sm-3 ">
 								<h6 class="col-form-label col-md-4 col-sm-4 ">DURACIÓN: </h6>
-								<label class="col-form-label col-md-8 col-sm-8 ">30 minutos</label>
+								<label class="col-form-label col-md-8 col-sm-8 "><?php echo $duracion; ?></label>
 							</div>
 							<div class="col-md-3 col-sm-3 ">
 								<h6 class="col-form-label col-md-4 col-sm-4 ">PORCIONES: </h6>
-								<label class="col-form-label col-md-8 col-sm-8 ">4</label>
+								<label class="col-form-label col-md-8 col-sm-8 "><?php echo $porciones; ?></label>
 							</div>
 							<div class="col-md-3 col-sm-3 " align="right">
 								<button type="button" class="btn btn-success">Agregar a planeación</button>
 							</div>
 							<div class="col-md-3 col-sm-3 " align="right">
-								<button type="button" class="btn btn-info">Editar o eliminar receta</button>
+								<button type="button" class="btn btn-info" ><a href="updateReceta.php">Editar o eliminar receta </a></button>
 							</div>
 						</div>
 
@@ -120,23 +156,27 @@
 							<div class="col-md-5 col-sm-5 ">
 								<h6 class="col-form-label col-md-12 col-sm-12 ">INGREDIENTES: </h6>	
 								<ul>
-									<li>Pechuga de pollo (1 pieza)</li>
-									<li>Caldo de pollo (1 litro)</li>
-									<li>Tortillas (12)</li>
-									<li>Tomates (8)</li>
-									<li>Cilantro (1 taza)</li>
-									<li>Chile serrano (1)</li>
-									<li>Diente de ajo (1)</li>
-									<li>Cebolla (1/2)</li>
-									<li>Queso doble crema (1 taza)</li>
-									<li>Crema (1/2 taza)</li>
-									<li>Aceite (1/2 taza)</li>
+									<?php 
+									echo "<li>".$ingredientes."</li>";
+									while($ingredientes = mysqli_fetch_assoc($resultadoingrediente))
+									{
+										echo "<li>".$ingredientes['nombre']."</li>";
+									}
+
+									?>
 								</ul>																								
 							</div>
 							<div class="col-md-7 col-sm-7 ">
 								<div class="thumbnail">
 									<div class="image view view-first">
-										<img style="width: 100%; display: block;" src="../img/ejemplo1.png" alt="image" />	
+										<!--IMAGEN-->
+
+										<?php
+										
+										echo '<img style="width: 100%;" src="data:image/png;base64,'.base64_encode($imagen_base64).'"/>';
+
+										?>
+
 									</div>
 									<div class="caption" align="center">
 										<p>Calificación:</p>
@@ -157,70 +197,42 @@
 						</div>
 						</form>
                     <!-- Tabs -->
-                    <div id="wizard_verticle" class="form_wizard wizard_verticle">
-                      <ul class="list-unstyled wizard_steps">
-                        <li>
-                          <a href="#step-11">
-                            <span class="step_no">1</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#step-22">
-                            <span class="step_no">2</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#step-33">
-                            <span class="step_no">3</span>
-                          </a>
-                        </li>
-                      </ul>
+					<div id="wizard_verticle" class="form_wizard wizard_verticle">
+  <ul id="steps-list" class="list-unstyled wizard_steps">
+    <?php 
+      $cont=1;
+      echo "<li><a href=\"#step-$cont\" data-step=\"$cont\"><span class=\"step_no\">$cont</span></a></li>";
+      $cont++;
+      while($pasos = mysqli_fetch_assoc($resultadopasos)) {
+        echo "<li><a href=\"#step-$cont\" data-step=\"$cont\"><span class=\"step_no\">$cont</span></a></li>";
+        $cont++;
+      } 
+    ?>
+  </ul>
 
-						<div id="step-11">
-							<br>
-							<div class="col-md-6 col-sm-6 ">
-								<h2 class="StepTitle">Paso 1</h2>
-								<p>Hierve los tomates, chile serrano, ajo y cebolla en el caldo de pollo durante 10 minutos y licua con el cilantro. Salpimenta y conserva caliente.
-								</p>
-							</div>
-							<div class="col-md-6 col-sm-6 ">
-								<div class="image view view-first">
-									<img style="width: 100%; display: block;" src="../img/1.png" alt="image" />	
-								</div>
-								<br>
-							</div>
-						</div>
-						<div id="step-22">
-							<br>
-							<div class="col-md-6 col-sm-6 ">
-								<h2 class="StepTitle">Paso 2</h2>
-								<p>Fríe ligeramente las tortillas en el aceite caliente y escurre. Sumerge las tortillas en la salsa, rellena con el pollo y baña con más salsa. Decora con el queso, crema, cebolla cambray y cilantro picado								
-								</p>
-							</div>
-							<div class="col-md-6 col-sm-6 ">
-								<div class="image view view-first">
-									<img style="width: 100%; display: block;" src="../img/2.png" alt="image" />	
-								</div>
-								<br>
-							</div>
-						</div>
-						<div id="step-33">
-							<br>
-							<div class="col-md-6 col-sm-6 ">
-								<h2 class="StepTitle">Paso 3</h2>
-								<p>Fríe ligeramente las tortillas en el aceite caliente y escurre. Sumerge las tortillas en la salsa, rellena con el pollo y baña con más salsa. Decora con el queso, crema, cebolla cambray y cilantro picado								
-								</p>
-							</div>
-							<div class="col-md-6 col-sm-6 ">
-								<div class="image view view-first">
-									<img style="width: 100%; display: block;" src="../img/ejemplo1.png" alt="image" />	
-								</div>
-								<br>
-							</div>
-						</div>
-					</div>
-                    <!-- End SmartWizard Content -->
-                  </div>
+  <?php 
+    $cont=1;
+    mysqli_data_seek($resultadopasos, 0); // reset the data pointer
+    while($pasos = mysqli_fetch_assoc($resultadopasos)) {
+      echo "<div id=\"step-$cont\">";
+      echo "<br>";
+      echo "<div class=\"col-md-6 col-sm-6\">";
+      echo "<h2 class=\"StepTitle\">Paso $cont</h2>";
+      echo "<p>{$pasos['paso']}</p>";
+      echo "</div>";
+      echo "<div class=\"col-md-6 col-sm-6\">";
+      echo "<div class=\"image view view-first\">";
+      echo "<img style=\"width: 100%; display: block;\" src=\"../img/$cont.png\" alt=\"image\" />";
+      echo "</div>";
+      echo "<br>";
+      echo "</div>";
+      echo "</div>";
+      $cont++;
+    } 
+  ?>
+
+                <!-- End SmartWizard Content -->
+				</div>
                 </div>
               </div>
             </div>
