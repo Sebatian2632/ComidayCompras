@@ -16,7 +16,8 @@ try {
 
 	// Obtener los datos del resultado y convertirlos a un array asociativo
 	$datos = $resultado->fetchAll(PDO::FETCH_ASSOC);
-
+	
+	//file_put_contents('respuesta.json', $datos);
 	// Enviar respuesta al cliente en formato JSON
 	header('Content-Type: application/json');
 	echo json_encode($datos);
