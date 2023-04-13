@@ -8,7 +8,8 @@ const receta = new Receta(); //Variable global para la instancia de la clase Rec
 
 //Cuando se presione el boton guardar receta al final de la pagina
 addButton.onclick = function () {
-    leerDatosReceta();
+    comprobarTablas();
+    
 };
 //Lectura de los datos ingresados en la receta para saber si estan completos o vacios para guardarlos en la clase posteriormente
 async function leerDatosReceta() {
@@ -193,7 +194,21 @@ async function sendIngredient(ingrediente) {
         })
         .catch((error) => console.error(error));
 }
-
+//---------------------------Comprobaciones-----------------
+async function comprobarTablas() {
+    //revisamos las tablas para saber si existen pasos e ingredientes
+    const table = document.querySelector("#listaingredientes"); // Obtener la tabla
+    const tds = table.querySelectorAll("td:not(.col-md-1)"); // Obtener todos los td que no tienen clase "col-md-1"
+    const texts = Array.from(tds).map((td) => td.textContent); // Obtener la cadena de texto de cada td y guardarlos en un array
+    const tablepro = document.querySelector("#procedimiento"); // Obtener la tabla
+    const tdspro = tablepro.querySelectorAll("td:not(.col-md-1)"); // Obtener todos los td que no tienen clase "col-md-1"
+    const textspro = Array.from(tdspro).map((td) => td.textContent); // Obtener la cadena de texto de cada td y guardarlos en un array
+    if (texts == "" || textspro == "") {
+        alert("Por favor complete los ingredientes y pasos");
+        return;
+    }
+    await leerDatosReceta();
+}
 //Esperar en ms para evitar problemas al retomar datos de la db, es una aberracion de programacion pero creo que funcionaxd
 function esperar(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
