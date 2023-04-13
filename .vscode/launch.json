@@ -8,7 +8,7 @@
             "type": "msedge",
             "request": "launch",
             "name": "Launch Edge against localhost",
-            "url": "localhost:80/b/proyecto/html/",
+            "url": "http://localhost/b/Proyecto/html/index.html",
             "webRoot": "${workspaceFolder}"
         }
     ]

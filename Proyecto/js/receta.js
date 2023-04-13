@@ -43,9 +43,9 @@ async function leerDatosReceta() {
     receta.setEmail(email);
     imprimirDatosReceta(); //Debug
     await addRecipe();
-    let idReceta = await obtenerIdReceta();
-    console.log(idReceta); //Dubug
-    receta.setId(idReceta);
+    await DbIngredients();
+
+    esperar(3000);
 }
 
 //Comprobar los datos de la receta, es con fines de debugin
@@ -69,6 +69,7 @@ async function obtenerCorreo() {
     const user = data.correo;
     return user;
 }
+//------------------------Receta datos y acciones----------------------------
 //Ingresamos la receta a la base de datos
 async function addRecipe() {
     let rName = receta.getName();
@@ -104,7 +105,9 @@ async function addRecipe() {
     })
         .then((response) => console.log("Se añadio la receta")) //Mostrar en la consola que se añadio
         .catch((error) => console.error(error)); //Mostrar el error si es que hubo
-    esperar(3000);
+    let idReceta = await obtenerIdReceta();
+    console.log(idReceta); //Dubug
+    receta.setId(idReceta);
 }
 //Obtener el id de la receta
 async function obtenerIdReceta() {
@@ -136,13 +139,62 @@ async function obtenerIdReceta() {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                resolve(parseInt(data.idRecetas));
+                resolve(parseInt(data[0].idRecetas));
             })
             .catch((error) => reject(error));
     });
-} 
+}
+//--------------------Ingredientes datos y acciones --------------------------
+//Funcion para obtener los ingredientes de la tabla
+async function DbIngredients() {
+    //revisamos ingredientes para insertar los que no existan
+    const table = document.querySelector("#listaingredientes"); // Obtener la tabla
+    const tds = table.querySelectorAll("td:not(.col-md-1)"); // Obtener todos los td que no tienen clase "col-md-1"
+    const texts = Array.from(tds).map((td) => td.textContent); // Obtener la cadena de texto de cada td y guardarlos en un array
+    //Iterar el array y separarlo
+    for (let i = 0; i < texts.length; i++) {
+        const fila = texts[i]; //Del array obtener la cadena de la posicion i
+        const split = fila.split(" "); //Partimos la cadena donde existan ' '
+        const indiceDe = split.indexOf("de"); //Obtenemos la posicion del "de"
+        const ingrediente = split.slice(indiceDe + 1).join(" "); //De la posicion del primer "de" se obtiene la cadena de despues
+        await sendIngredient(ingrediente);
+        for (let j = i + 1; j < texts.length; j++) {
+            //Checamos que no se repita el ingrediente en toda la lista para evitar dobles en DB
+            if (fila == texts[j]) {
+                i++;
+            }
+        }
+    }
+}
 
-//Esperar en ms para evitar problemas al retomar datos de la db
+//Funcion para leer los ingredientes de la BD y enviar si es que no esta
+async function sendIngredient(ingrediente) {
+    return fetch("../php/ingredientes.php") //Consulta a la DB por todos los ingredientes
+        .then((response) => response.json()) //Obtenemos respuesta en JSON
+        .then((data) => {
+            //Guardar el contenido del JSON en data
+            let ingre = data; //Pasar el contenido del data
+            let nombres = ingre.map((obj) => obj.nombre); //Convertimos el contenido JSON de objeto => string, lista de ingredientes de la db
+            if (!nombres.includes(ingrediente)) {
+                console.log("Ingrediente no existe en la BD");
+                fetch("../php/insertarDB.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body:
+                        'sql=INSERT INTO ingredientes (nombre) VALUES ("' +
+                        ingrediente +
+                        '")',
+                })
+                    .then((response) => console.log(response))
+                    .catch((error) => console.error(error));
+            }
+        })
+        .catch((error) => console.error(error));
+}
+
+//Esperar en ms para evitar problemas al retomar datos de la db, es una aberracion de programacion pero creo que funcionaxd
 function esperar(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
