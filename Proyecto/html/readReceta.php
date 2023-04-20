@@ -144,8 +144,38 @@ mysqli_close($conn);
 								<h6 class="col-form-label col-md-4 col-sm-4 ">PORCIONES: </h6>
 								<label class="col-form-label col-md-8 col-sm-8 "><?php echo $porciones; ?></label>
 							</div>
-							<div class="col-md-3 col-sm-3 " align="right">
-								<button type="button" class="btn btn-success">Agregar a planeación</button>
+							<div class="col-md-3 col-sm-3 ">
+								<button type="button" align="right" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Agregar a planeación</button>
+								<!-- Small modal -->
+
+								<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+								  <div class="modal-dialog modal-sm">
+									<div class="modal-content">
+			  
+									  <div class="modal-header">
+										<h5 class="modal-title" id="myModalLabel2">Agregar receta a planeación</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+										</button>
+									  </div>
+									  <div class="modal-body">
+										<div class="form-group row">
+											<label class="col-form-label col-md-12 col-sm-12 "></label>
+											<div class="col-md-12 col-sm-12 ">
+												<label for="fullname">Ingresa el número de porciones que quieres preparar de esta receta:</label>
+												<input type="number" class="form-control"
+													placeholder="Número de porciones" id="no_porciones_planeacion">
+											</div>
+										</div>
+									  </div>
+									  <div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+										<button type="button" class="btn btn-success">Guardar</button>
+									  </div>
+			  
+									</div>
+								  </div>
+								</div>
+								<!-- /modals -->
 							</div>
 							<div class="col-md-3 col-sm-3 " align="right">
 								<button type="button" class="btn btn-info" onclick="window.location.href='\\ComidayCompras/Proyecto/html/updateReceta.php';">Editar o eliminar receta </button>
