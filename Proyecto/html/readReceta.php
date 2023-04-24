@@ -16,7 +16,7 @@ $resultadopasos = mysqli_query($conn, "SELECT paso FROM pasos WHERE Recetas_idRe
  
 
 //IMAGEN
-$qimagen = "SELECT imagen FROM recetas WHERE idRecetas = 4";
+$qimagen = "SELECT imagen FROM recetas WHERE idRecetas = 1";
 $resultadoimagen = $conn->query($qimagen);
 $imagen = mysqli_fetch_assoc($resultadoimagen)["imagen"];
 $imagen_base64 = base64_encode($imagen);
@@ -199,7 +199,8 @@ mysqli_close($conn);
 							<div class="col-md-7 col-sm-7 ">
 								<div class="thumbnail">
 									<div class="image view view-first">
-										<!--IMAGEN-->
+										
+									<!--IMAGEN-->
 
 										<?php
 										
