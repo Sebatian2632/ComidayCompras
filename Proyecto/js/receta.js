@@ -13,13 +13,16 @@ ATC
 */
 import { Receta } from "./recetaclass.js"; //Clase receta para guardar datos
 import { Ingrediente } from "./recetaclass.js"; //Clase receta para guardar datos
+import { pasosBlob } from "./procedimiento.js";
 let addButton = document.getElementById("guardarreceta"); //Variable global para el boton receta agregar
 const receta = new Receta(); //Variable global para la instancia de la clase Receta
 const ingredientes = [];
 const ingredientesReceta = [];
 //Cuando se presione el boton guardar receta al final de la pagina
 addButton.onclick = function () {
-    comprobarTablas();
+    setTimeout(function () {
+        comprobarTablas();
+    }, 1000);
 };
 
 //Lectura de los datos ingresados en la receta para saber si estan completos o vacios para guardarlos en la clase posteriormente
@@ -30,7 +33,7 @@ async function leerDatosReceta() {
     const rPortion = document.getElementById("rporcion").value;
     const rTime = document.getElementById("rtiempo").value;
     const rType = document.getElementById("rtipo").value;
-    const rImg = document.getElementById("rimg");
+    const rImg = document.getElementById("rimg").files[0];
     const email = await obtenerCorreo();
     //Comprobamos si estan completos
     if (
@@ -39,25 +42,27 @@ async function leerDatosReceta() {
         rPortion == "" ||
         rTime == "" ||
         rType == "" ||
-        rImg.files.length === 0
+        rImg === undefined ||
+        rImg == null ||
+        rImg.name === ""
     ) {
         //No estan completos
         alert("Por favor, complete todos los campos y seleccione una imagen.");
         return;
     }
+    const blob = new Blob([rImg], { type: rImg.type });
     //Creamos la receta para guardar los datos
     receta.setName(rName);
     receta.setDuration(rDuration);
     receta.setPortion(rPortion);
     receta.setTime(rTime);
     receta.setType(rType);
-    receta.setImage(rImg);
+    receta.setImage(blob);
     receta.setEmail(email);
+
     imprimirDatosReceta(); //Debug
     await addRecipe();
     await DbIngredients();
-
-    esperar(3000);
 }
 
 //Comprobar los datos de la receta, es con fines de debugin
@@ -95,7 +100,7 @@ async function addRecipe() {
         //Peticion php para guardar cosas en DB
         method: "POST",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/x-www-form-urlencoded"
         },
         //Sentencia para enviar la receta
         body:
@@ -113,14 +118,16 @@ async function addRecipe() {
             rimg +
             '", "' +
             correo +
-            '")',
+            '")'
     })
         .then((response) => console.log("Se añadio la receta")) //Mostrar en la consola que se añadio
         .catch((error) => console.error(error)); //Mostrar el error si es que hubo
-    let idReceta = await obtenerIdReceta();
-    console.log(idReceta); //Dubug
-    receta.setId(idReceta);
-    await insertPasos();
+    setTimeout(async function () {
+        let idReceta = await obtenerIdReceta();
+        console.log(idReceta); //Dubug
+        receta.setId(idReceta);
+        await insertPasos();
+    }, 5000);
 }
 //Obtener el id de la receta
 async function obtenerIdReceta() {
@@ -134,7 +141,7 @@ async function obtenerIdReceta() {
         fetch("../php/insertarDB.php", {
             method: "POST",
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+                "Content-Type": "application/x-www-form-urlencoded"
             },
             body:
                 'sql=SELECT idRecetas FROM recetas WHERE nombre="' +
@@ -147,7 +154,7 @@ async function obtenerIdReceta() {
                 rType +
                 '" AND Usuarios_correo="' +
                 correo +
-                '";',
+                '";'
         })
             .then((response) => response.json())
             .then((data) => {
@@ -212,12 +219,12 @@ async function sendIngredient(ingrediente) {
                 fetch("../php/insertarDB.php", {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
+                        "Content-Type": "application/x-www-form-urlencoded"
                     },
                     body:
                         'sql=INSERT INTO ingredientes (nombre) VALUES ("' + //Lo insertamos en la base de datos
                         ingrediente +
-                        '")',
+                        '")'
                 })
                     .then((response) => console.log(response))
                     .catch((error) => console.error(error));
@@ -235,12 +242,12 @@ async function obtenerIdIngrediente() {
             fetch("../php/insertarDB.php", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Content-Type": "application/x-www-form-urlencoded"
                 },
                 body:
                     'sql=SELECT idIngredientes FROM ingredientes WHERE nombre="' + //Buscamos el id de los ingredientes de la bd
                     ingrediente.getName() +
-                    '";',
+                    '";'
             })
                 .then((response) => response.json())
                 .then((data) => {
@@ -264,35 +271,35 @@ async function obtenerIdIngrediente() {
 async function insertRecipeIngredients() {
     let recetaId = receta.getId();
     for (const ingredienteReceta of ingredientesReceta) {
-      const idIngredienteAgregar = ingredienteReceta.getId();
-      const quantity = ingredienteReceta.getQuantity();
-      const unitMedida = ingredienteReceta.getUnit();
-  
-      try {
-        const response = await fetch("../php/insertarDB.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body:
-            'sql=INSERT INTO recetas_has_ingredientes (Recetas_idRecetas, Ingredientes_idIngredientes, cantidad, unidad_medida) VALUES ("' +
-            recetaId +
-            '", "' +
-            idIngredienteAgregar +
-            '", "' +
-            quantity +
-            '", "' +
-            unitMedida +
-            '")',
-        });
-  
-        console.log("Ingredient added to recipe"); //Debugg
-      } catch (error) {
-        console.error("Error adding ingredient to recipe:", error); //Debugg
-      }
+        const idIngredienteAgregar = ingredienteReceta.getId();
+        const quantity = ingredienteReceta.getQuantity();
+        const unitMedida = ingredienteReceta.getUnit();
+
+        try {
+            const response = await fetch("../php/insertarDB.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body:
+                    'sql=INSERT INTO recetas_has_ingredientes (Recetas_idRecetas, Ingredientes_idIngredientes, cantidad, unidad_medida) VALUES ("' +
+                    recetaId +
+                    '", "' +
+                    idIngredienteAgregar +
+                    '", "' +
+                    quantity +
+                    '", "' +
+                    unitMedida +
+                    '")'
+            });
+
+            console.log("Ingredient added to recipe"); //Debugg
+        } catch (error) {
+            console.error("Error adding ingredient to recipe:", error); //Debugg
+        }
     }
-  }
-  
+}
+
 //----------------Pasos-----------------------
 //Insertar los pasos en la tabla pasos
 //Esto hay que modificarlo si vamos a introducir el blob en las imagenes
@@ -317,7 +324,7 @@ async function insertPasos() {
                     //Peticion php para guardar los pasos en la DB
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
+                        "Content-Type": "application/x-www-form-urlencoded"
                     },
                     body:
                         'sql=INSERT INTO pasos (nopaso, paso, Recetas_idRecetas) VALUES ("' + //Sentencia SQL para guardar
@@ -326,7 +333,7 @@ async function insertPasos() {
                         descripcion +
                         '", "' +
                         recetaId +
-                        '")',
+                        '")'
                 })
                     .then((response) => response.json())
                     .then((data) =>
@@ -336,27 +343,35 @@ async function insertPasos() {
             } else {
                 //Si no era igual a la sintexis entonces significa que tiene imagen y entonces hay que contemplar eso
                 console.log("Tiene imagen"); //Debugg
-                const partes = filaproce.match(regex); //Comparar las cadenas para saber las partes y separarlas
-                const numeroPaso = partes[1]; //Aqui se guarda el numero del paso
-                const descripcion = partes[2]; //Aqui se guarda la descripcion del paso
-                const nombreArchivo = partes[3]; //Aqui se guarda el nombre de la imagen
+                const regexIm = /^Paso\s(\d+)\.\s([\w\s]+)\.\s([\w\s]+\.(jpg|jpeg|png|gif))$/i;
+                const partesIm = filaproce.match(regexIm); //Comparar las cadenas para saber las partes y separarlas
+                const numeroPasoIm = partesIm[1]; //Aqui se guarda el numero del paso
+                const descripcionIm = partesIm[2]; //Aqui se guarda la descripcion del paso
+                //Iterar por el array de blobs
+                let blobPaso;
+                for (let i = 0; i < pasosBlob.length; i++) {
+                    if (parseInt(pasosBlob[i].numero) === parseInt(numeroPasoIm)) {
+                        blobPaso = pasosBlob[i].blob;
+                        break; // Salir del loop cuando se encuentre el objeto correspondiente
+                    }
+                }
                 fetch("../php/insertarDB.php", {
                     //Peticion a php para insertar
                     //Peticion php para guardar cosas en DB
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
+                        "Content-Type": "application/x-www-form-urlencoded"
                     },
                     body:
-                        'sql=INSERT INTO pasos (idPasos, paso, imagen, Recetas_idRecetas) VALUES ("' + //Sentencia SQL para guardar
-                        numeroPaso +
+                        'sql=INSERT INTO pasos (nopaso, paso, imagen, Recetas_idRecetas) VALUES ("' + //Sentencia SQL para guardar
+                        numeroPasoIm +
                         '", "' +
-                        descripcion +
+                        descripcionIm +
                         '", "' +
-                        nombreArchivo +
+                        blobPaso +
                         '", "' +
                         recetaId +
-                        '")',
+                        '")'
                 })
                     .then((response) => response.json())
                     .then((data) =>
@@ -383,8 +398,8 @@ async function comprobarTablas() {
         return;
     }
     await leerDatosReceta();
-}
-//Esperar en ms para evitar problemas al retomar datos de la db, es una aberracion de programacion pero creo que funcionaxd
-function esperar(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+    setTimeout(function () {
+        alert("Se guardó la receta");
+        window.location.href = "./createReceta.html";
+    }, 1000);
 }

@@ -1,15 +1,15 @@
+export const pasosBlob = []; //Arreglo de objetos Blob
 let ADDpro = document.getElementById("agregarpro");
 const pasos = {}; //Mapa de pasos para llevar control de los existentes
 ADDpro.onclick = async function () {
     let NStep = document.getElementById("nopaso").value;
     //Comprobamos que el paso no exista ya
-    const paso = `${NStep}.`; //Creamos un arreglo con el paso
+    const paso = `${NStep}`; //Creamos un arreglo con el paso
     if (pasos[paso]) {
         //comprobamos si el paso esta en el mapa de pasos
         alert("El paso ya existe");
         return;
     }
-    pasos[paso] = true; // Agregar el paso al mapa
     //Comprobar que se haya ingresado un numero en la cantidad y no texto
     if (isNaN(NStep)) {
         alert("Ingrese un número como cantidad");
@@ -22,6 +22,7 @@ ADDpro.onclick = async function () {
         // Al menos una de las variables es vacía o nula
         alert("Por favor, complete todos los campos");
     } else if (Stepimg.files.length === 0) {
+        pasos[paso] = true; // Agregar el paso al mapa
         //agregar valores a la tabla de listado de ingredientes con el icono para eliminar
         let inicio = "Paso ";
         let explicacion = inicio + NStep + ". " + Step + "."; //Encadenamos para formar el texto a plasmar
@@ -48,9 +49,20 @@ ADDpro.onclick = async function () {
             .appendChild(tr); //Agragamos al TBody ambos TR
         limpiar();
     } else {
+        pasos[paso] = true; // Agregar el paso al mapa
         let nameimg = Stepimg.files[0];
         let namestepimg = nameimg.name;
-        //agregar valores a la tabla de listado de ingredientes con el icono para eliminar
+
+        // Convertir la imagen en un objeto Blob
+        let blobimg = new Blob([nameimg], { type: nameimg.type });
+        // Guardar la cadena base64 en un array
+        let blobConDescripcion = {
+            numero: NStep,
+            blob: blobimg
+        };
+        pasosBlob.push(blobConDescripcion); // Agregar el objeto Blob con descripción al arreglo
+
+        // agregar valores a la tabla de listado de ingredientes con el icono para eliminar
         let inicio = "Paso ";
         let explicacion = inicio + NStep + ". " + Step + ". " + namestepimg; //Encadenamos para formar el texto a plasmar
         const tr = document.createElement("tr"); //Creamos el TR
@@ -67,6 +79,7 @@ ADDpro.onclick = async function () {
         let txt = document.createTextNode(explicacion); //Inicializamos un nodo con el texto a plasmar
         tdtext.appendChild(txt); //Agregamos el textro al TD
         tdRemove.appendChild(icon); //Agregamos el icono al TD
+
         tr.appendChild(tdRemove); //Agregamos el TD al TR
         tr.appendChild(tdtext); //Agregamos el TD al TR
 
@@ -80,8 +93,20 @@ ADDpro.onclick = async function () {
 //Para eliminar
 function eliminarFila() {
     const tr = this.closest("tr");
+    const tdtext = tr.querySelector("td:nth-child(2)");
+    const explicacionEliminar = tdtext.textContent.trim();
+    const numeroPasoEliminar = Number(explicacionEliminar.match(/^Paso (\d+)/)[1]);
+    delete pasos[numeroPasoEliminar];
+    for (let i = 0; i < pasosBlob.length; i++) {
+        if (parseInt(pasosBlob[i].numero) === parseInt(numeroPasoEliminar)) {
+          pasosBlob.splice(i, 1); // Eliminar el objeto en la posición i
+          break; // Salir del bucle una vez que se elimine el objeto
+        }
+      }
+      
     tr.remove();
 }
+//Limpiar el formulario
 function limpiar() {
     document.getElementById("nopaso").value = "";
     document.getElementById("paso").value = "";
