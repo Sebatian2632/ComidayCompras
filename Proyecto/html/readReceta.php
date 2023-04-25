@@ -22,6 +22,11 @@ $imagen = mysqli_fetch_assoc($resultadoimagen)["imagen"];
 $imagen_base64 = base64_encode($imagen);
 
 
+
+
+
+
+
 // Obtener el valor de la columna y guardarlo en una variable
 $nombre = mysqli_fetch_assoc($resultadonombre)["nombre"];
 $duracion = mysqli_fetch_assoc($resultadoduracion)["duracion"];
@@ -204,7 +209,9 @@ mysqli_close($conn);
 
 										<?php
 										
-										echo '<img style="width: 100%;" src="data:image/png;base64,'.base64_encode($imagen_base64).'"/>';
+
+										echo '<img  width=100% height=100% src="data:image/jpeg;base64,' . $imagen_base64 . '">';
+
 
 										?>
 
