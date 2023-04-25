@@ -98,7 +98,7 @@ DROP TABLE IF EXISTS `pasos`;
 CREATE TABLE `pasos` (
   `idPasos` int NOT NULL AUTO_INCREMENT,
   `nopaso` varchar(45) NOT NULL,
-  `paso` text NOT NULL,
+  `paso` longblob NOT NULL,
   `imagen` varchar(45) DEFAULT NULL,
   `Recetas_idRecetas` int NOT NULL,
   PRIMARY KEY (`idPasos`),
@@ -181,7 +181,7 @@ CREATE TABLE `recetas` (
   `porciones` varchar(45) NOT NULL,
   `Usuarios_correo` varchar(255) NOT NULL,
   `caificacion` int DEFAULT NULL,
-  `imagen` blob NOT NULL,
+  `imagen` longblob NOT NULL,
   PRIMARY KEY (`idRecetas`,`Usuarios_correo`),
   KEY `fk_Recetas_Usuarios1_idx` (`Usuarios_correo`),
   CONSTRAINT `fk_Recetas_Usuarios1` FOREIGN KEY (`Usuarios_correo`) REFERENCES `usuarios` (`correo`)
@@ -338,4 +338,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-24 23:33:42
+-- Dump completed on 2023-04-25  0:24:54
