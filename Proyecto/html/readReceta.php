@@ -25,8 +25,6 @@ $imagen_base64 = base64_encode($imagen);
 
 
 
-
-
 // Obtener el valor de la columna y guardarlo en una variable
 $nombre = mysqli_fetch_assoc($resultadonombre)["nombre"];
 $duracion = mysqli_fetch_assoc($resultadoduracion)["duracion"];
@@ -34,6 +32,15 @@ $porciones = mysqli_fetch_assoc($resultadoporcion)["porciones"];
 $ingredientes = mysqli_fetch_assoc($resultadoingrediente)["nombre"];
 $pasos = mysqli_fetch_assoc($resultadopasos)["paso"];
 
+
+function almacenarreceta()
+{
+
+	$resultadoreceta = mysqli_query($conn, "SELECT idRecetas FROM recetas WHERE idRecetas = 1");
+	$receta = mysqli_fetch_assoc($resultadoreceta)["idRecetas"];
+	$insertarreceta = mysqli_query($conn, "INSERT INTO planeacion_has_recetas (id_recetas,id_planeacion,no_porciones) Values($receta,1,'') WHERE id_planeacion = 1");
+
+}
 
 // Cerrar la conexión a la base de datos
 mysqli_close($conn);
@@ -150,7 +157,7 @@ mysqli_close($conn);
 								<label class="col-form-label col-md-8 col-sm-8 "><?php echo $porciones; ?></label>
 							</div>
 							<div class="col-md-3 col-sm-3 ">
-								<button type="button" align="right" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Agregar a planeación</button>
+								<button type="button" action="<?php echo almacenarreceta()?>" align="right" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Agregar a planeación</button>
 								<!-- Small modal -->
 
 								<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
@@ -234,6 +241,7 @@ mysqli_close($conn);
 							</div>
 						</div>
 						</form>
+						
                     <!-- Tabs -->
 					<div id="wizard_verticle" class="form_wizard wizard_verticle">
 						<ul id="steps-list" class="list-unstyled wizard_steps">
@@ -247,7 +255,7 @@ mysqli_close($conn);
 							} 
 							?>
 						</ul>
-
+					
 						<?php 
 							$cont=1;
 							mysqli_data_seek($resultadopasos, 0); // reset the data pointer
@@ -265,10 +273,11 @@ mysqli_close($conn);
 									echo "<br>";
 								echo "</div>";
 							echo "</div>";
+							
 							$cont++;
 							} 
+							
 						?>
-
 					<!-- End SmartWizard Content -->
 					</div>
                 </div>
