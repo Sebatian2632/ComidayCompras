@@ -73,7 +73,7 @@ DROP TABLE IF EXISTS `ingredientes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ingredientes` (
-  `idIngredientes` int NOT NULL,
+  `idIngredientes` int NOT NULL auto_increment,
   `nombre` varchar(45) NOT NULL,
   PRIMARY KEY (`idIngredientes`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;

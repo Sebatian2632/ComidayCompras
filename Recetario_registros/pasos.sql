@@ -1,4 +1,4 @@
-INSERT INTO recetas (Recetas_idRecetas, nopaso, paso)
+INSERT INTO pasos (Recetas_idRecetas, nopaso, paso)
 VALUES  (1, '1', 'En un tazón grande, mezcla la harina, el azúcar, el polvo de hornear, el bicarbonato de sodio y la sal.'),
         (1, '2', 'En otro tazón, bate los huevos y luego agrega la leche y el extracto de vainilla. Mezcla bien.'),
         (1, '3', 'Añade los ingredientes líquidos a los ingredientes secos y mezcla hasta que estén bien combinados. No te preocupes si la masa tiene algunos grumos, es normal en los pancakes.'),

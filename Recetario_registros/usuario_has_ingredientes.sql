@@ -1,4 +1,3 @@
--- INGREDIENTES DISPONIBLES --
 INSERT INTO usuario_has_ingredientes (usuario_correo, ingrediente_id, cantidad, unidad_medida)
 VALUES  ('juanperez1234@gmail.com', 1, 2, 'Kilogramo(s)'),
         ('juanperez1234@gmail.com', 6, 1, 'Kilogramo(s)'),

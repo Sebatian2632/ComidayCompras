@@ -3,10 +3,9 @@ INSERT INTO usuarios (correo, clave, nombre) VALUES
 ('mariarod9876@gmail.com', '9876pass', 'María Rodríguez'),
 ('pedrogomez12@gmail.com', 'abcdef12', 'Pedro Gómez'),
 ('anamartinp@gmail.com', 'p@ssw0rd', 'Ana Martínez'),
-------------------------------------------------------------------
 ('luissanchez78@gmail.com', '12345678', 'Luis Sánchez'),
 ('lauraramirez45@gmail.com', 'mypassword', 'Laura Ramírez'),
-('carlosherr8765@gmail.com', '87654321', 'Carlos Herrera'),     --Ingredientes disponibles
+('carlosherr8765@gmail.com', '87654321', 'Carlos Herrera'),
 ('sofiavargas01@gmail.com', 'secretpass', 'Sofía Vargas'),
 ('jorgefernaui@gmail.com', 'qwertyui', 'Jorge Fernández'),
 ('gabrielajimen1@gmail.com', 'password1', 'Gabriela Jiménez'),
