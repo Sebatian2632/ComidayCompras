@@ -7,9 +7,8 @@ fetch("../php/ingredientes.php") //Pedimos en la base de datos los ingredientes 
     })
     .catch((error) => console.error(error));
     
-//console.log('funcionando');
 
-//----------------Create-----------------
+//----------------CREATE-----------------
 async function actionCreate()
 {
     console.log('me diste un click');
@@ -20,7 +19,13 @@ async function actionCreate()
     let unidad_medida = document.getElementById('unidad_medida').value;
     const email = await obtenerCorreo();
 
-    console.log(nombre);
+    if(nombre === '' || cantidad === '' || unidad_medida === '')
+    {
+      alert("Por favor llene todos los campos");
+    }
+    else
+    {
+      console.log(nombre);
     console.log(cantidad);
     console.log(unidad_medida);
     console.log(email);
@@ -42,8 +47,26 @@ async function actionCreate()
       .then(res => res.json())
       .then(data => {
         console.log(data);
-    }); 
+        if(data.Respuesta === 1){
+          alert("Los datos se han guardado exitosamente");
+        }
+        else{
+          alert("Fallo al guardar los datos");
+        }
+    });
+    }     
 }
+
+//----------------READ-----------------
+
+
+
+//----------------DELATE-----------------
+
+
+
+//----------------UPDATE-----------------
+
 
 //Limpiar las variables del formulario
 function limpiarpagina()
