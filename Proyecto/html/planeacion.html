@@ -146,12 +146,12 @@
 														<label class="col-form-label col-md-12 col-sm-12 "></label>
 														<div class="col-md-6 col-sm-6 ">
 															<label for="fullname">Cantidad</label>
-															<input type="text" class="form-control" id="cantidad"
+															<input type="text" class="form-control" id="cantidad" name="cantidad"
 																placeholder="Cantidad del ingrediente">
 														</div>
 														<div class="col-md-6 col-sm-6 ">
 															<label for="fullname">Unidad de medida</label>
-															<select id="unidad_medida" class="form-control">
+															<select id="unidad_medida" name="unidad_medida" class="form-control">
 																<option value="">Elige...</option>
 																<option value="Gramos">Gramos (gr.)</option>
 																<option value="Piezas">Piezas (pzs)</option>
@@ -161,7 +161,7 @@
 													</div>
 													<div class="form-group row">
 														<div class="col-md-12 col-sm-12 " align="right">
-															<button type="button" id="agregarin" class="btn btn-primary">Agregar</button>
+															<button type="button" id="agregarin" class="btn btn-primary" onclick="actionCreate()">Agregar</button>
 														</div>
 													</div>
 													<div class="row">
@@ -187,6 +187,7 @@
 																			<button type="button" id="eliminarIngrediente" class="btn btn-danger"><i class="fa fa-trash"></i> </button>
 																		</td>
 																	</tr>
+																	
 																	<tr>
 																		<td>Huevo</td>
 																		<td>6</td>
@@ -210,7 +211,7 @@
 																		<td>600</td>
 																		<td>g</td>
 																		<td align="center">
-																			<button type="button" id="editarIngrediente" class="btn btn-primary"><i class="fa fa-pencil"></i> </button>
+																			<button type="button" id="editarIngrediente" class="btn btn-primary"><i class="fa fa-pencil" ></i> </button>
 																			<button type="button" id="eliminarIngrediente" class="btn btn-danger"><i class="fa fa-trash"></i> </button>
 																		</td>
 																	</tr>
@@ -702,7 +703,7 @@
     <!-- jQuery Smart Wizard -->
     <script src="../../gentelella-master/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
     <!-- Custom Theme Scripts -->
-    <script src="../../gentelella-master/build/js/custom.min.js"></script>
+    <!--<script src="../../gentelella-master/build/js/custom.min.js"></script>-->
 	<!-- bootstrap-progressbar -->
     <script src="../../gentelella-master/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
 	<!-- Datatables -->
@@ -725,6 +726,10 @@
     <script src="../../gentelella-master/vendors/pnotify/dist/pnotify.js"></script>
     <script src="../../gentelella-master/vendors/pnotify/dist/pnotify.buttons.js"></script>
     <script src="../../gentelella-master/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+	<!--JS para el crud-->
+	<script src="../js/crud_ingredientesex.js"></script>
+	<!-- Input de ingredientes autocompletar-->
+	<scrip type="module" src="../js/ingredientes.js"></script>
 
 	
   </body>
