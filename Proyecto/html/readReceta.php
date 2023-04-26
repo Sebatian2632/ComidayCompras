@@ -36,6 +36,13 @@ $pasos = mysqli_fetch_assoc($resultadopasos)["paso"];
 function almacenarreceta()
 {
 
+	$servername = "localhost";
+	$username = "root";
+	$password = "";
+	$dbname = "recetasDB";
+
+// Conexión a la base de datos
+$conn = mysqli_connect($servername, $username, $password, $dbname);
 	$resultadoreceta = mysqli_query($conn, "SELECT idRecetas FROM recetas WHERE idRecetas = 1");
 	$receta = mysqli_fetch_assoc($resultadoreceta)["idRecetas"];
 	$insertarreceta = mysqli_query($conn, "INSERT INTO planeacion_has_recetas (id_recetas,id_planeacion,no_porciones) Values($receta,1,'') WHERE id_planeacion = 1");
