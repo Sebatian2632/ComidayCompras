@@ -35,7 +35,8 @@ async function actionCreate()
           nombre,
           cantidad,
           unidad_medida,
-          email
+          email,
+          accion : 'create'
         })
       })
       .then(res => res.json())

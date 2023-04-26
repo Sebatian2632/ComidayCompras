@@ -1,6 +1,38 @@
 <?php
-        //Conexión a la base de datos
-        include 'connect.php';
+    
+    //Conexión a la base de datos
+    include 'connect.php';
+
+    $data = json_decode(file_get_contents('php://input'), true);
+    $accion = isset($data['accion']) ? $data['accion'] : '';
+
+    switch ($accion) {
+        case 'create':
+            actionCreatePHP($conex);
+            break;
+        case 'update':
+            actionUpdatePHP($conex);
+            break;
+        case 'delete':
+            actionDeletePHP($conex);
+            break;
+        case 'read':
+            actionReadPHP($conex);
+            break;
+        case 'read_id':
+            actionReadByIdPHP($conex);
+            break;
+        default:
+            # code...
+            break;
+    }
+    
+    //$accion    = $_POST['accion'];
+
+    
+
+    function actionCreatePHP($conex)
+    {
         //Recuperación de los datos
         $data = json_decode(file_get_contents('php://input'), true);    //Parte para decodificar lo que recibimos del js
         $ingrediente = isset($data['nombre']) ? $data['nombre'] : '';   //Parte para validar que no este vacio
@@ -32,4 +64,5 @@
                 echo json_encode(['message' => 'Error al guardar los datos']);
             }
         }
+    }
 ?>
