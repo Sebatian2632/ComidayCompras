@@ -50,19 +50,22 @@ async function leerDatosReceta() {
         alert("Por favor, complete todos los campos y seleccione una imagen.");
         return;
     }
-    const blob = new Blob([rImg], { type: rImg.type });
-    //Creamos la receta para guardar los datos
-    receta.setName(rName);
-    receta.setDuration(rDuration);
-    receta.setPortion(rPortion);
-    receta.setTime(rTime);
-    receta.setType(rType);
-    receta.setImage(blob);
-    receta.setEmail(email);
-
-    imprimirDatosReceta(); //Debug
-    await addRecipe();
-    await DbIngredients();
+    const reader = new FileReader();
+    reader.onload = async () => {
+        const blob = new Blob([reader.result], { type: rImg.type });
+        //Creamos la receta para guardar los datos
+        receta.setName(rName);
+        receta.setDuration(rDuration);
+        receta.setPortion(rPortion);
+        receta.setTime(rTime);
+        receta.setType(rType);
+        receta.setImage(blob);
+        receta.setEmail(email);
+        console.log("Guardando imagen");
+        imprimirDatosReceta(); //Debug
+        await addRecipe();
+    };
+    reader.readAsArrayBuffer(rImg);
 }
 
 //Comprobar los datos de la receta, es con fines de debugin
@@ -84,6 +87,7 @@ async function obtenerCorreo() {
     const response = await fetch("../php/session.php");
     const data = await response.json();
     const user = data.correo;
+    console.log("ObtenerCorreo()", data.correo); //debug
     return user;
 }
 //------------------------Receta datos y acciones----------------------------
@@ -126,7 +130,7 @@ async function addRecipe() {
         let idReceta = await obtenerIdReceta();
         console.log(idReceta); //Dubug
         receta.setId(idReceta);
-        await insertPasos();
+        await DbIngredients();
     }, 5000);
 }
 //Obtener el id de la receta
@@ -194,8 +198,8 @@ async function DbIngredients() {
         //Comprobamos los ingredientes de la receta en la base de datos
         await sendIngredient(ingrediente);
     }
+    console.log(ingredientesReceta); //Debug
     await obtenerIdIngrediente();
-    await insertRecipeIngredients();
 }
 
 //Funcion para leer los ingredientes de la BD y enviar si es que no esta
@@ -266,15 +270,18 @@ async function obtenerIdIngrediente() {
         });
     });
     await Promise.all(promises); //Completar primero todas las promesas antes de continuar con la ejecucion del codigo
+    await insertRecipeIngredients();
+    await insertPasos();
 }
 //Ingresamos los ingredientes a la receta, en la tabla Receta_has_ingredientes
 async function insertRecipeIngredients() {
+    console.log("Receta has ingredientes inicio");
     let recetaId = receta.getId();
     for (const ingredienteReceta of ingredientesReceta) {
         const idIngredienteAgregar = ingredienteReceta.getId();
         const quantity = ingredienteReceta.getQuantity();
         const unitMedida = ingredienteReceta.getUnit();
-
+        console.log("Receta has ingredientes: ", ingredienteReceta);
         try {
             const response = await fetch("../php/insertarDB.php", {
                 method: "POST",
@@ -343,14 +350,17 @@ async function insertPasos() {
             } else {
                 //Si no era igual a la sintexis entonces significa que tiene imagen y entonces hay que contemplar eso
                 console.log("Tiene imagen"); //Debugg
-                const regexIm = /^Paso\s(\d+)\.\s([\w\s]+)\.\s([\w\s]+\.(jpg|jpeg|png|gif))$/i;
+                const regexIm =
+                    /^Paso\s(\d+)\.\s([\w\s]+)\.\s([\w\s]+\.(jpg|jpeg|png|gif))$/i;
                 const partesIm = filaproce.match(regexIm); //Comparar las cadenas para saber las partes y separarlas
                 const numeroPasoIm = partesIm[1]; //Aqui se guarda el numero del paso
                 const descripcionIm = partesIm[2]; //Aqui se guarda la descripcion del paso
                 //Iterar por el array de blobs
                 let blobPaso;
                 for (let i = 0; i < pasosBlob.length; i++) {
-                    if (parseInt(pasosBlob[i].numero) === parseInt(numeroPasoIm)) {
+                    if (
+                        parseInt(pasosBlob[i].numero) === parseInt(numeroPasoIm)
+                    ) {
                         blobPaso = pasosBlob[i].blob;
                         break; // Salir del loop cuando se encuentre el objeto correspondiente
                     }
@@ -380,6 +390,7 @@ async function insertPasos() {
                     .catch((error) => console.error(error));
             }
         }
+        await final();
     } catch (error) {
         console.error(error);
     }
@@ -397,9 +408,14 @@ async function comprobarTablas() {
         alert("Por favor complete los ingredientes y pasos");
         return;
     }
-    await leerDatosReceta();
-    setTimeout(function () {
-        alert("Se guardó la receta");
-        window.location.href = "./createReceta.html";
-    }, 1000);
+    try {
+        await leerDatosReceta();
+      } catch (error) {
+        console.error(error);
+      }
+}
+
+async function final(){
+    alert("Se guardó la receta");
+    window.location.href = "./createReceta.html";
 }
