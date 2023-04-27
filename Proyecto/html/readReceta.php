@@ -34,11 +34,11 @@ $imagen_base64 = base64_encode($imagen);
 $resultadoimgpasos = mysqli_query($conn, "SELECT imagen FROM pasos WHERE Recetas_idRecetas= $idReceta");
 
 
-
+/*
 //Porciones
 $no_porciones = $_POST['no_porciones'];
 $insertporciones = mysqli_query($conn, "INSERT INTO planeacion (idplaneacion, no_porciones) VALUES (NULL, $no_porciones)");
-
+*/
 
 // Obtener el valor de la columna y guardarlo en una variable
 $nombre = mysqli_fetch_assoc($resultadonombre)["nombre"];
@@ -49,7 +49,7 @@ $cantidad= mysqli_fetch_assoc($resultadocantidad)["cantidad"];
 $unidad= mysqli_fetch_assoc($resultadounidad)["unidad_medida"];
 $pasos = mysqli_fetch_assoc($resultadopasos)["paso"];
 
-
+/*
 function almacenarreceta()
 {
 
@@ -65,7 +65,7 @@ function almacenarreceta()
 	$receta = mysqli_fetch_assoc($resultadoreceta)["idRecetas"];
 	$insertarreceta = mysqli_query($conn, "INSERT INTO recetas (planeacion_idplaneacion) VALUES ('1') ");
 
-}
+}*/
 
 // Cerrar la conexión a la base de datos
 mysqli_close($conn);
@@ -174,15 +174,16 @@ mysqli_close($conn);
                     <form id="demo-form" data-parsley-validate>                                        
                       	<div class="form-group row">
 							<div class="col-md-3 col-sm-3 ">
-								<h6 class="col-form-label col-md-4 col-sm-4 ">DURACIÓN(mn): </h6>
-								<label class="col-form-label col-md-8 col-sm-8 "><?php echo $duracion; ?></label>
+								<h6 class="col-form-label col-md-12 col-sm-12 ">DURACIÓN: </h6>
+								<br>
+								<label class="col-form-label col-md-12 col-sm-12 "><?php echo $duracion; ?></label>
 							</div>
 							<div class="col-md-3 col-sm-3 ">
-								<h6 class="col-form-label col-md-4 col-sm-4 ">PORCIONES: </h6>
-								<label class="col-form-label col-md-8 col-sm-8 "><?php echo $porciones; ?></label>
+								<h6 class="col-form-label col-md-12 col-sm-12 ">PORCIONES: </h6>
+								<label class="col-form-label col-md-12 col-sm-12 "><?php echo $porciones; ?></label>
 							</div>
 							<div class="col-md-3 col-sm-3 ">
-								<button type="button" action="<?php echo almacenarreceta()?>" align="right" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Agregar a planeación</button>
+								<button type="button"  align="right" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Agregar a planeación</button>
 								<!-- Small modal -->
 
 								<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
@@ -206,7 +207,7 @@ mysqli_close($conn);
 									  </div>
 									  <div class="modal-footer">
 										<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-										<button type="submit" class="btn btn-success">Guardar</button>
+										<button type="button" class="btn btn-success">Guardar</button>
 									  </div>
 			  
 									</div>
@@ -220,7 +221,7 @@ mysqli_close($conn);
 						</div>
 
                       	<div class="form-group row">
-							<div class="col-md-5 col-sm-5 ">
+							<div class="col-md-6 col-sm-6 ">
 								<h6 class="col-form-label col-md-12 col-sm-12 ">INGREDIENTES: </h6>	
 								<ul>
 									<?php 
@@ -233,21 +234,17 @@ mysqli_close($conn);
 									?>
 								</ul>																								
 							</div>
-							<div class="col-md-7 col-sm-7 ">
-								<div class="thumbnail">
-									<div class="image view view-first">
+							<div class="col-md-6 col-sm-8 ">
 										
 									<!--IMAGEN-->
 
 										<?php
 										
 
-										echo '<img  width=100% height=100% src="data:image/jpeg;base64,' . $imagen_base64 . '">';
+										echo '<img  width=100% height=70% src="data:image/jpeg;base64,' . $imagen_base64 . '">';
 
 
 										?>
-
-									</div>
 									<div class="caption" align="center">
 										<p>Calificación:</p>
 										<!--Agregar el onclick en <a>, NO en span-->
@@ -257,7 +254,6 @@ mysqli_close($conn);
 										<a href="#"><span class="glyphicon glyphicon-star" aria-hidden="true" type="button"></span></a>
 										<a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true" type="button"></span></a>
 									</div>
-								</div>
 							</div>
 						</div>
 						<div class="form-group row">
