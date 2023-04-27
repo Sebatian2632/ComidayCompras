@@ -23,7 +23,7 @@ $imagen_base64 = base64_encode($imagen);
 
 
 $no_porciones = $_POST['no_porciones'];
-$insertporciones = mysqli_query($conn, "INSERT INTO  (,,) Values(,,) WHERE id_planeacion = 1");
+$insertporciones = mysqli_query($conn, "INSERT INTO planeacion (idplaneacion, no_porciones) VALUES (NULL, $no_porciones)");
 
 
 
@@ -48,7 +48,7 @@ function almacenarreceta()
 
 	$resultadoreceta = mysqli_query($conn, "SELECT idRecetas FROM recetas WHERE idRecetas = 1");
 	$receta = mysqli_fetch_assoc($resultadoreceta)["idRecetas"];
-	$insertarreceta = mysqli_query($conn, "INSERT INTO planeacion_has_recetas (id_recetas,id_planeacion,no_porciones) Values($receta,1,'') WHERE id_planeacion = 1");
+	$insertarreceta = mysqli_query($conn, "INSERT INTO recetas (planeacion_idplaneacion) VALUES ('1') ");
 
 }
 
