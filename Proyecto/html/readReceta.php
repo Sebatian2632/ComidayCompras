@@ -9,7 +9,7 @@ $conn = mysqli_connect($servername, $username, $password, $dbname);
 
 if (isset($_POST["idReceta"])) {
 	$idReceta = $_POST["idReceta"];
-	echo "El ID de la receta es: " . $idReceta;
+	//echo "El ID de la receta es: " . $idReceta;
   } else {
 	echo "No se recibió el ID de la receta.";
   }
