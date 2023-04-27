@@ -13,6 +13,8 @@ $resultadoduracion = mysqli_query($conn, "SELECT duracion FROM recetas WHERE idR
 $resultadoporcion = mysqli_query($conn, "SELECT porciones FROM recetas WHERE idRecetas = 1");
 $resultadoingrediente = mysqli_query($conn, "SELECT * FROM ingredientes INNER JOIN recetas_has_ingredientes ON recetas_has_ingredientes.Ingredientes_idIngredientes= ingredientes.idIngredientes WHERE recetas_has_ingredientes.Recetas_idRecetas=1");
 $resultadopasos = mysqli_query($conn, "SELECT paso FROM pasos WHERE Recetas_idRecetas=1");
+$resultadocantidad = mysqli_query($conn, "SELECT cantidad FROM recetas_has_ingredientes WHERE Recetas_idRecetas = 1");
+$resultadounidad = mysqli_query($conn, "SELECT unidad_medida FROM recetas_has_ingredientes WHERE Recetas_idRecetas = 1");
 
 
 //IMAGEN
@@ -24,9 +26,12 @@ $imagen_base64 = base64_encode($imagen);
 //Imágenes pasos 
 $resultadoimgpasos = mysqli_query($conn, "SELECT imagen FROM pasos WHERE Recetas_idRecetas=1");
 
-
-
-
+if (isset($_POST["idReceta"])) {
+	$idReceta = $_POST["idReceta"];
+	echo "El ID de la receta es: " . $idReceta;
+  } else {
+	echo "No se recibió el ID de la receta.";
+  }
 
 //Porciones
 $no_porciones = $_POST['no_porciones'];
@@ -39,6 +44,8 @@ $nombre = mysqli_fetch_assoc($resultadonombre)["nombre"];
 $duracion = mysqli_fetch_assoc($resultadoduracion)["duracion"];
 $porciones = mysqli_fetch_assoc($resultadoporcion)["porciones"];
 $ingredientes = mysqli_fetch_assoc($resultadoingrediente)["nombre"];
+$cantidad= mysqli_fetch_assoc($resultadocantidad)["cantidad"];
+$unidad= mysqli_fetch_assoc($resultadounidad)["unidad_medida"];
 $pasos = mysqli_fetch_assoc($resultadopasos)["paso"];
 
 
@@ -216,10 +223,10 @@ mysqli_close($conn);
 								<h6 class="col-form-label col-md-12 col-sm-12 ">INGREDIENTES: </h6>	
 								<ul>
 									<?php 
-									echo "<li>".$ingredientes."</li>";
-									while($ingredientes = mysqli_fetch_assoc($resultadoingrediente))
+									echo "<li>".$cantidad." ". $unidad." de ".$ingredientes."</li>";
+									while($ingredientes = mysqli_fetch_assoc($resultadoingrediente) and $cantidad= mysqli_fetch_assoc($resultadocantidad) and $unidad= mysqli_fetch_assoc($resultadounidad))
 									{
-										echo "<li>".$ingredientes['nombre']."</li>";
+										echo "<li>".$cantidad['cantidad']." ". $unidad["unidad_medida"]." de ".$ingredientes['nombre']. "</li>";
 									}
 
 									?>
@@ -295,7 +302,7 @@ mysqli_close($conn);
 								echo "</div>";
 							echo "</div>";
 							
-							$cont++;
+							$cont++;	
 							} 
 							
 						?>
