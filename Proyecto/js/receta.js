@@ -100,39 +100,35 @@ async function addRecipe() {
     let rPortion = receta.getPortion();
     let rimg = receta.getImage();
     let correo = receta.getEmail();
-    fetch("../php/insertarDB.php", {
-        //Peticion php para guardar cosas en DB
+
+    // Crear un objeto FormData y agregar la imagen como un campo "imagen"
+    const formData = new FormData();
+    formData.append("imagen", rimg, "imagen.jpg");
+
+    // Agregar los demás campos a la solicitud
+    formData.append("nombre", rName);
+    formData.append("duracion", rDuration);
+    formData.append("tiempo_comida", rTime);
+    formData.append("tiempo_receta", rType);
+    formData.append("porciones", rPortion);
+    formData.append("usuarios_correo", correo);
+
+    fetch("../php/insertRecetas.php", {
+        // Peticion php para guardar cosas en DB
         method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        //Sentencia para enviar la receta
-        body:
-            'sql=INSERT INTO recetas (nombre, duracion, tiempo_comida, tiempo_receta, porciones, imagen, usuarios_correo) VALUES ("' +
-            rName +
-            '", "' +
-            rDuration +
-            '", "' +
-            rTime +
-            '", "' +
-            rType +
-            '", "' +
-            rPortion +
-            '", "' +
-            rimg +
-            '", "' +
-            correo +
-            '")'
+        body: formData // Enviar el objeto FormData en lugar de una cadena de consulta
     })
         .then((response) => console.log("Se añadio la receta")) //Mostrar en la consola que se añadio
         .catch((error) => console.error(error)); //Mostrar el error si es que hubo
+
     setTimeout(async function () {
         let idReceta = await obtenerIdReceta();
-        console.log(idReceta); //Dubug
+        console.log(idReceta); // Debug
         receta.setId(idReceta);
         await DbIngredients();
     }, 5000);
 }
+
 //Obtener el id de la receta
 async function obtenerIdReceta() {
     let rName = receta.getName();
@@ -355,6 +351,7 @@ async function insertPasos() {
                 const partesIm = filaproce.match(regexIm); //Comparar las cadenas para saber las partes y separarlas
                 const numeroPasoIm = partesIm[1]; //Aqui se guarda el numero del paso
                 const descripcionIm = partesIm[2]; //Aqui se guarda la descripcion del paso
+
                 //Iterar por el array de blobs
                 let blobPaso;
                 for (let i = 0; i < pasosBlob.length; i++) {
@@ -365,23 +362,18 @@ async function insertPasos() {
                         break; // Salir del loop cuando se encuentre el objeto correspondiente
                     }
                 }
-                fetch("../php/insertarDB.php", {
-                    //Peticion a php para insertar
-                    //Peticion php para guardar cosas en DB
+                const formData = new FormData();
+                formData.append("nopaso", numeroPasoIm);
+                formData.append("paso", descripcionIm);
+                formData.append(
+                    "imagen",
+                    blobPaso,
+                    "paso_" + numeroPasoIm + ".jpg"
+                );
+                formData.append("Recetas_idRecetas", recetaId);
+                fetch("../php/insertPasosImg.php", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body:
-                        'sql=INSERT INTO pasos (nopaso, paso, imagen, Recetas_idRecetas) VALUES ("' + //Sentencia SQL para guardar
-                        numeroPasoIm +
-                        '", "' +
-                        descripcionIm +
-                        '", "' +
-                        blobPaso +
-                        '", "' +
-                        recetaId +
-                        '")'
+                    body: formData
                 })
                     .then((response) => response.json())
                     .then((data) =>
@@ -410,12 +402,12 @@ async function comprobarTablas() {
     }
     try {
         await leerDatosReceta();
-      } catch (error) {
+    } catch (error) {
         console.error(error);
-      }
+    }
 }
 
-async function final(){
+async function final() {
     alert("Se guardó la receta");
     window.location.href = "./createReceta.html";
 }
