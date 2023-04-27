@@ -11,13 +11,18 @@ fetch("../php/ingredientes.php") //Pedimos en la base de datos los ingredientes 
 //----------------CREATE-----------------
 async function actionCreate()
 {
-    console.log('me diste un click');
-
     //Recuperamos los datos del formulario
     let nombre = document.getElementById('autocomplete-custom-append').value;
     let cantidad = document.getElementById('cantidad').value;
-    let unidad_medida = document.getElementById('unidad_medida').value;
-    const email = await obtenerCorreo();
+    if(cantidad === '0')
+    {
+      console.log('me diste un click');
+      alert("Favor de poner un número positivo en la cantidad")
+    }
+    else
+    {
+      let unidad_medida = document.getElementById('unidad_medida').value;
+      const email = await obtenerCorreo();
 
     if(nombre === '' || cantidad === '' || unidad_medida === '')
     {
@@ -49,17 +54,52 @@ async function actionCreate()
         console.log(data);
         if(data.Respuesta === 1){
           alert("Los datos se han guardado exitosamente");
+          //actionRead();
         }
         else{
           alert("Fallo al guardar los datos");
         }
     });
+    }
     }     
 }
 
 //----------------READ-----------------
+/*function actionRead() {
+  $.ajax({
+    method:"POST",
+    url: "../php/crud_ingredientesex.php",
+    data: {
+      accion: "read"
+    },
+    success: function( respuesta ) {
+      
+      JSONRespuesta = JSON.parse(respuesta);
+      
+      if(JSONRespuesta.estado==1){
+        //Mostrar los registros = categorias en la tabla
+        tabla = $("#dataTable").DataTable();
 
+            //Ciclo for para leer la categoria del arreglo
+            JSONRespuesta.ingredeintes.forEach(categoria => {
+              let Botones ='<a class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-lg-subtemas" href="#" ><i class="fas fa-clock"></i></a>';
+              Botones +=' <a class="btn btn-primary btn-sm" href="#" data-toggle="modal" data-target="#modal-update" onclick="identificarActualizar('+categoria.idDisponible+')"><i class="fas fa-edit"></i></a>';
+              Botones +=' <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modal-delete" onclick="identificarEliminar('+categoria.idDisponible+')"><i class="fas fa-trash"></i></a>';
+          
+              tabla.row.add([categoria.id_ingredientes,
+                            categoria.cantidad,
+                            categoria.unidad_medida,
+                            Botones]).draw().node().id="renglon_"+categoria.idDisponible;
 
+            });
+
+      } 
+      //console.log(respuesta);
+      //Mostrar todos los registros en la tabla
+    }
+  });
+}
+*/
 
 //----------------DELATE-----------------
 
