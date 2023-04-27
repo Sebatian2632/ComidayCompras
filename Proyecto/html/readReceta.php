@@ -22,6 +22,8 @@ $imagen = mysqli_fetch_assoc($resultadoimagen)["imagen"];
 $imagen_base64 = base64_encode($imagen);
 
 
+$no_porciones = $_POST['no_porciones'];
+$insertporciones = mysqli_query($conn, "INSERT INTO  (,,) Values(,,) WHERE id_planeacion = 1");
 
 
 
@@ -182,14 +184,14 @@ mysqli_close($conn);
 											<label class="col-form-label col-md-12 col-sm-12 "></label>
 											<div class="col-md-12 col-sm-12 ">
 												<label for="fullname">Ingresa el número de porciones que quieres preparar de esta receta:</label>
-												<input type="number" class="form-control"
+												<input type="number" class="form-control" name="no_porciones"
 													placeholder="Número de porciones" id="no_porciones_planeacion">
 											</div>
 										</div>
 									  </div>
 									  <div class="modal-footer">
 										<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-										<button type="button" class="btn btn-success">Guardar</button>
+										<button type="submit" class="btn btn-success">Guardar</button>
 									  </div>
 			  
 									</div>
