@@ -13,7 +13,7 @@ $resultadoduracion = mysqli_query($conn, "SELECT duracion FROM recetas WHERE idR
 $resultadoporcion = mysqli_query($conn, "SELECT porciones FROM recetas WHERE idRecetas = 1");
 $resultadoingrediente = mysqli_query($conn, "SELECT * FROM ingredientes INNER JOIN recetas_has_ingredientes ON recetas_has_ingredientes.Ingredientes_idIngredientes= ingredientes.idIngredientes WHERE recetas_has_ingredientes.Recetas_idRecetas=1");
 $resultadopasos = mysqli_query($conn, "SELECT paso FROM pasos WHERE Recetas_idRecetas=1");
- 
+
 
 //IMAGEN
 $qimagen = "SELECT imagen FROM recetas WHERE idRecetas = 1";
@@ -21,7 +21,14 @@ $resultadoimagen = $conn->query($qimagen);
 $imagen = mysqli_fetch_assoc($resultadoimagen)["imagen"];
 $imagen_base64 = base64_encode($imagen);
 
+//Imágenes pasos 
+$resultadoimgpasos = mysqli_query($conn, "SELECT imagen FROM pasos WHERE Recetas_idRecetas=1");
 
+
+
+
+
+//Porciones
 $no_porciones = $_POST['no_porciones'];
 $insertporciones = mysqli_query($conn, "INSERT INTO  (,,) Values(,,) WHERE id_planeacion = 1");
 
@@ -159,7 +166,7 @@ mysqli_close($conn);
                     <form id="demo-form" data-parsley-validate>                                        
                       	<div class="form-group row">
 							<div class="col-md-3 col-sm-3 ">
-								<h6 class="col-form-label col-md-4 col-sm-4 ">DURACIÓN: </h6>
+								<h6 class="col-form-label col-md-4 col-sm-4 ">DURACIÓN(mn): </h6>
 								<label class="col-form-label col-md-8 col-sm-8 "><?php echo $duracion; ?></label>
 							</div>
 							<div class="col-md-3 col-sm-3 ">
@@ -269,7 +276,7 @@ mysqli_close($conn);
 						<?php 
 							$cont=1;
 							mysqli_data_seek($resultadopasos, 0); // reset the data pointer
-							while($pasos = mysqli_fetch_assoc($resultadopasos)) {
+							while($pasos = mysqli_fetch_assoc($resultadopasos) and $fila = mysqli_fetch_assoc($resultadoimgpasos)) {
 							echo "<div id=\"step-$cont\">";
 								echo "<br>";
 								echo "<div class=\"col-md-6 col-sm-6\">";
@@ -278,7 +285,11 @@ mysqli_close($conn);
 								echo "</div>";
 								echo "<div class=\"col-md-6 col-sm-6\">";
 									echo "<div class=\"image view view-first\">";
-										echo "<img style=\"width: 100%; display: block;\" src=\"../img/$cont.png\" alt=\"image\" />";
+									// Obtener la variable BLOB de la fila actual
+									$imagen = $fila['imagen'];
+  
+									// Mostrar la imagen en la página utilizando la función base64_encode
+									echo '<img width=100% height=100%  src="data:image/jpeg;base64,' . base64_encode($imagen) . '">';
 									echo "</div>";
 									echo "<br>";
 								echo "</div>";
