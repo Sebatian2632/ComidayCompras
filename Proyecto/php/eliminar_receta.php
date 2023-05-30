@@ -7,6 +7,8 @@ $dbname = "recetasDB";
 // Conexión a la base de datos
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 
+
+
 // Verificar si se ha eliminado el registro
 $eliminareceta = mysqli_query($conn, "DELETE FROM pasos WHERE Recetas_idRecetas = 4");
 $eliminareceta = mysqli_query($conn, "DELETE FROM recetas_has_ingredientes WHERE Recetas_idRecetas = 4");

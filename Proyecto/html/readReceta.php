@@ -307,10 +307,10 @@ mysqli_close($conn);
 						?>
 					</div>
 					<!-- End SmartWizard Content -->
-				  </div>
-                </div>
-              </div>
-            </div>
+				     </div>
+                   </div>
+               </div>
+             </div>
           </div>
         </div>
         <!-- /page content -->
