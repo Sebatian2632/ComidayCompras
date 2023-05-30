@@ -19,7 +19,7 @@ $resultadonombre = mysqli_query($conn, "SELECT nombre FROM recetas WHERE idRecet
 $resultadoduracion = mysqli_query($conn, "SELECT duracion FROM recetas WHERE idRecetas = $idReceta");
 $resultadoporcion = mysqli_query($conn, "SELECT porciones FROM recetas WHERE idRecetas = $idReceta");
 $resultadoingrediente = mysqli_query($conn, "SELECT * FROM ingredientes INNER JOIN recetas_has_ingredientes ON recetas_has_ingredientes.Ingredientes_idIngredientes= ingredientes.idIngredientes WHERE recetas_has_ingredientes.Recetas_idRecetas=$idReceta");
-$resultadopasos = mysqli_query($conn, "SELECT paso FROM pasos WHERE Recetas_idRecetas=$idReceta");
+$resultadopasos = mysqli_query($conn, "SELECT paso, nopaso FROM pasos WHERE Recetas_idRecetas=$idReceta ORDER BY nopaso ASC");
 $resultadocantidad = mysqli_query($conn, "SELECT cantidad FROM recetas_has_ingredientes WHERE Recetas_idRecetas = $idReceta");
 $resultadounidad = mysqli_query($conn, "SELECT unidad_medida FROM recetas_has_ingredientes WHERE Recetas_idRecetas = $idReceta");
 
@@ -288,14 +288,16 @@ mysqli_close($conn);
 									echo "<p>{$pasos['paso']}</p>";
 								echo "</div>";
 								echo "<div class=\"col-md-6 col-sm-6\">";
-									echo "<div class=\"image view view-first\">";
+								echo "<div class=\"image view view-first\">";
 									// Obtener la variable BLOB de la fila actual
 									$imagen = $fila['imagen'];
   
 									// Mostrar la imagen en la página utilizando la función base64_encode
-									echo '<img width=100% height=100%  src="data:image/jpeg;base64,' . base64_encode($imagen) . '">';
+									if (!empty($imagen)) {
+										echo '<img width="100%" height="100%" src="data:image/jpeg;base64,' . base64_encode($imagen) . '">';
+									}
+
 									echo "</div>";
-									echo "<br>";
 								echo "</div>";
 							echo "</div>";
 							
@@ -303,8 +305,9 @@ mysqli_close($conn);
 							} 
 							
 						?>
-					<!-- End SmartWizard Content -->
 					</div>
+					<!-- End SmartWizard Content -->
+				  </div>
                 </div>
               </div>
             </div>
