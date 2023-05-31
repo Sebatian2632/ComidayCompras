@@ -23,7 +23,7 @@ fetch("../php/insertarDB.php", {
     body:
         'sql=SELECT idRecetas, nombre FROM recetas WHERE Usuarios_correo="' +
         email +
-        '" AND planeacion_idplaneacion=1;'
+        '";'
 })
     .then((response) => response.json())
     .then((data) => {
@@ -51,7 +51,7 @@ async function obtenerCorreo() {
 
 //Imprimimos las recetas en el html
 async function imprimirRecetas() {
-    const contenedorRecetas = document.getElementById("contenedor-recetas");
+    const contenedorRecetas = document.getElementById("contenedor-recetass");
     for (const receta of recetas) {
         //Obtener el blob de la receta
         receta.setImage(await obtenerImg(receta.getId()));
