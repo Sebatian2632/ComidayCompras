@@ -207,7 +207,7 @@ mysqli_close($conn);
 									  </div>
 									  <div class="modal-footer">
 										<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-										<button type="button" class="btn btn-success">Guardar</button>
+										<button type="button" class="btn btn-success" onclick="actionCreate();">Guardar</button>
 									  </div>
 			  
 									</div>
@@ -339,6 +339,8 @@ mysqli_close($conn);
     <!-- Custom Theme Scripts -->
     <script src="../../gentelella-master/build/js/custom.min.js"></script>
 
+    <!-- Agregar elemento a planeación -->
+    <script src="../js/agregarPlaneacion.js"></script>
 	
   </body>
 </html>
