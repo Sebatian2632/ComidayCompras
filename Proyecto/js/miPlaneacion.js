@@ -1,6 +1,7 @@
 import { Receta } from "./recetaclass.js";
 const recetas = []; //Para guardar las recetas
 const email = await obtenerCorreo();
+const idPlaneacion = await obtenerIdPlaneacion();
 const logoutB = document.getElementById("logout");
 
 logoutB.addEventListener("click", function () {
@@ -21,9 +22,9 @@ fetch("../php/insertarDB.php", {
         "Content-Type": "application/x-www-form-urlencoded"
     },
     body:
-        'sql=SELECT idRecetas, nombre FROM recetas WHERE Usuarios_correo="' +
-        email +
-        '";'
+    'sql=SELECT idRecetas, nombre FROM recetas r JOIN recetas_has_planeacion rp ON r.idRecetas = rp.recetas_idRecetas WHERE rp.planeacion_idplaneacion="' +
+    idPlaneacion +
+    '";'
 })
     .then((response) => response.json())
     .then((data) => {
@@ -49,9 +50,17 @@ async function obtenerCorreo() {
     return user;
 }
 
+async function obtenerIdPlaneacion() {
+    const response = await fetch("../php/idPlaneacion.php");
+    const data = await response.json();
+    const idPlaneacion = data.idPlaneacion;
+    return idPlaneacion;
+}
+
+
 //Imprimimos las recetas en el html
 async function imprimirRecetas() {
-    const contenedorRecetas = document.getElementById("contenedor-recetass");
+    const contenedorRecetas = document.getElementById("contenedor-recetas");
     for (const receta of recetas) {
         //Obtener el blob de la receta
         receta.setImage(await obtenerImg(receta.getId()));
@@ -89,7 +98,7 @@ async function imprimirRecetas() {
             const idReceta = this.id;
             const form = document.createElement("form");
             form.method = "POST";
-            form.action = "readReceta.php";
+            form.action = "readRecetaPlaneacion.php";
             const inputId = document.createElement("input");
             inputId.type = "hidden";
             inputId.name = "idReceta";

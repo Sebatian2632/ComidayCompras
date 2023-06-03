@@ -1,11 +1,5 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "recetasDB";
-
-// Conexión a la base de datos
-$conn = mysqli_connect($servername, $username, $password, $dbname);
+include('../php/connect.php');
 
 if (isset($_POST["idReceta"])) {
 	$idReceta = $_POST["idReceta"];
@@ -15,60 +9,38 @@ if (isset($_POST["idReceta"])) {
   }
 
 // Realizar la consultas
-$resultadonombre = mysqli_query($conn, "SELECT nombre FROM recetas WHERE idRecetas = $idReceta");
-$resultadoduracion = mysqli_query($conn, "SELECT duracion FROM recetas WHERE idRecetas = $idReceta");
-$resultadoporcion = mysqli_query($conn, "SELECT porciones FROM recetas WHERE idRecetas = $idReceta");
-$resultadoingrediente = mysqli_query($conn, "SELECT * FROM ingredientes INNER JOIN recetas_has_ingredientes ON recetas_has_ingredientes.Ingredientes_idIngredientes= ingredientes.idIngredientes WHERE recetas_has_ingredientes.Recetas_idRecetas=$idReceta");
-$resultadopasos = mysqli_query($conn, "SELECT paso, nopaso FROM pasos WHERE Recetas_idRecetas=$idReceta ORDER BY nopaso ASC");
-$resultadocantidad = mysqli_query($conn, "SELECT cantidad FROM recetas_has_ingredientes WHERE Recetas_idRecetas = $idReceta");
-$resultadounidad = mysqli_query($conn, "SELECT unidad_medida FROM recetas_has_ingredientes WHERE Recetas_idRecetas = $idReceta");
-
+$resultadonombre = mysqli_query($conex, "SELECT nombre FROM recetas WHERE idRecetas = $idReceta");
+$resultadoduracion = mysqli_query($conex, "SELECT duracion FROM recetas WHERE idRecetas = $idReceta");
+$resultadoporcion = mysqli_query($conex, "SELECT no_porciones FROM recetas_has_planeacion WHERE recetas_idRecetas = $idReceta");
+$resultadoporcion2 = mysqli_query($conex, "SELECT porciones FROM recetas WHERE idRecetas = $idReceta");
+$resultadoingrediente = mysqli_query($conex, "SELECT * FROM ingredientes INNER JOIN recetas_has_ingredientes ON recetas_has_ingredientes.Ingredientes_idIngredientes= ingredientes.idIngredientes WHERE recetas_has_ingredientes.Recetas_idRecetas=$idReceta");
+$resultadopasos = mysqli_query($conex, "SELECT paso, nopaso FROM pasos WHERE Recetas_idRecetas=$idReceta ORDER BY nopaso ASC");
+$resultadocantidad = mysqli_query($conex, "SELECT cantidad FROM recetas_has_ingredientes WHERE Recetas_idRecetas = $idReceta");
+$resultadounidad = mysqli_query($conex, "SELECT unidad_medida FROM recetas_has_ingredientes WHERE Recetas_idRecetas = $idReceta");
 
 //IMAGEN
 $qimagen = "SELECT imagen FROM recetas WHERE idRecetas = $idReceta";
-$resultadoimagen = $conn->query($qimagen);
+$resultadoimagen = $conex->query($qimagen);
 $imagen = mysqli_fetch_assoc($resultadoimagen)["imagen"];
 $imagen_base64 = base64_encode($imagen);
 
 //Imágenes pasos 
-$resultadoimgpasos = mysqli_query($conn, "SELECT imagen FROM pasos WHERE Recetas_idRecetas= $idReceta");
-
-
-/*
-//Porciones
-$no_porciones = $_POST['no_porciones'];
-$insertporciones = mysqli_query($conn, "INSERT INTO planeacion (idplaneacion, no_porciones) VALUES (NULL, $no_porciones)");
-*/
+$resultadoimgpasos = mysqli_query($conex, "SELECT imagen FROM pasos WHERE Recetas_idRecetas= $idReceta");
 
 // Obtener el valor de la columna y guardarlo en una variable
 $nombre = mysqli_fetch_assoc($resultadonombre)["nombre"];
 $duracion = mysqli_fetch_assoc($resultadoduracion)["duracion"];
-$porciones = mysqli_fetch_assoc($resultadoporcion)["porciones"];
+$porciones = mysqli_fetch_assoc($resultadoporcion)["no_porciones"];
+$porciones2 = mysqli_fetch_assoc($resultadoporcion2)["porciones"];
+$equiv= $porciones/$porciones2;
+
 $ingredientes = mysqli_fetch_assoc($resultadoingrediente)["nombre"];
 $cantidad= mysqli_fetch_assoc($resultadocantidad)["cantidad"];
 $unidad= mysqli_fetch_assoc($resultadounidad)["unidad_medida"];
 $pasos = mysqli_fetch_assoc($resultadopasos)["paso"];
 
-/*
-function almacenarreceta()
-{
-
-	$servername = "localhost";
-	$username = "root";
-	$password = "";
-	$dbname = "recetasDB";
-
-	// Conexión a la base de datos
-	$conn = mysqli_connect($servername, $username, $password, $dbname);
-
-	$resultadoreceta = mysqli_query($conn, "SELECT idRecetas FROM recetas WHERE idRecetas =  $idReceta");
-	$receta = mysqli_fetch_assoc($resultadoreceta)["idRecetas"];
-	$insertarreceta = mysqli_query($conn, "INSERT INTO recetas (planeacion_idplaneacion) VALUES ('1') ");
-
-}*/
-
 // Cerrar la conexión a la base de datos
-mysqli_close($conn);
+mysqli_close($conex);
 ?>
 
 <!DOCTYPE html>
@@ -183,7 +155,6 @@ mysqli_close($conn);
 								<label class="col-form-label col-md-12 col-sm-12 "><?php echo $porciones; ?></label>
 							</div>
 							<div class="col-md-3 col-sm-3 ">
-								<button type="button"  align="right" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Agregar a planeación</button>
 								<!-- Small modal -->
 
 								<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
@@ -217,7 +188,7 @@ mysqli_close($conn);
 								<!-- /modals -->
 							</div>
 							<div class="col-md-3 col-sm-3 " align="right">
-								<button type="button" class="btn btn-info" onclick="window.location.href='\\ComidayCompras/Proyecto/html/updateReceta.php';">Editar o eliminar receta </button>
+								<button type="button" class="btn btn-info" onclick="window.location.href='\\ComidayCompras/Proyecto/html/updateReceta.php';">Eliminar de planeación </button>
 							</div>
 						</div>
 
@@ -226,10 +197,10 @@ mysqli_close($conn);
 								<h6 class="col-form-label col-md-12 col-sm-12 ">INGREDIENTES: </h6>	
 								<ul>
 									<?php 
-									echo "<li>".$cantidad." ". $unidad." de ".$ingredientes."</li>";
+									echo "<li>".round($cantidad*$equiv,1)." ". $unidad." de ".$ingredientes."</li>";
 									while($ingredientes = mysqli_fetch_assoc($resultadoingrediente) and $cantidad= mysqli_fetch_assoc($resultadocantidad) and $unidad= mysqli_fetch_assoc($resultadounidad))
 									{
-										echo "<li>".$cantidad['cantidad']." ". $unidad["unidad_medida"]." de ".$ingredientes['nombre']. "</li>";
+										echo "<li>".round($cantidad['cantidad']*$equiv,1)." ". $unidad["unidad_medida"]." de ".$ingredientes['nombre']. "</li>";
 									}
 
 									?>
