@@ -109,12 +109,12 @@ async function imprimirRecetas() {
             document.body.appendChild(form);
             form.submit();
           });
-
+//----------------------------------------------------------------------------
         const aEditarReceta = document.createElement("a");
         aEditarReceta.id = receta.getId();
         aEditarReceta.href = "#";
         const iEditarReceta = document.createElement("i");
-        iEditarReceta.classList.add("fa", "fa-pencil");
+        iEditarReceta.classList.add("fa", "fa-times");
         aEditarReceta.appendChild(iEditarReceta);
         divTools.appendChild(aEditarReceta);
 
@@ -124,7 +124,7 @@ async function imprimirRecetas() {
             // Crear un formulario con un campo oculto que contenga el ID de la receta
             const form = document.createElement("form");
             form.method = "POST";
-            form.action = "updateReceta.php";
+            form.action = "../php/deleteReceta.php";
             const inputIdReceta = document.createElement("input");
             inputIdReceta.type = "hidden";
             inputIdReceta.name = "idReceta";
@@ -135,7 +135,7 @@ async function imprimirRecetas() {
             document.body.appendChild(form);
             form.submit();
         });
-
+//--------------------------------------------------------------------------------------
         divMask.appendChild(divTools);
         divImage.appendChild(img);
         divImage.appendChild(divMask);
