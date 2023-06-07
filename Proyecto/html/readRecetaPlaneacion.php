@@ -188,7 +188,7 @@ mysqli_close($conex);
 								<!-- /modals -->
 							</div>
 							<div class="col-md-3 col-sm-3 " align="right">
-								<button type="button" class="btn btn-info" onclick="window.location.href='\\ComidayCompras/Proyecto/html/updateReceta.php';">Eliminar de planeación </button>
+								<button type="button" class="btn btn-info" onclick="actionDelete('<?php echo $idReceta; ?>');">Eliminar de planeación </button>
 							</div>
 						</div>
 
