@@ -75,11 +75,33 @@
                         $Entrega['cantidadTotalIngrediente']= $cantidadTotalIngrediente;
                         $Entrega['unidadMedida'] = $unidadMedida;
                         
-                    }else{
+                    }else{                              // Si son de otra unidad de medida, hay que convertir a Kg o L
+                        // Kilogramo(s) o Litro(s) = 1
+                        if($unidadMedida === "Kilogramo(s)" || $unidadMedida === "Litro(s)"){
+                            $cantidadPedidaN = $cantidadPedida;
+                        }
+                        // Gramos o mililitros = 0.001
+                        if($unidadMedida === "Gramos" || $unidadMedida === "Mililitros"){
+                            $cantidadPedidaN = ($cantidadPedida * 0.001);
+                        }
+                        // Taza(s) = 0.236588
+                        if($unidadMedida === "Taza(s)"){
+                            $cantidadPedidaN = ($cantidadPedida * 0.236588);
+                        }
+                        // Cucharada(s) = 0.0147868
+                        if($unidadMedida === "Cucharada(s)"){
+                            $cantidadPedidaN = ($cantidadPedida * 0.0147868);
+                        }
+                        // Cucharadita(s) = 0.00492892
+                        if($unidadMedida === "Cucharadita(s)"){
+                            $cantidadPedidaN = ($cantidadPedida * 0.00492892);
+                        }
+
                         $Entrega = array();
                         $Entrega['nombreIngrediente'] = $nombreIngrediente;
-                        $Entrega['cantidadTotalIngrediente']= $cantidadPedida;
+                        $Entrega['cantidadTotalIngrediente']= $cantidadPedidaN;
                         $Entrega['unidadMedida'] = $unidadMedida;
+                        //$Entrega['unidadMedida'] = "Kilogramo(s) o litro(s)";
                     }
 
                     $Respuesta['estado'] = 1;
