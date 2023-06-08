@@ -21,7 +21,7 @@ async function actionRead() {
         //alert(JSONRespuesta.mensaje);
         tabla = $("#datatable-buttons").DataTable();
             JSONRespuesta.entregas.forEach(listaC => {
-              tabla.row.add([listaC.nombreIngrediente, listaC.cantidadTotalIngrediente, listaC.UnidadMedidaDefinitiva]).draw();
+              tabla.row.add([listaC.nombreIngrediente, listaC.cantidadTotalIngrediente, listaC.unidadMedida]).draw();
             });
       } 
       console.log(respuesta);
