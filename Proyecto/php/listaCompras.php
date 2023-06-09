@@ -124,6 +124,9 @@
                         foreach ($Respuesta['entregas'] as &$entrega) {
                             if ($entrega['nombreIngrediente'] == $nombreIngrediente && $entrega['unidadMedida'] == "Kilogramo(s) o litro(s)") {
                                 $entrega['cantidadTotalIngrediente'] += $cantidadPedidaN;
+                                $entrega['cantidadTotalIngrediente'] = ceil($entrega['cantidadTotalIngrediente'] * 100) / 100; // Redondear hacia arriba con 2 decimales
+                                $entrega['cantidadTotalIngrediente'] = number_format($entrega['cantidadTotalIngrediente'], 2); // Formatear con 2 decimales
+
                                 $encontrado = true;
                                 break;
                             }
@@ -133,6 +136,8 @@
                             // Crear un nuevo registro de entrega para el ingrediente
                             $Entrega['nombreIngrediente'] = $nombreIngrediente;
                             $Entrega['cantidadTotalIngrediente'] = $cantidadPedidaN;
+                            $Entrega['cantidadTotalIngrediente'] = ceil($Entrega['cantidadTotalIngrediente'] * 100) / 100; // Redondear hacia arriba con 2 decimales
+                            $Entrega['cantidadTotalIngrediente'] = number_format($Entrega['cantidadTotalIngrediente'], 2); // Formatear con 2 decimales
                             $Entrega['unidadMedida'] = "Kilogramo(s) o litro(s)";
                             array_push($Respuesta['entregas'], $Entrega);
                         }
@@ -160,6 +165,8 @@
                             if($cantidadDisponible < $entrega['cantidadTotalIngrediente']){
                                 // Restar la cantidad disponible de la cantidad total de ingredientes
                                 $entrega['cantidadTotalIngrediente'] -= $cantidadDisponible;
+                                $entrega['cantidadTotalIngrediente'] = ceil($entrega['cantidadTotalIngrediente'] * 100) / 100; // Redondear hacia arriba con 2 decimales
+                                $entrega['cantidadTotalIngrediente'] = number_format($entrega['cantidadTotalIngrediente'], 2); // Formatear con 2 decimales
                                 
                                 if ($entrega['cantidadTotalIngrediente'] > 0) {
                                     $entregasFiltradas[] = $entrega; // Agregar entrega al arreglo filtrado
