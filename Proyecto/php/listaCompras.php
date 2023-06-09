@@ -65,19 +65,30 @@
                             $filaIngD = mysqli_fetch_assoc($ResultadoReadIngredientesDisponibles);
                             $cantidadDisponible = $filaIngD['cantidad'];
 
-                            $cantidadTotalIngrediente = ceil($cantidadPedida - $cantidadDisponible);
+                            if($cantidadDisponible < $cantidadPedida){
+                                $cantidadTotalIngrediente = ceil($cantidadPedida - $cantidadDisponible);
+
+                                $Entrega = array();
+                                $Entrega['nombreIngrediente'] = $nombreIngrediente;
+                                $Entrega['cantidadTotalIngrediente']= $cantidadTotalIngrediente;
+                                $Entrega['unidadMedida'] = $unidadMedida;
+
+                                array_push($Respuesta['entregas'], $Entrega);
+                                $Respuesta['estado'] = 1;
+                                $Respuesta['mensaje'] = "Los registros se listan correctamente";
+                            }
+                            
                         }else{
                             $cantidadTotalIngrediente = ceil($cantidadPedida);
+                            $Entrega = array();
+                            $Entrega['nombreIngrediente'] = $nombreIngrediente;
+                            $Entrega['cantidadTotalIngrediente']= $cantidadTotalIngrediente;
+                            $Entrega['unidadMedida'] = $unidadMedida;
+
+                            array_push($Respuesta['entregas'], $Entrega);
+                            $Respuesta['estado'] = 1;
+                            $Respuesta['mensaje'] = "Los registros se listan correctamente";
                         }
-
-                        $Entrega = array();
-                        $Entrega['nombreIngrediente'] = $nombreIngrediente;
-                        $Entrega['cantidadTotalIngrediente']= $cantidadTotalIngrediente;
-                        $Entrega['unidadMedida'] = $unidadMedida;
-
-                        array_push($Respuesta['entregas'], $Entrega);
-                        $Respuesta['estado'] = 1;
-                        $Respuesta['mensaje'] = "Los registros se listan correctamente";
                         
                     }else{                              // Si son de otra unidad de medida, hay que convertir a Kg o L
                         // Kilogramo(s) o Litro(s) = 1
@@ -146,7 +157,7 @@
                             $filaIngD = mysqli_fetch_assoc($ResultadoReadIngredientesDisponibles);
                             $cantidadDisponible = $filaIngD['cantidad'];
 
-                            if($cantidadDisponible <= $entrega['cantidadTotalIngrediente']){
+                            if($cantidadDisponible < $entrega['cantidadTotalIngrediente']){
                                 // Restar la cantidad disponible de la cantidad total de ingredientes
                                 $entrega['cantidadTotalIngrediente'] -= $cantidadDisponible;
                                 
@@ -164,8 +175,6 @@
 
                 $Respuesta['entregas'] = $entregasFiltradas; // Actualizar $Respuesta con las entregas filtradas
 
-                
-                // Mueve estas líneas fuera del bucle foreach para que se ejecuten después de procesar todas las entregas
                 $Respuesta['estado'] = 1;
                 $Respuesta['mensaje'] = "Los registros se listan correctamente";
                 
