@@ -76,6 +76,8 @@
                         $Entrega['unidadMedida'] = $unidadMedida;
 
                         array_push($Respuesta['entregas'], $Entrega);
+                        $Respuesta['estado'] = 1;
+                        $Respuesta['mensaje'] = "Los registros se listan correctamente";
                         
                     }else{                              // Si son de otra unidad de medida, hay que convertir a Kg o L
                         // Kilogramo(s) o Litro(s) = 1
@@ -125,10 +127,49 @@
                         }
                         
                     }
-
-                    $Respuesta['estado'] = 1;
-                    $Respuesta['mensaje'] = "Los registros se listan correctamente";
                 }
+
+                // Comprueba si hay ingredientes disponibles, para el caso de Kg o L
+                $entregasFiltradas = array(); // Nuevo arreglo para almacenar las entregas filtradas
+
+                foreach ($Respuesta['entregas'] as &$entrega) {
+                    if ($entrega['unidadMedida'] == "Kilogramo(s) o litro(s)") {
+                        $QueryReadIngredientesDisponibles = "SELECT ui.*, i.*
+                                                            FROM usuario_has_ingredientes ui
+                                                            JOIN ingredientes i ON ui.ingrediente_id = i.idIngredientes
+                                                            WHERE ui.usuario_correo = '".$correo."'
+                                                                AND NOT(ui.unidad_medida = 'Pieza(s)')
+                                                                AND i.nombre = '".$entrega['nombreIngrediente']."'";
+
+                        $ResultadoReadIngredientesDisponibles = mysqli_query($conex, $QueryReadIngredientesDisponibles);
+                        if($ResultadoReadIngredientesDisponibles && mysqli_num_rows($ResultadoReadIngredientesDisponibles) > 0) {
+                            $filaIngD = mysqli_fetch_assoc($ResultadoReadIngredientesDisponibles);
+                            $cantidadDisponible = $filaIngD['cantidad'];
+
+                            if($cantidadDisponible <= $entrega['cantidadTotalIngrediente']){
+                                // Restar la cantidad disponible de la cantidad total de ingredientes
+                                $entrega['cantidadTotalIngrediente'] -= $cantidadDisponible;
+                                
+                                if ($entrega['cantidadTotalIngrediente'] > 0) {
+                                    $entregasFiltradas[] = $entrega; // Agregar entrega al arreglo filtrado
+                                }
+                            }
+                        } else {
+                            $entregasFiltradas[] = $entrega; // Agregar entrega al arreglo filtrado
+                        }
+                    } else {
+                        $entregasFiltradas[] = $entrega; // Agregar entrega al arreglo filtrado
+                    }
+                }
+
+                $Respuesta['entregas'] = $entregasFiltradas; // Actualizar $Respuesta con las entregas filtradas
+
+                
+                // Mueve estas líneas fuera del bucle foreach para que se ejecuten después de procesar todas las entregas
+                $Respuesta['estado'] = 1;
+                $Respuesta['mensaje'] = "Los registros se listan correctamente";
+                
+
             }else{
                 $Respuesta['estado'] = 0;
                 $Respuesta['mensaje'] = "Ocurrio un error desconocido";
