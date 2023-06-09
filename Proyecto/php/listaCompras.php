@@ -74,6 +74,8 @@
                         $Entrega['nombreIngrediente'] = $nombreIngrediente;
                         $Entrega['cantidadTotalIngrediente']= $cantidadTotalIngrediente;
                         $Entrega['unidadMedida'] = $unidadMedida;
+
+                        array_push($Respuesta['entregas'], $Entrega);
                         
                     }else{                              // Si son de otra unidad de medida, hay que convertir a Kg o L
                         // Kilogramo(s) o Litro(s) = 1
@@ -98,16 +100,34 @@
                         }
 
                         $Entrega = array();
-                        $Entrega['nombreIngrediente'] = $nombreIngrediente;
-                        $Entrega['cantidadTotalIngrediente']= $cantidadPedidaN;
-                        $Entrega['unidadMedida'] = $unidadMedida;
-                        //$Entrega['unidadMedida'] = "Kilogramo(s) o litro(s)";
+                        
+                        $ingredientesRepetidos = array_filter($Respuesta['entregas'], function ($item) use ($nombreIngrediente) {
+                            return $item['nombreIngrediente'] == $nombreIngrediente 
+                                && $item['unidadMedida'] == "Kilogramo(s) o litro(s)" 
+                                && $item['cantidadTotalIngrediente'];
+                        });
+                        
+                        $encontrado = false;
+                        foreach ($Respuesta['entregas'] as &$entrega) {
+                            if ($entrega['nombreIngrediente'] == $nombreIngrediente && $entrega['unidadMedida'] == "Kilogramo(s) o litro(s)") {
+                                $entrega['cantidadTotalIngrediente'] += $cantidadPedidaN;
+                                $encontrado = true;
+                                break;
+                            }
+                        }
+
+                        if (!$encontrado) {
+                            // Crear un nuevo registro de entrega para el ingrediente
+                            $Entrega['nombreIngrediente'] = $nombreIngrediente;
+                            $Entrega['cantidadTotalIngrediente'] = $cantidadPedidaN;
+                            $Entrega['unidadMedida'] = "Kilogramo(s) o litro(s)";
+                            array_push($Respuesta['entregas'], $Entrega);
+                        }
+                        
                     }
 
                     $Respuesta['estado'] = 1;
                     $Respuesta['mensaje'] = "Los registros se listan correctamente";
-
-                    array_push($Respuesta['entregas'], $Entrega);
                 }
             }else{
                 $Respuesta['estado'] = 0;
