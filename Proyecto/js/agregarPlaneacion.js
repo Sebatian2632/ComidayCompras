@@ -42,7 +42,7 @@ function actionDelete(idReceta) {
     success: function(response) {
       // Analizar la respuesta JSON
       if (response.success) {
-        alert(response.message); // Mostrar el mensaje de éxito
+        //alert(response.message); // Mostrar el mensaje de éxito
         window.location = '../html/planeacion.html'; // Redireccionar si es necesario
       } else {
         alert(response.message); // Mostrar el mensaje de error
