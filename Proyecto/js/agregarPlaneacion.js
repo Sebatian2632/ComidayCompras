@@ -14,7 +14,7 @@ function actionCreate(idReceta) {
     dataType: "json",
     success: function(response) {
       if (response.success) {
-        alert(response.message); // Mostrar mensaje de éxito
+        //alert(response.message); // Mostrar mensaje de éxito
         // Realizar acciones adicionales si es necesario
       } else {
         alert(response.message); // Mostrar mensaje de error
