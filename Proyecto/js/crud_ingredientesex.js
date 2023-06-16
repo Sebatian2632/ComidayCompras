@@ -48,8 +48,10 @@ async function actionCreate()
           if(JSONRespuesta.estado==1){
             alert(JSONRespuesta.mensaje);
             tabla = $("#example").DataTable();
-            let simbolo = '<i class="fas fa-envelope" style="color: #af66eb;"></i>';
-            tabla.row.add([nombre, cantidad, unidad_medida, simbolo]).draw().node().id = "renglon_" + JSONRespuesta.id;
+            let Botones = '';
+              Botones += '<button type="button" id="editarIngrediente" class="btn btn-primary"><i class="fa fa-pencil"></i></button>';
+              Botones += '<button type="button" id="eliminarIngrediente" class="btn btn-danger"><i class="fa fa-trash"></i></button>';
+            tabla.row.add([nombre, cantidad, unidad_medida, Botones]).draw().node().id = "renglon_" + JSONRespuesta.id;
           }else{
             alert(JSONRespuesta.mensaje);
           }
@@ -76,11 +78,10 @@ async function actionRead() {
         //alert(JSONRespuesta.mensaje);
         tabla = $("#example").DataTable();
         JSONRespuesta.entregas.forEach(ingredientes => {
-          let simbolo = '<i class="fas fa-envelope" style="color: #af66eb;"></i>';
-            /*let Botones = "";
-              Botones += '<i class="fas fa-edit" style="font-size:25px;color: #168645; margin-right: 10px;" data-toggle="modal" data-target="#modal_update_tarea" onclick="identificarActualizar(' + tareas.idtareas + ')"></i>';
-              Botones += '<i class="fas fa-trash" style="font-size:25px;color: #da2c2c; margin-right: 10px;" data-toggle="modal" data-target="#modal_delete_tarea" onclick="identificarEliminar(' + tareas.idtareas + ')"></i>';*/
-              tabla.row.add([ingredientes.nombre_ingrediente, ingredientes.cantidad, ingredientes.unidad_medida, simbolo]).draw().node().id = "renglon_" + ingredientes.idDisponibles;
+          let Botones = '';
+            Botones += '<button type="button" id="editarIngrediente" class="btn btn-primary"><i class="fa fa-pencil"></i></button>';
+            Botones += '<button type="button" id="eliminarIngrediente" class="btn btn-danger"><i class="fa fa-trash"></i></button>';
+          tabla.row.add([ingredientes.nombre_ingrediente, ingredientes.cantidad, ingredientes.unidad_medida, Botones]).draw().node().id = "renglon_" + ingredientes.idDisponibles;
         });
       }
     }
