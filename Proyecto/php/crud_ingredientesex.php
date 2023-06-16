@@ -3,9 +3,7 @@
     //Conexión a la base de datos
     include 'connect.php';
     $Respuesta = array();
-
-    $data = json_decode(file_get_contents('php://input'), true);
-    $accion = isset($data['accion']) ? $data['accion'] : '';
+    $accion    = $_POST['accion'];
 
     switch ($accion) {
         case 'create':
@@ -31,33 +29,73 @@
     function actionCreatePHP($conex)
     {
         //Recuperación de los datos
-        $data = json_decode(file_get_contents('php://input'), true);    //Parte para decodificar lo que recibimos del js
+        $nombre = $_POST['nom'];
+        $cantidad = $_POST['cant'];
+        $unidad_medida = $_POST['unid'];
+        $email = $_POST['correo'];
 
-        $ingrediente = $data['nombre'];
-        $cantidad = $data['cantidad'];  
-        $unidad_medida = $data['unidad_medida'];
-
-        $email = isset($data['email']) ? $data['email'] : '';
         //Consulta del id en la base de datos
-        $consultaid =  "SELECT idIngredientes FROM ingredientes WHERE nombre = '$ingrediente'";
+        $consultaid =  "SELECT idIngredientes FROM ingredientes WHERE nombre = '$nombre'";
         $resultadoid = mysqli_query($conex,$consultaid);
         if(mysqli_num_rows($resultadoid)==1)
         {
             $id = mysqli_fetch_assoc($resultadoid)['idIngredientes']; 
-            //echo json_encode(['id' => $id]);       //->Parte para poder ver el id que estamos recogiendo
     
             //Consulta de la inserción a la base de datos
             $consultainsert = "INSERT INTO `usuario_has_ingredientes`(`usuario_correo`, `ingrediente_id`, `cantidad`, `unidad_medida`) VALUES ('$email','$id','$cantidad','$unidad_medida')";
-            $resultadoinsert = mysqli_query($conex,$consultainsert);
                 
-            if($resultadoinsert)
+            if(mysqli_query($conex,$consultainsert))
             {
-                echo json_encode(['Respuesta' => 1]);
+                $Respuesta['id'] = mysqli_insert_id($conex); 
+                $Respuesta['estado'] = 1;
+                $Respuesta['mensaje'] = "Ingrediente guardado con exito.";
             }
         }
         else
         {
-            echo json_encode(['Respuesta' => 0]);
+            $Respuesta['estado'] = 0;
+            $Respuesta['mensaje'] = "Error al guardar el ingrediente, intentelo de nuevo.";
         }
+        echo json_encode($Respuesta);
+        mysqli_close($conex);
+    }
+
+    function actionRead($conex)
+    {
+        $email = $_POST['correo'];
+        $consultarea = "SELECT * FROM usuario_has_ingredientes WHERE usuario_correo = '$email'";
+        $rconsulta = mysqli_query($conex,$consultarea);
+        $numeroRegistros = mysqli_num_rows($rconsulta);
+
+        if(mysqli_num_rows($rconsulta) > 0)
+        {
+            $Respuesta['estado'] = 1;
+            $Respuesta['entregas'] = array();
+            
+            while ($RenglonEntrega = mysqli_fetch_assoc($rconsulta)) {
+                $Entrega = array();
+                $Entrega['idDisponibles'] = $RenglonEntrega['idDisponibles'];
+                $Entrega['usuario_correo'] = $RenglonEntrega['usuario_correo'];
+                $Entrega['cantidad'] = $RenglonEntrega['cantidad'];
+                $Entrega['unidad_medida'] = $RenglonEntrega['unidad_medida'];
+            
+                $ingrediente_id = $RenglonEntrega['ingrediente_id'];
+                $consultaIngrediente = "SELECT nombre FROM ingredientes WHERE idIngredientes = '$ingrediente_id'";
+                $rconsultaIngrediente = mysqli_query($conex, $consultaIngrediente);
+                $RenglonIngrediente = mysqli_fetch_assoc($rconsultaIngrediente);
+                $nombreIngrediente = $RenglonIngrediente['nombre'];
+            
+                $Entrega['nombre_ingrediente'] = $nombreIngrediente;
+            
+                array_push($Respuesta['entregas'], $Entrega);
+            }            
+        }
+        else
+        {
+            $Respuesta['estado'] = 0;
+            $Respuesta['mensaje'] = "Ocurrio un error desconocido";
+        }
+        echo json_encode($Respuesta);
+        mysqli_close($conex);
     }
 ?>

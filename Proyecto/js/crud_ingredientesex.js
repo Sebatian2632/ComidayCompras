@@ -30,76 +30,63 @@ async function actionCreate()
     }
     else
     {
-      console.log(nombre);
-    console.log(cantidad);
-    console.log(unidad_medida);
-    console.log(email);
-    limpiarpagina();
+      limpiarpagina();
 
-    fetch('../php/crud_ingredientesex.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
+      $.ajax({
+        method:"POST",
+        url: "../php/crud_ingredientesex.php",
+        data: {
+          nom: nombre,
+          cant: cantidad,
+          unid: unidad_medida,
+          correo: email,
+          accion: "create"
         },
-        body: JSON.stringify({
-          nombre,
-          cantidad,
-          unidad_medida,
-          email,
-          accion : 'create'
-        })
-      })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        if(data.Respuesta === 1){
-          alert("Los datos se han guardado exitosamente");
-          //actionRead();
+        success: function( respuesta ) {
+          JSONRespuesta = JSON.parse(respuesta);
+          console.log(respuesta);
+          if(JSONRespuesta.estado==1){
+            alert(JSONRespuesta.mensaje);
+            tabla = $("#example").DataTable();
+            let simbolo = '<i class="fas fa-envelope" style="color: #af66eb;"></i>';
+            tabla.row.add([nombre, cantidad, unidad_medida, simbolo]).draw().node().id = "renglon_" + JSONRespuesta.id;
+          }else{
+            alert(JSONRespuesta.mensaje);
+          }
         }
-        else{
-          alert("Fallo al guardar los datos");
-        }
-    });
-    }
+      });
+      }
     }     
 }
 
 //----------------READ-----------------
-/*function actionRead() {
+async function actionRead() {
+  const email = await obtenerCorreo();
   $.ajax({
     method:"POST",
     url: "../php/crud_ingredientesex.php",
     data: {
+      correo: email,
       accion: "read"
     },
     success: function( respuesta ) {
-      
       JSONRespuesta = JSON.parse(respuesta);
-      
       if(JSONRespuesta.estado==1){
-        //Mostrar los registros = categorias en la tabla
-        tabla = $("#dataTable").DataTable();
-
-            //Ciclo for para leer la categoria del arreglo
-            JSONRespuesta.ingredeintes.forEach(categoria => {
-              let Botones ='<a class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-lg-subtemas" href="#" ><i class="fas fa-clock"></i></a>';
-              Botones +=' <a class="btn btn-primary btn-sm" href="#" data-toggle="modal" data-target="#modal-update" onclick="identificarActualizar('+categoria.idDisponible+')"><i class="fas fa-edit"></i></a>';
-              Botones +=' <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modal-delete" onclick="identificarEliminar('+categoria.idDisponible+')"><i class="fas fa-trash"></i></a>';
-          
-              tabla.row.add([categoria.id_ingredientes,
-                            categoria.cantidad,
-                            categoria.unidad_medida,
-                            Botones]).draw().node().id="renglon_"+categoria.idDisponible;
-
-            });
-
-      } 
-      //console.log(respuesta);
-      //Mostrar todos los registros en la tabla
+        console.log(respuesta);
+        //alert(JSONRespuesta.mensaje);
+        tabla = $("#example").DataTable();
+        JSONRespuesta.entregas.forEach(ingredientes => {
+          let simbolo = '<i class="fas fa-envelope" style="color: #af66eb;"></i>';
+            /*let Botones = "";
+              Botones += '<i class="fas fa-edit" style="font-size:25px;color: #168645; margin-right: 10px;" data-toggle="modal" data-target="#modal_update_tarea" onclick="identificarActualizar(' + tareas.idtareas + ')"></i>';
+              Botones += '<i class="fas fa-trash" style="font-size:25px;color: #da2c2c; margin-right: 10px;" data-toggle="modal" data-target="#modal_delete_tarea" onclick="identificarEliminar(' + tareas.idtareas + ')"></i>';*/
+              tabla.row.add([ingredientes.nombre_ingrediente, ingredientes.cantidad, ingredientes.unidad_medida, simbolo]).draw().node().id = "renglon_" + ingredientes.idDisponibles;
+        });
+      }
     }
   });
 }
-*/
+
 
 //----------------DELATE-----------------
 
