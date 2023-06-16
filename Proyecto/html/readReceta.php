@@ -94,8 +94,8 @@ mysqli_close($conn);
   </head>
 
   <body class="nav-md">
-    <div class="container body">
-      <div class="main_container">
+    <div class="container body" class="right_col" role="main">
+      <div class="main_container" >
         <div class="col-md-3 left_col">
 			<div class="left_col scroll-view">
 				<div class="navbar nav_title" style="border: 0;">
@@ -310,10 +310,6 @@ mysqli_close($conn);
 					<!-- End SmartWizard Content -->
 				     </div>
                    </div>
-               </div>
-             </div>
-          </div>
-        </div>
         <!-- /page content -->
 
         <!-- footer content -->
@@ -324,7 +320,7 @@ mysqli_close($conn);
 			<div class="clearfix"></div>
 		</footer>
         <!-- /footer content -->
-      </div>
+      		</div>
     </div>
 
     <!-- jQuery -->
