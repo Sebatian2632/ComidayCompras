@@ -225,6 +225,28 @@ CREATE TABLE IF NOT EXISTS `recetasdb`.`recetas_has_planeacion` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
+-- Crear la tabla "alergias"
+CREATE TABLE IF NOT EXISTS `recetasdb`.`alergias` (
+  `idalergia` INT NOT NULL AUTO_INCREMENT,
+  `alergico` BOOLEAN NOT NULL,
+  `usuarios_correo` VARCHAR(255) NOT NULL,
+  `ingredientes_idIngredientes` INT NOT NULL,
+  PRIMARY KEY (`idalergia`),
+  INDEX `fk_alergias_usuarios1_idx` (`usuarios_correo` ASC),
+  INDEX `fk_alergias_ingredientes1_idx` (`ingredientes_idIngredientes` ASC),
+  CONSTRAINT `fk_alergias_usuarios1`
+    FOREIGN KEY (`usuarios_correo`)
+    REFERENCES `recetasdb`.`usuarios` (`correo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_alergias_ingredientes1`
+    FOREIGN KEY (`ingredientes_idIngredientes`)
+    REFERENCES `recetasdb`.`ingredientes` (`idIngredientes`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
