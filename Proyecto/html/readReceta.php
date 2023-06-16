@@ -8,11 +8,13 @@ $dbname = "recetasDB";
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 
 if (isset($_POST["idReceta"])) {
-	$idReceta = $_POST["idReceta"];
-	//echo "El ID de la receta es: " . $idReceta;
-  } else {
-	echo "No se recibió el ID de la receta.";
-  }
+    $idReceta = $_POST["idReceta"];
+    // Redireccionar a otra página con la variable en la URL
+    header("Location: updateReceta.php?idReceta=" . $idReceta);
+    exit();
+} else {
+    echo "No se recibió el ID de la receta.";
+}
 
 // Realizar la consultas
 $resultadonombre = mysqli_query($conn, "SELECT nombre FROM recetas WHERE idRecetas = $idReceta");
