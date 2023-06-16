@@ -52,6 +52,7 @@ async function actionCreate()
               Botones += '<button type="button" id="editarIngrediente" class="btn btn-primary"><i class="fa fa-pencil"></i></button>';
               Botones += '<button type="button" id="eliminarIngrediente" class="btn btn-danger"><i class="fa fa-trash"></i></button>';
             tabla.row.add([nombre, cantidad, unidad_medida, Botones]).draw().node().id = "renglon_" + JSONRespuesta.id;
+            readnumber()
           }else{
             alert(JSONRespuesta.mensaje);
           }
@@ -95,6 +96,33 @@ async function actionRead() {
 
 //----------------UPDATE-----------------
 
+
+
+//----------------READ NUMBER-----------------
+async function readnumber()
+{
+  let email = await obtenerCorreo();
+  $.ajax({
+    method:"POST",
+    url: "../php/crud_ingredientesex.php",
+    data: {
+      correo: email,
+      accion: "read_number"
+    },
+    success: function( respuesta ) {
+      JSONRespuesta = JSON.parse(respuesta);
+      if(JSONRespuesta.estado == 1)
+      {
+        let numeroregistros = JSONRespuesta.numero_registros;
+        document.getElementById("numero_ingredientes").textContent = numeroregistros;
+      }
+      else
+      {
+        alert('Error al obtener los ingredientes existentes');
+      }
+    }
+  }); 
+}
 
 //Limpiar las variables del formulario
 function limpiarpagina()

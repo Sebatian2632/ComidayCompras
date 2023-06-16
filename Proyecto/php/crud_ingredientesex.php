@@ -21,6 +21,9 @@
         case 'read_id':
             actionReadByIdPHP($conex);
             break;
+        case 'read_number':
+            actionReadNumber($conex);
+            break;
         default:
             # code...
             break;
@@ -97,5 +100,19 @@
         }
         echo json_encode($Respuesta);
         mysqli_close($conex);
+    }
+
+    function actionReadNumber($conex)
+    {
+        $email = $_POST['correo'];
+        $consultarea = "SELECT * FROM usuario_has_ingredientes WHERE usuario_correo = '$email'";
+        $rconsulta = mysqli_query($conex,$consultarea);
+        $numeroRegistros = mysqli_num_rows($rconsulta);
+
+        $Respuesta['estado'] = 1;
+        $Respuesta['numero_registros'] = $numeroRegistros;
+        echo json_encode($Respuesta);
+        mysqli_close($conex);
+
     }
 ?>
