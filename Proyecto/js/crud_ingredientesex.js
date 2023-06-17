@@ -1,5 +1,4 @@
-
-fetch("../php/ingredientes.php") //Pedimos en la base de datos los ingredientes existentes
+  fetch("../php/ingredientes.php") //Pedimos en la base de datos los ingredientes existentes
     .then((response) => response.json())
     .then((data) => {
         let ingre = data; //Guardamos los resultados de php
@@ -28,6 +27,14 @@ async function actionCreate()
     if(nombre === '' || cantidad === '' || unidad_medida === '')
     {
       alert("Por favor llene todos los campos");
+      fetch("../php/ingredientes.php") //Pedimos en la base de datos los ingredientes existentes
+      .then((response) => response.json())
+      .then((data) => {
+          let ingre = data; //Guardamos los resultados de php
+          let nombres = ingre.map((obj) => obj.nombre); //Sacamos el nombre de los resultados
+          $("#autocomplete-custom-append").autocomplete({ lookup: nombres }); //Autocompletamos el campo
+      })
+      .catch((error) => console.error(error));
     }
     else
     {
@@ -283,8 +290,7 @@ function Cerrar() {
   }
   limpiarpagina();
 }
-
-
+  
 
 //Limpiar las variables del formulario
 function limpiarpagina()
