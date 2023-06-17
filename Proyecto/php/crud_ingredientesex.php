@@ -115,4 +115,39 @@
         mysqli_close($conex);
 
     }
+
+    function actionReadByIdPHP($conex)
+    {
+        $Idact = $_POST['id'];
+        $consulta = "SELECT * FROM usuario_has_ingredientes WHERE idDisponibles = '$Idact'";
+        $resultado = mysqli_query($conex,$consulta);
+
+        $numeroRegistros = mysqli_num_rows($resultado);
+
+        if(mysqli_num_rows($resultado) > 0)
+        {
+            $Respuesta['estado'] = 1;
+            
+            $IngredienteRegistroById = mysqli_fetch_assoc($resultado);
+
+            $Respuesta['idDisponible'] = $IngredienteRegistroById['idDisponibles'];
+            $Respuesta['cantidad'] = $IngredienteRegistroById['cantidad'];
+            $Respuesta['unidad_medida'] = $IngredienteRegistroById['unidad_medida'];
+
+            
+            $ingrediente_id = $IngredienteRegistroById['ingrediente_id'];
+            $consultaIngrediente = "SELECT nombre FROM ingredientes WHERE idIngredientes = '$ingrediente_id'";
+            $rconsultaIngrediente = mysqli_query($conex, $consultaIngrediente);
+            $RenglonIngrediente = mysqli_fetch_assoc($rconsultaIngrediente);
+            $Respuesta['nombre_ingrediente'] = $RenglonIngrediente['nombre'];           
+        }
+        else
+        {
+            $Respuesta['estado'] = 0;
+            $Respuesta['mensaje'] = "Ocurrio un error desconocido";
+        }
+        echo json_encode($Respuesta);
+        mysqli_close($conex);
+
+    }
 ?>
