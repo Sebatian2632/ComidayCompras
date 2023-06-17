@@ -228,7 +228,6 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- Crear la tabla "alergias"
 CREATE TABLE IF NOT EXISTS `recetasdb`.`alergias` (
   `idalergia` INT NOT NULL AUTO_INCREMENT,
-  `alergico` BOOLEAN NOT NULL,
   `usuarios_correo` VARCHAR(255) NOT NULL,
   `ingredientes_idIngredientes` INT NOT NULL,
   PRIMARY KEY (`idalergia`),
