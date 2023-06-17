@@ -14,6 +14,21 @@ if (isset($_POST["idReceta"])) {
 	echo "No se recibió el ID de la receta.";
   }
   
+// Obtener los valores del formulario
+$nombreReceta = $_POST["nombrereceta"];
+$duracion = $_POST["rduracion"];
+$porciones = $_POST["rporcion"];
+$tiempoComida = $_POST["rtiempo"];
+
+// Actualizar los valores en la base de datos
+$sql = "UPDATE recetas SET nombre = '$nombreReceta', duracion = '$duracion', porciones = '$porciones', tiempo_comida = '$tiempoComida' WHERE idRecetas = $idReceta";
+
+if (mysqli_query($conn, $sql)) {
+    echo "Los valores se actualizaron correctamente en la base de datos.";
+} else {
+    echo "Error al actualizar los valores en la base de datos: " . mysqli_error($conn);
+}
+
 
 // Obtener los valores actuales de la base de datos
 $resultadonombre = mysqli_query($conn, "SELECT nombre FROM recetas WHERE idRecetas = $idReceta");

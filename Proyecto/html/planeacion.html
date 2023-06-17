@@ -79,7 +79,13 @@
 					<nav class="nav navbar-nav">
 						<ul class=" navbar-right">
 							<li class="nav-item dropdown open" style="padding-left: 15px;">
-								<button type="button" class="btn btn-primary btn-sm" id="logout">Log out</button>
+								<!-- INGREDIENTES DISPONIBLES -->
+								<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg" align="right" onclick="actionRead()">Ingredientes disponibles
+								<samp class="badge bg-warning">
+									<samp id="numero_ingredientes"></samp>
+								</samp>
+								</button>
+								<button type="button" class="btn btn-danger btn-sm" id="logout">Log out</button>
 							</li>
 						</ul>
 					</nav>
@@ -115,130 +121,6 @@
 											</div>
 										</div>
 										<div class="col-md-3 col-sm-3 ">
-										<!-- INGREDIENTES DISPONIBLES -->
-										<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg" align="right">Ingredientes disponibles</button>
-										<!-- Large modal -->
-										<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-										  <div class="modal-dialog modal-lg">
-											<div class="modal-content">
-					  
-												<div class="modal-header">
-													<h5 class="modal-title" id="myModalLabel">Ingredientes disponibles</h5>
-													<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-													</button>
-												</div>
-												<div class="modal-body">
-													<label for="fullname">Ingrediente</label>
-													<input type="text" name="ingredientes" id="autocomplete-custom-append"
-														class="form-control" placeholder="Nombre del ingrediente">
-													<ul class="list"></ul>
-													<div class="form-group row">
-														<label class="col-form-label col-md-12 col-sm-12 "></label>
-														<div class="col-md-6 col-sm-6 ">
-															<label for="fullname">Cantidad</label>
-															<input type="text" class="form-control" id="cantidad" name="cantidad"
-																placeholder="Cantidad del ingrediente">
-														</div>
-														<div class="col-md-6 col-sm-6 ">
-															<label for="fullname">Unidad de medida</label>
-															<select id="unidad_medida" name="unidad_medida" class="form-control">
-																<option value="">Elige...</option>
-																<option value="Piezas">Pieza(s)</option>
-																<option value="Kilogramo(s)">Kilogramo(s)</option>
-																<option value="Gramos">Gramos</option>
-																<option value="Litros">Litro(s)</option>
-																<option value="Mililitros">Mililitros</option>
-															</select>
-														</div>
-													</div>
-													<div class="form-group row">
-														<div class="col-md-12 col-sm-12 " align="right">
-															<button type="button" id="agregarin" class="btn btn-primary">Agregar</button>
-														</div>
-													</div>
-													<div class="row">
-														<div class="col-sm-12">
-															<h4>Lista de ingredientes disponibles</h4><hr>
-														  	<div class="card-box table-responsive">
-																<table id="datatable" class="table table-striped table-bordered" style="width:100%">
-																	<thead>
-																	<tr>
-																		<th>Ingrediente</th>
-																		<th>Cantidad</th>
-																		<th>Unidad de medida</th>
-																		<th>Acciones</th>
-																	</tr>
-																	</thead>											
-																	<tbody>
-																	<tr>
-																		<td>Jitomate</td>
-																		<td>2</td>
-																		<td>kg</td>
-																		<td align="center">
-																			<button type="button" id="editarIngrediente" class="btn btn-primary"><i class="fa fa-pencil"></i> </button>
-																			<button type="button" id="eliminarIngrediente" class="btn btn-danger"><i class="fa fa-trash"></i> </button>
-																		</td>
-																	</tr>
-																	
-																	<tr>
-																		<td>Huevo</td>
-																		<td>6</td>
-																		<td>pzas</td>
-																		<td align="center">
-																			<button type="button" id="editarIngrediente" class="btn btn-primary"><i class="fa fa-pencil"></i> </button>
-																			<button type="button" id="eliminarIngrediente" class="btn btn-danger"><i class="fa fa-trash"></i> </button>
-																		</td>
-																	</tr>
-																	<tr>
-																		<td>Leche</td>
-																		<td>1</td>
-																		<td>L</td>
-																		<td align="center">
-																			<button type="button" id="editarIngrediente" class="btn btn-primary"><i class="fa fa-pencil"></i> </button>
-																			<button type="button" id="eliminarIngrediente" class="btn btn-danger"><i class="fa fa-trash"></i> </button>
-																		</td>
-																	</tr>
-																	<tr>
-																		<td>Azúcar</td>
-																		<td>600</td>
-																		<td>g</td>
-																		<td align="center">
-																			<button type="button" id="editarIngrediente" class="btn btn-primary"><i class="fa fa-pencil" ></i> </button>
-																			<button type="button" id="eliminarIngrediente" class="btn btn-danger"><i class="fa fa-trash"></i> </button>
-																		</td>
-																	</tr>
-																	<tr>
-																		<td>Arroz</td>
-																		<td>2</td>
-																		<td>kg</td>
-																		<td align="center">
-																			<button type="button" id="editarIngrediente" class="btn btn-primary"><i class="fa fa-pencil"></i> </button>
-																			<button type="button" id="eliminarIngrediente" class="btn btn-danger"><i class="fa fa-trash"></i> </button>
-																		</td>
-																	</tr>
-																	<tr>
-																		<td>Frijoles</td>
-																		<td>3</td>
-																		<td>kg</td>
-																		<td align="center">
-																			<button type="button" id="editarIngrediente" class="btn btn-primary"><i class="fa fa-pencil"></i> </button>
-																			<button type="button" id="eliminarIngrediente" class="btn btn-danger"><i class="fa fa-trash"></i> </button>
-																		</td>
-																	</tr>
-																	</tbody>
-																</table>
-															</div>
-														</div>
-													</div>
-												</div>
-											  <div class="modal-footer">
-												<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-											  </div>
-					  
-											</div>
-										  </div>
-										</div>					  
-										<!-- END LARGE MODAL -->
 										</div>
 									</div>
 									<!-- LÍNEA 1 DE RECETAS-->
@@ -439,6 +321,71 @@
 					</div>
 				</div>
 			</div>
+			<!-- Large modal -->
+			<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+				  <div class="modal-content">
+
+					  <div class="modal-header">
+						  <h5 class="modal-title" id="myModalLabel">Ingredientes disponibles</h5>
+						  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+						  </button>
+					  </div>
+					  <div class="modal-body">
+						  <label for="fullname">Ingrediente</label>
+						  <input type="text" name="ingredientes" id="autocomplete-custom-append"
+							  class="form-control" placeholder="Nombre del ingrediente">
+						  <ul class="list"></ul>
+						  <div class="form-group row">
+							  <label class="col-form-label col-md-12 col-sm-12 "></label>
+							  <div class="col-md-6 col-sm-6 ">
+								  <label for="fullname">Cantidad</label>
+								  <input type="text" class="form-control" id="cantidad" name="cantidad"
+									  placeholder="Cantidad del ingrediente">
+							  </div>
+							  <div class="col-md-6 col-sm-6 ">
+								  <label for="fullname">Unidad de medida</label>
+								  <select id="unidad_medida" name="unidad_medida" class="form-control">
+									  <option value="">Elige...</option>
+									  <option value="Piezas">Pieza(s)</option>
+									  <option value="Kilogramo(s)">Kilogramo(s)</option>
+									  <option value="Gramos">Gramos</option>
+									  <option value="Litros">Litro(s)</option>
+									  <option value="Mililitros">Mililitros</option>
+								  </select>
+							  </div>
+						  </div>
+						  <div class="form-group row">
+							  <div class="col-md-12 col-sm-12 " align="right">
+								<button type="button" id="agregarin" class="btn btn-primary" onclick="actionCreate()">Agregar</button>
+							  </div>
+						  </div>
+						  <div class="row">
+							  <div class="col-sm-12">
+								  <h4>Lista de ingredientes disponibles</h4><hr>
+									<div class="card-box table-responsive">
+									  <table id="example" class="table table-striped table-bordered" style="width:100%">
+										  <thead>
+										  <tr>
+											  <th>Ingrediente</th>
+											  <th>Cantidad</th>
+											  <th>Unidad de medida</th>
+											  <th>Acciones</th>
+										  </tr>
+										  </thead>											
+									  </table>
+								  </div>
+							  </div>
+						  </div>
+					  </div>
+					<div class="modal-footer">
+					  <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="Cerrar()">Cerrar</button>
+					</div>
+
+				  </div>
+				</div>
+			  </div>					  
+			  <!-- END LARGE MODAL -->
 			<!-- /page content -->
 
 			<!-- footer content -->
@@ -468,9 +415,36 @@
 	<script src="../../gentelella-master/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
 	<!-- Custom Theme Scripts -->
 	<script src="../../gentelella-master/build/js/custom.min.js"></script>
-       <!--JS para la visualización de planeación-->
+	<!-- jQuery autocomplete -->
+	<script src="../../gentelella-master/vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+
+	<!-- DataTable -->
+	<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+	
+	<!--JS para la visualización de planeación-->
 	<script type="module" src="../js/miPlaneacion.js"></script>
 	
+	<script>
+		$(function () {
+		  $('#example').DataTable({
+			"paging": false,
+			"lengthChange": false,
+			"searching": true	,
+			"ordering": false,
+			"info": false,
+			"autoWidth": true,
+			"responsive": false,
+		  });
+		});
+	  </script>
+
+	<script>
+		$(document).ready(function(){
+			readnumber();
+		});
+	</script>
+
 	<!--JS para el crud-->
     <script src="../js/crud_ingredientesex.js"></script>
 
