@@ -51,7 +51,7 @@ async function actionCreate()
             tabla = $("#example").DataTable();
             let Botones = '';
               Botones += '<button type="button" id="editarIngrediente" class="btn btn-primary" onclick="cambiarBotonAgregar('+JSONRespuesta.id+')"><i class="fa fa-pencil"></i></button>';
-              Botones += '<button type="button" id="eliminarIngrediente" class="btn btn-danger"><i class="fa fa-trash"></i></button>';
+              Botones += '<button type="button" id="eliminarIngrediente" class="btn btn-danger data-toggle="modal" data-target="#modal_delete_ingrediente" onclick="actionDelete('+JSONRespuesta.id+')"><i class="fa fa-trash"></i></button>';
             tabla.row.add([nombre, cantidad, unidad_medida, Botones]).draw().node().id = "renglon_" + JSONRespuesta.id;
             readnumber()
           }else{
@@ -76,13 +76,12 @@ async function actionRead() {
     success: function( respuesta ) {
       JSONRespuesta = JSON.parse(respuesta);
       if(JSONRespuesta.estado==1){
-        //console.log(respuesta);
-        //alert(JSONRespuesta.mensaje);
         tabla = $("#example").DataTable();
+        tabla.clear().draw(); // Limpiar la tabla antes de agregar nuevos datos
         JSONRespuesta.entregas.forEach(ingredientes => {
           let Botones = '';
             Botones += '<button type="button" id="editarIngrediente" class="btn btn-primary" onclick="cambiarBotonAgregar('+ingredientes.idDisponibles+')"><i class="fa fa-pencil"></i></button>';
-            Botones += '<button type="button" id="eliminarIngrediente" class="btn btn-danger"><i class="fa fa-trash"></i></button>';
+            Botones += '<button type="button" id="eliminarIngrediente" class="btn btn-danger"data-toggle="modal" data-target="#modal_delete_ingrediente" onclick="actionDelete('+ingredientes.idDisponibles+')"><i class="fa fa-trash"></i></button>';
           tabla.row.add([ingredientes.nombre_ingrediente, ingredientes.cantidad, ingredientes.unidad_medida, Botones]).draw().node().id = "renglon_" + ingredientes.idDisponibles;
         });
       }
@@ -92,7 +91,65 @@ async function actionRead() {
 
 
 //----------------DELATE-----------------
+function actionDelete(id)
+{
+  idEliminar = id;
+}
 
+function confirmDelete(id)
+{
+  $.ajax({
+    method:"POST",
+    url: "../php/crud_ingredientesex.php",
+    data: {
+      id: idEliminar,
+      accion: "delete"
+    },
+    success: function( respuesta ) {
+      JSONRespuesta = JSON.parse(respuesta);
+      if(JSONRespuesta.estado == 1)
+      {
+        let tabla = $("#example").DataTable();
+        tabla.row("#renglon_"+idEliminar).remove().draw();
+        alert("Ingrediente eliminado exitosamente.");
+        $('#modal_delete_ingrediente').modal('hide'); // Cierra el modal
+        readnumber();
+      }
+      else
+      {
+        alert("Error al eliminar el ingrediente, intentelo nuevamente");
+      }
+    }
+  });
+}
+
+async function deleteAll()
+{
+  const email = await obtenerCorreo();
+  $.ajax({
+    method:"POST",
+    url: "../php/crud_ingredientesex.php",
+    data: {
+      correo: email,
+      accion: "delete_all"
+    },
+    success: function( respuesta ) {
+      JSONRespuesta = JSON.parse(respuesta);
+      if(JSONRespuesta.estado == 1)
+      {
+        alert("Ingredientes eliminados exitosamente.");
+        $('#modal_delete_all').modal('hide'); // Cierra el modal
+        let tabla = $("#example").DataTable();
+        tabla.clear().draw();
+        readnumber();
+      }
+      else
+      {
+        alert("Error al eliminar los ingredientes, intentelo nuevamente");
+      }
+    }
+  });
+}
 
 
 //----------------UPDATE-----------------
@@ -134,9 +191,58 @@ function cambiarBotonAgregar(id) {
   }
 }
 
-function actionUpdate(id) {
+async function actionUpdate(id) {
+  let nom_ingrediente = document.getElementById("autocomplete-custom-append").value;
+  let cantidad = document.getElementById("cantidad").value;
+  let unidad = document.getElementById("unidad_medida").value;
+  const email = await obtenerCorreo();
   console.log(id);
-  cambiarBotonAgregar();
+  console.log(nom_ingrediente);
+  console.log(cantidad);
+  console.log(unidad);
+  $.ajax({
+    method:"POST",
+      url: "../php/crud_ingredientesex.php",
+      data: {
+        iding: id,
+        nom: nom_ingrediente,
+        cant: cantidad,
+        unid: unidad,
+        correo: email,
+        accion:"update"
+      },
+      success: function( respuesta ) {
+        JSONRespuesta = JSON.parse(respuesta);
+        console.log(respuesta);
+        if(JSONRespuesta.estado==1){
+          let tabla = $("#example").DataTable();
+          let Botones = '';
+            Botones += '<button type="button" id="editarIngrediente" class="btn btn-primary" onclick="cambiarBotonAgregar('+id+')"><i class="fa fa-pencil"></i></button>';
+            Botones += '<button type="button" id="eliminarIngrediente" class="btn btn-danger" data-toggle="modal" data-target="#modal_delete_ingrediente" onclick="actionDelete('+id+')"><i class="fa fa-trash"></i></button>';
+          ////////////////////////////////////////////////
+          var temp = tabla.row("#renglon_"+id).data();
+          temp[0] = nom_ingrediente;
+          temp[1] = cantidad;
+          temp[2] = unidad;
+          temp[3] = Botones;
+          tabla.row("#renglon_"+id).data(temp).draw();
+          /////////////////////////////////////////////////
+          alert("Ingrediente actualizado correctamente");
+          limpiarpagina();
+          cambiarBotonAgregar();
+        }else{
+          alert("Error al actualizar el ingrediente, intentelo nuevamente");
+      }
+      }
+  })
+  fetch("../php/ingredientes.php") //Pedimos en la base de datos los ingredientes existentes
+    .then((response) => response.json())
+    .then((data) => {
+        let ingre = data; //Guardamos los resultados de php
+        let nombres = ingre.map((obj) => obj.nombre); //Sacamos el nombre de los resultados
+        $("#autocomplete-custom-append").autocomplete({ lookup: nombres }); //Autocompletamos el campo
+    })
+    .catch((error) => console.error(error));
 }
 
 
@@ -168,18 +274,16 @@ async function readnumber()
 }
 
 //Cerar el formulario
-function Cerrar()
-{
+function Cerrar() {
   var btnAgregarIn = document.getElementById("agregarin");
 
-  if (btnAgregarIn.innerText === "Actulizar")
-  {
+  if (btnAgregarIn.innerText === "Actualizar") {
     btnAgregarIn.innerText = "Agregar";
     btnAgregarIn.onclick = actionCreate;
   }
   limpiarpagina();
-  cambiarBotonAgregar();
 }
+
 
 
 //Limpiar las variables del formulario

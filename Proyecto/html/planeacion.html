@@ -358,6 +358,7 @@
 						  <div class="form-group row">
 							  <div class="col-md-12 col-sm-12 " align="right">
 								<button type="button" id="agregarin" class="btn btn-primary" onclick="actionCreate()">Agregar</button>
+								<button type="button" id="deleteall" class="btn btn-danger" data-toggle="modal" data-target="#modal_delete_all" onclick="">Eliminar ingredientes</button>
 							  </div>
 						  </div>
 						  <div class="row">
@@ -384,8 +385,48 @@
 
 				  </div>
 				</div>
-			  </div>					  
-			  <!-- END LARGE MODAL -->
+			</div>					  
+			<!-- END LARGE MODAL -->
+			<!-----------------------------        Eliminar  un ingrediente ------------------------------->
+			<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="modal_delete_ingrediente">
+				<div class="modal-dialog modal-sm">
+				  <div class="modal-content">
+					<div class="modal-header">
+					  <h4 class="modal-title" id="myModalLabel2">Eliminar ingrediente</h4>
+					  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+					  </button>
+					</div>
+					<div class="modal-body">
+					  <h5>¿Esta seguro de eliminar este ingrediente?</h5>
+					</div>
+					<div class="modal-footer">
+					  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+					  <button type="button" class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
+					</div>
+				  </div>
+				</div>
+			</div>
+			<!-----------------------------        Eliminar todos los ingrediente ------------------------------->
+			<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="modal_delete_all">
+				<div class="modal-dialog modal-lg">
+				  <div class="modal-content">
+
+					<div class="modal-header">
+					  <h3 class="modal-title" id="myModalLabel2">Eliminar todos los ingredientes ingrediente</h3>
+					  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+					  </button>
+					</div>
+					<div class="modal-body">
+					  <h5>¿Esta seguro de eliminar todos los ingredientes existentes?</h5>
+					</div>
+					<div class="modal-footer">
+					  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+					  <button type="button" class="btn btn-danger" onclick="deleteAll()">Eliminar</button>
+					</div>
+
+				  </div>
+				</div>
+			</div> 
 			<!-- /page content -->
 
 			<!-- footer content -->
