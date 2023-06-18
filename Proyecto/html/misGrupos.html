@@ -114,8 +114,8 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3 col-sm-3 " align="right">
-                                            <a href="createGrupo.html"><button type="button"
-                                                    class="btn btn-success">Nuevo grupo</button></a>
+                                            <button type="button" class="btn btn-success" data-toggle="modal"
+                                                data-target="#modal_nuevo_grupo" align="right">Nuevo Grupo
                                         </div>
                                     </div>
                                     <!-- LÍNEA 1 DE GRUPOS-->
@@ -188,23 +188,22 @@
                                                                 <span>Integrantes</span>
                                                             </li>
                                                         </ul>
-                                                        
+
                                                     </div>
                                                     <h3 class="name">1234</h3>
+                                                    <p style="margin-top:-10%">Codigo</p>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
-
-
-
 
                                 </div>
                             </div>
                         </div>
 
-                        <!-- PARTE DERECHA O FILTROS-->
-                        <!-- <div class="col-md-4 ">
+                        <!-- PARTE DERECHA O FILTROS
+                        <div class="col-md-4 ">
 
                         <INGREDIENTES NECESARIOS>
                         <div class="x_panel">
@@ -386,22 +385,157 @@
                                   
                                 </form>
                             </div>
-                        </div>
-                    </div> -->
+                        </div> -->
                     </div>
                 </div>
             </div>
-            <!-- /page content -->
+            <!-- Large modal -->
+            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true"
+                id="modal_nuevo_grupo">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
 
-            <!-- footer content -->
-            <footer>
-                <div class="pull-right">
-                    © 2023 Desarrollado por METAS
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="myModalLabel">Crear Nuevo Grupo</h5>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="fullname">Nombre</label>
+                            <input type="text" id="nombreGrupo" name="grupos" class="form-control"
+                                placeholder="Nombre del grupo">
+                            <ul class="list"></ul>
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-12 col-sm-12 "></label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <label for="fullname">Descripcion</label>
+                                    <input type="text" class="form-control" id="descripcion"
+                                        placeholder="Descripcion del grupo">
+                                </div>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <div class="col-md-6 col-sm-6 ">
+                                        <label>Codigo</label>
+
+                                        <h3 id="codigo">12433429</h3>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 ">
+                                    <div class="col-md-6 col-sm-6 ">
+                                        <label>Imagen de perfil del grupo</label>
+                                        <input type="file" id="gimg">
+                                    </div>
+                                </div>
+                                <!-- Previews -->
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="form-group row" id="previewGrupo"
+                                        style="display: flex; justify-content: center;">
+                                        <!-- Tarjeta para grupo propio -->
+                                        <div class="col-md-3 widget widget_tally_box">
+                                            <div class="x_panel fixed_height_390">
+                                                <div class="x_content">
+                                                    <div class="flex">
+                                                        <ul class="flex list-inline widget_profile_box">
+                                                            <li style="margin-left: 6px;">
+                                                                <a href="#"><i class="fa fa-eye"></i></a>
+                                                            </li>
+                                                            <li>
+                                                                <img id="profileImage" src="../img/1.png" alt="..."
+                                                                    class="img-circle profile_img">
+                                                            </li>
+                                                            <li>
+                                                                <a href="#"><i class="fa fa-pencil"></i></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <h3 class="name" id="nombreGrupoPreview"
+                                                        style="word-wrap: break-word;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+                                                        Nombre</h3>
+                                                    <div class="flex">
+                                                        <ul class="list-inline count2"
+                                                            style="display: flex; justify-content: center;">
+                                                            <li>
+                                                                <h3>####</h3>
+                                                                <span>Integrantes</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <h3 class="name" id="codigoPreview">1234</h3>
+                                                    <p style="margin-top:-10%">Codigo</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Tarjeta para grupo integrante -->
+                                        <div class="col-md-3 widget widget_tally_box">
+                                            <div class="x_panel fixed_height_390">
+                                                <div class="x_content">
+
+                                                    <div class="flex">
+                                                        <ul class="flex list-inline widget_profile_box">
+                                                            <li style="margin-left: 6px;">
+                                                                <a href="#"><i class="fa fa-eye"></i></a>
+                                                            </li>
+                                                            <li>
+                                                                <img id="profileImageVisitor" src="../img/1.png"
+                                                                    alt="..." class="img-circle profile_img">
+                                                            </li>
+                                                            <li>
+                                                                <a href="#"><i class="fa fa-share-alt"></i></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <h3 class="name" id="nombreGrupoPreviewVisitor"
+                                                        style="word-wrap: break-word;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+                                                        Nombre</h3>
+                                                    <span style="display: flex;
+                                                    justify-content: center; margin-top:-20px"
+                                                        id="correoVisitor"></span>
+                                                    <div class="flex">
+                                                        <ul class="list-inline count2" style="display: flex;
+                                                        justify-content: center;">
+                                                            <li>
+                                                                <h3>####</h3>
+                                                                <span>Integrantes</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <p id="descripcionGrupoPreview"
+                                                        style="overflow: hidden; white-space: break;">
+                                                        Una pequeña descripcion del grupo
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="agregar" class="btn btn-primary"
+                                onclick="actionCreate()">Crear</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                onclick="Cerrar()">Cerrar</button>
+                        </div>
+
+                    </div>
                 </div>
-                <div class="clearfix"></div>
-            </footer>
-            <!-- /footer content -->
+            </div>
+            <!-- END LARGE MODAL -->
         </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+            <div class="pull-right">
+                © 2023 Desarrollado por METAS
+            </div>
+            <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+    </div>
     </div>
     <iframe src="../php/session.php" style="display: none;"></iframe>
     <!-- jQuery -->
@@ -421,8 +555,9 @@
     <!-- Custom Theme Scripts -->
     <script src="../../gentelella-master/build/js/custom.min.js"></script>
     <!--Para saber si existe la sesion o el correo-->
-    <script type="module"  src="../js/grupos.js"></script>
-    <script type="module"  src="../js/misGrupos.js"></script>
+    <script type="module" src="../js/grupos.js"></script>
+    <script type="module" src="../js/misGrupos.js"></script>
+    <script src="../js/crudGrupos.js"></script>
     <script>
         //Existe la session iniciada, sino redirigir a que inicie sesion
         async function session() {

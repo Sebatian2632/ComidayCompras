@@ -118,7 +118,7 @@ async function llenarGrupos() {
       spanEmail.style.display = "flex";
       spanEmail.style.justifyContent = "center";
       spanEmail.style.marginTop = "-20px";
-      spanEmail.textContent = "alguien@example.com";
+      spanEmail.textContent = "alguien@example.com"; // Cambiar para el correo del dueño
   
       const divFlex2 = document.createElement("div");
       divFlex2.className = "flex";
