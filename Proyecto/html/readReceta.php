@@ -249,8 +249,14 @@ mysqli_close($conn);
 $(document).ready(function() {
   // Función para actualizar la visualización de las estrellas
   function updateStars(rating) {
-    $('.rating-star').removeClass('active');
-    $('.rating-star:lt(' + rating + ')').addClass('active');
+    $('.rating-star').each(function() {
+      var starRating = parseInt($(this).data('rating'));
+      if (starRating <= rating) {
+        $(this).html('<span class="glyphicon glyphicon-star" aria-hidden="true"></span>');
+      } else {
+        $(this).html('<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>');
+      }
+    });
   }
 
   // Manejar el clic en una estrella
@@ -275,16 +281,13 @@ $(document).ready(function() {
     }
   });
 
-  // Obtener la calificación inicial al cargar la página
+  // Obtener la calificación almacenada inicialmente
   $.ajax({
     url: 'obtener_calificacion.php', // Ajusta la URL a tu archivo PHP que obtiene la calificación
     method: 'GET',
     success: function(response) {
       // Actualizar la visualización de las estrellas con la calificación inicial
-      var initialRating = parseInt(response);
-      if (!isNaN(initialRating)) {
-        updateStars(initialRating);
-      }
+      updateStars(parseInt(response));
     },
     error: function() {
       alert('Error en la solicitud AJAX.');
@@ -292,6 +295,7 @@ $(document).ready(function() {
   });
 });
 </script>
+
 
 
 							</div>
