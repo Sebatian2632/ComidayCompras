@@ -14,27 +14,13 @@ if (isset($_POST["idReceta"])) {
 	echo "No se recibió el ID de la receta.";
   }
   
-// Obtener los valores del formulario
-$nombreReceta = $_POST["nombrereceta"];
-$duracion = $_POST["rduracion"];
-$porciones = $_POST["rporcion"];
-$tiempoComida = $_POST["rtiempo"];
-
-// Actualizar los valores en la base de datos
-$sql = "UPDATE recetas SET nombre = '$nombreReceta', duracion = '$duracion', porciones = '$porciones', tiempo_comida = '$tiempoComida' WHERE idRecetas = $idReceta";
-
-if (mysqli_query($conn, $sql)) {
-    echo "Los valores se actualizaron correctamente en la base de datos.";
-} else {
-    echo "Error al actualizar los valores en la base de datos: " . mysqli_error($conn);
-}
-
 
 // Obtener los valores actuales de la base de datos
 $resultadonombre = mysqli_query($conn, "SELECT nombre FROM recetas WHERE idRecetas = $idReceta");
 $resultadoduracion = mysqli_query($conn, "SELECT duracion FROM recetas WHERE idRecetas = $idReceta");
 $resultadoporcion = mysqli_query($conn, "SELECT porciones FROM recetas WHERE idRecetas = $idReceta");
 $resultadotc = mysqli_query($conn, "SELECT tiempo_comida FROM recetas WHERE idRecetas = $idReceta");
+$eliminareceta = mysqli_query($conn, "DELETE FROM recetas WHERE idRecetas = $idReceta");
 
 
 $nombre = mysqli_fetch_assoc($resultadonombre)["nombre"];
@@ -49,7 +35,8 @@ mysqli_close($conn);
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<!-- Meta, title, CSS, favicons, etc. -->
 	<meta charset="utf-8">
@@ -64,8 +51,8 @@ mysqli_close($conn);
 	<link href="../../gentelella-master/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 	<!-- NProgress -->
 	<link href="../../gentelella-master/vendors/nprogress/nprogress.css" rel="stylesheet">
-    <!-- Dropzone.js -->
-    <link href="../../gentelella-master/vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
+	<!-- Dropzone.js -->
+	<link href="../../gentelella-master/vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
 	<!-- iCheck -->
 	<link href="../../gentelella-master/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
 	<!-- bootstrap-wysiwyg -->
@@ -81,7 +68,6 @@ mysqli_close($conn);
 
 	<!-- Custom Theme Style -->
 	<link href="../../gentelella-master/build/css/custom.min.css" rel="stylesheet">
-		
 </head>
 
 <body class="nav-md">
@@ -98,7 +84,8 @@ mysqli_close($conn);
 					<!-- menu profile quick info -->
 					<div class="profile clearfix">
 						<div class="profile_pic">
-							<img src="../../gentelella-master/production/images/img.jpg" alt="..." class="img-circle profile_img">
+							<img src="../../gentelella-master/production/images/img.jpg" alt="..."
+								class="img-circle profile_img">
 						</div>
 						<div class="profile_info">
 							<span>Bienvenido</span>
@@ -139,8 +126,8 @@ mysqli_close($conn);
 					<nav class="nav navbar-nav">
 						<ul class=" navbar-right">
 							<li class="nav-item dropdown open" style="padding-left: 15px;">
-								<button type="button" class="btn btn-primary btn-sm">Log out</button>
-							</li>
+								<button type="button" class="btn btn-primary btn-sm" id="logout">Log out</button>
+							</li> 
 						</ul>
 					</nav>
 				</div>
@@ -161,34 +148,49 @@ mysqli_close($conn);
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
-									<form id="demo-form" data-parsley-validate >                                        
-                                        <div class="form-group row">
+									<form id="demo-form" data-parsley-validate>
+										<div class="form-group row">
 											<label class="col-form-label col-md-12 col-sm-12 "></label>
 											<div class="col-md-10 col-sm-10 ">
-                                                <label for="fullname">Nombre</label>
-												<input type="text" id="nombrereceta" class="form-control" placeholder="<?php echo $nombre; ?>">
-                                                                                                                                             
+												<label for="fullname">Nombre de la receta</label>
+												<input type="text" class="form-control" placeholder="<?php echo $nombre; ?>" id="nombrereceta">
+ 
 											</div>
-                                            <div class="col-md-2 col-sm-2 " align="center">
-												<label for="fullname">¿Ya no te interesa?</label>
-												<button type="button" class="btn btn-danger" onclick="window.location.href='\\ComidayCompras/Proyecto/php/eliminar_receta.php';">Eliminar receta</button>
-											</div>
+											<div class="col-md-2 col-sm-2" align="center">
+    <label for="fullname">¿Ya no te interesa?</label>
+    <button type="button" class="btn btn-danger" onclick="confirmarEliminacion()">Eliminar receta</button>
+</div>
+
+<script>
+    function confirmarEliminacion() {
+        var confirmacion = confirm("¿Estás seguro de que deseas eliminar el registro?");
+        if (confirmacion) {
+            // Redireccionar al archivo PHP con la variable recuperada
+            var idReceta = <?php echo $idReceta; ?>;
+            window.location.href = "\\ComidayCompras/Proyecto/php/eliminar_receta.php?idReceta=" + idReceta;
+        }
+    }
+</script>
+
+
 										</div>
 
-                                        <div class="form-group row">
+										<div class="form-group row">
 											<label class="col-form-label col-md-12 col-sm-12 "></label>
 											<div class="col-md-6 col-sm-6 ">
-                                                <label for="fullname">Ingrediente</label>
+												<label for="fullname">Ingrediente</label>
 												<input type="text" name="ingredientes" id="autocomplete-custom-append"
 													class="form-control" placeholder="Nombre del ingrediente">
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-md-12 col-sm-12 "></label>
-                                                    <div class="col-md-6 col-sm-6 ">
-                                                        <label for="fullname">Cantidad</label>
-                                                        <input type="text" id="cantidad" class="form-control" placeholder="Cantidad del ingrediente">
-                                                    </div>
-                                                    <div class="col-md-6 col-sm-6 ">
-													<label for="fullname">Unidad de medida</label>
+												<ul class="list"></ul>
+												<div class="form-group row">
+													<label class="col-form-label col-md-12 col-sm-12 "></label>
+													<div class="col-md-6 col-sm-6 ">
+														<label for="fullname">Cantidad</label>
+														<input type="text" class="form-control" id="cantidad"
+															placeholder="Cantidad del ingrediente">
+													</div>
+													<div class="col-md-6 col-sm-6 ">
+														<label for="fullname">Unidad de medida</label>
 														<select id="unidad_medida" class="form-control">
 															<option value="">Elige...</option>
 															<option value="Piezas">Pieza(s)</option>
@@ -200,17 +202,18 @@ mysqli_close($conn);
 															<option value="Cucharada(s)">Cucharada(s)</option>
 															<option value="Cucharadita(s)">Cucharadita(s)</option>
 														</select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <div class="col-md-6 col-sm-6 ">
-                                                        
-                                                    </div>
-                                                    <div class="col-md-6 col-sm-6 " align="right">
-                                                        <button type="button" class="btn btn-primary">Agregar</button>
-                                                    </div>                                                      
-                                                </div>
-                                                                                             
+													</div>
+												</div>
+												<div class="form-group row">
+													<div class="col-md-6 col-sm-6 ">
+
+													</div>
+													<div class="col-md-6 col-sm-6 " align="right">
+														<button type="button" id="agregarin"
+															class="btn btn-primary">Agregar</button>
+													</div>
+												</div>
+
 											</div>
 											<div class="col-md-6 col-sm-6 ">
 												<label for="fullname">Lista de ingredientes</label>
@@ -223,9 +226,9 @@ mysqli_close($conn);
 											</div>
 										</div>
 
-                                        
 
-                                        <div class="form-group row">
+
+										<div class="form-group row">
 											<div class="col-md-6 col-sm-6 ">
 												<div class="form-group row">
 													<div class="col-md-4 col-sm-4 ">
@@ -263,68 +266,72 @@ mysqli_close($conn);
 											</div>
 										</div>
 
-                                        <div class="form-group row">
+										<div class="form-group row">
 											<div class="col-md-6 col-sm-6 ">
-                                                <label class="col-form-label col-md-3 col-sm-3 ">Duración (min)</label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <input type="text" id="rduracion" class="form-control" placeholder="<?php echo $duracion; ?>">
-                                                </div>                               
+												<label class="col-form-label col-md-3 col-sm-3 ">Duración (min)</label>
+												<div class="col-md-9 col-sm-9 ">
+													<input type="text" id="rduracion" class="form-control"
+														placeholder="<?php echo $duracion; ?>">
+												</div>
 											</div>
-                                            
-                                            <div class="col-md-6 col-sm-6 ">
-                                                <label class="col-form-label col-md-3 col-sm-3 ">Porciones</label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <input type="text" id="rporcion" class="form-control" placeholder="<?php echo $porciones; ?>">
-                                                </div>                               
+
+											<div class="col-md-6 col-sm-6 ">
+												<label class="col-form-label col-md-3 col-sm-3 ">Porciones</label>
+												<div class="col-md-9 col-sm-9 ">
+													<input type="text" id="rporcion" class="form-control"
+														placeholder="<?php echo $porciones; ?>">
+												</div>
 											</div>
 										</div>
 
-                                        <div class="form-group row">
+										<div class="form-group row">
 											<div class="col-md-6 col-sm-6 ">
-                                                <label class="col-form-label col-md-3 col-sm-3 ">Tiempo de comida</label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <select id="rtiempo" name="tiempo_comida" class="form-control">
-                                                        <option value="">Elige...</option>
-                                                        <option value="Desayuno">Desayuno</option>
-                                                        <option value="Almuerzo">Almuerzo</option>
-                                                        <option value="Comida" selected>Comida</option>
-                                                        <option value="Merienda">Merienda</option>
-                                                        <option value="Cena">Cena</option>
-                                                    </select>
-                                                </div>                               
+												<label class="col-form-label col-md-3 col-sm-3 ">Tiempo de
+													comida</label>
+												<div class="col-md-9 col-sm-9 ">
+													<select id="rtiempo" class="form-control">
+														<option value="">Elige...</option>
+														<option value="Desayuno">Desayuno</option>
+														<option value="Almuerzo">Almuerzo</option>
+														<option value="Comida">Comida</option>
+														<option value="Merienda">Merienda</option>
+														<option value="Cena">Cena</option>
+													</select>
+												</div>
 											</div>
-                                            
-                                            <div class="col-md-6 col-sm-6 ">
-                                                <label class="col-form-label col-md-3 col-sm-3 ">Tipo de receta</label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <select id="rtipo" name="tipo_comida" class="form-control">
-                                                        <option value="">Elige...</option>
-                                                        <option value="Entrada">Entrada</option>
-                                                        <option value="Principal">Principal</option>
-                                                        <option value="Botanas">Botanas</option>
-                                                        <option value="Bebidas">Bebidas</option>
-                                                        <option value="Sopas y ensaladas">Sopas y ensaladas</option>
-                                                        <option value="Postres" selected>Postres</option>
-                                                        <option value="Aperitivos">Aperitivos</option>
-                                                    </select>  
-                                                </div>                               
+
+											<div class="col-md-6 col-sm-6 ">
+												<label class="col-form-label col-md-3 col-sm-3 ">Tipo de receta</label>
+												<div class="col-md-9 col-sm-9 ">
+													<select id="rtipo" class="form-control">
+														<option value="">Elige...</option>
+														<option value="Entrada">Entrada</option>
+														<option value="Principal">Principal</option>
+														<option value="Botanas">Botanas</option>
+														<option value="Bebidas">Bebidas</option>
+														<option value="Sopas y ensaladas">Sopas y ensaladas</option>
+														<option value="Postres">Postres</option>
+														<option value="Aperitivos">Aperitivos</option>
+													</select>
+												</div>
 											</div>
 										</div>
-                                        
-                                        <div class="form-group row"></div>
-                                        <div class="form-group row">
+
+										<div class="form-group row"></div>
+										<div class="form-group row">
 											<div class="col-md-6 col-sm-6 ">
-                                                <label class="col-form-label col-md-3 col-sm-3 ">Producto final</label>
-                                                <div class="col-md-9 col-sm-9 ">
-                                                    <input type="file" id="rimg">
-                                                </div>                               
+												<label class="col-form-label col-md-3 col-sm-3 ">Producto final</label>
+												<div class="col-md-9 col-sm-9 ">
+													<input type="file" id="rimg">
+												</div>
 											</div>
-                                            
-                                            <div class="col-md-6 col-sm-6 ">
-                                                <label class="col-form-label col-md-3 col-sm-3 "></label>
-                                                <div class="col-md-9 col-sm-9 "align="right">
-                                                    <button type="button" class="btn btn-success" id="guardarreceta">Actualizar receta</button>                                                    
-                                                </div>                               
+
+											<div class="col-md-6 col-sm-6 ">
+												<label class="col-form-label col-md-3 col-sm-3 "></label>
+												<div class="col-md-9 col-sm-9 " align="right">
+													<button type="button" class="btn btn-success"
+														id="guardarreceta" >Guardar receta</button>
+												</div>
 											</div>
 										</div>
 									</form>
@@ -346,8 +353,8 @@ mysqli_close($conn);
 			<!-- /footer content -->
 		</div>
 	</div>
-
 	<iframe src="../php/session.php" style="display: none;"></iframe>
+	
 	<!-- jQuery -->
 	<script src="../../gentelella-master/vendors/jquery/dist/jquery.min.js"></script>
 	<!-- Bootstrap -->
@@ -356,8 +363,8 @@ mysqli_close($conn);
 	<script src="../../gentelella-master/vendors/fastclick/lib/fastclick.js"></script>
 	<!-- NProgress -->
 	<script src="../../gentelella-master/vendors/nprogress/nprogress.js"></script>
-    <!-- Dropzone.js -->
-    <script src="../../gentelella-master/vendors/dropzone/dist/min/dropzone.min.js"></script>
+	<!-- Dropzone.js -->
+	<script src="../../gentelella-master/vendors/dropzone/dist/min/dropzone.min.js"></script>
 	<!-- bootstrap-progressbar -->
 	<script src="../../gentelella-master/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
 	<!-- iCheck -->
@@ -406,5 +413,7 @@ mysqli_close($conn);
 		}
 		session();
 		</script>
+		
+</body>
 
-</body></html>
+</html>
