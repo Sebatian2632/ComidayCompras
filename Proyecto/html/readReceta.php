@@ -23,6 +23,10 @@ $resultadopasos = mysqli_query($conn, "SELECT paso, nopaso FROM pasos WHERE Rece
 $resultadocantidad = mysqli_query($conn, "SELECT cantidad FROM recetas_has_ingredientes WHERE Recetas_idRecetas = $idReceta");
 $resultadounidad = mysqli_query($conn, "SELECT unidad_medida FROM recetas_has_ingredientes WHERE Recetas_idRecetas = $idReceta");
 
+//Calificación
+$resultadocalificacion = mysqli_query($conn, "SELECT calificacion FROM recetas WHERE idRecetas = $idReceta");
+$row = mysqli_fetch_assoc($resultadocalificacion);
+$calificacion = $row['calificacion'];
 
 //IMAGEN
 $qimagen = "SELECT imagen FROM recetas WHERE idRecetas = $idReceta";
@@ -229,15 +233,67 @@ mysqli_close($conn);
 
 
 										?>
-									<div class="caption" align="center">
-										<p>Calificación:</p>
-										<!--Agregar el onclick en <a>, NO en span-->
-										<a href="#"><span class="glyphicon glyphicon-star" aria-hidden="true" type="button"></span></a>
-										<a href="#"><span class="glyphicon glyphicon-star" aria-hidden="true" type="button"></span></a>
-										<a href="#"><span class="glyphicon glyphicon-star" aria-hidden="true" type="button"></span></a>
-										<a href="#"><span class="glyphicon glyphicon-star" aria-hidden="true" type="button"></span></a>
-										<a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true" type="button"></span></a>
-									</div>
+									
+									<div class="caption" align="center" style="width: auto">
+  <p>Calificación:</p>
+  <!-- Agregar el onclick en <a>, NO en span -->
+  <a href="#" class="rating-star" data-rating="1"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
+  <a href="#" class="rating-star" data-rating="2"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
+  <a href="#" class="rating-star" data-rating="3"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
+  <a href="#" class="rating-star" data-rating="4"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
+  <a href="#" class="rating-star" data-rating="5"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  // Función para actualizar la visualización de las estrellas
+  function updateStars(rating) {
+    $('.rating-star').removeClass('active');
+    $('.rating-star:lt(' + rating + ')').addClass('active');
+  }
+
+  // Manejar el clic en una estrella
+  $('.rating-star').click(function(e) {
+    e.preventDefault();
+    var rating = $(this).data('rating');
+    
+    if (confirm("¿Estás seguro de asignar esta calificación?")) {
+      // Enviar la calificación al servidor mediante una solicitud AJAX
+      $.ajax({
+        url: 'guardar_calificacion.php', // Ajusta la URL a tu archivo PHP que guarda la calificación
+        method: 'POST',
+        data: { rating: rating },
+        success: function(response) {
+          // Actualizar la visualización de las estrellas si la calificación se guarda correctamente
+          updateStars(parseInt(response));
+        },
+        error: function() {
+          alert('Error en la solicitud AJAX.');
+        }
+      });
+    }
+  });
+
+  // Obtener la calificación inicial al cargar la página
+  $.ajax({
+    url: 'obtener_calificacion.php', // Ajusta la URL a tu archivo PHP que obtiene la calificación
+    method: 'GET',
+    success: function(response) {
+      // Actualizar la visualización de las estrellas con la calificación inicial
+      var initialRating = parseInt(response);
+      if (!isNaN(initialRating)) {
+        updateStars(initialRating);
+      }
+    },
+    error: function() {
+      alert('Error en la solicitud AJAX.');
+    }
+  });
+});
+</script>
+
+
 							</div>
 						</div>
 						<div class="form-group row">
