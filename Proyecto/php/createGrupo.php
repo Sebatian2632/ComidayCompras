@@ -41,8 +41,11 @@ try {
     if ($stmt->rowCount() > 0) {
         echo 'El grupo se ha creado';
         $idGrupo = $conn->lastInsertId();
-        $queryMain = "INSERT INTO usuario_has_grupo (correo_usuario, rol) VALUES (:correo, 'admin')";
+        echo $idGrupo;
+        echo $correo;
+        $queryMain = "INSERT INTO usuario_has_grupo (id_grupo, correo_usuario, rol) VALUES (:idgrupo, :correo, 'admin')";
         $stmt2 = $conn->prepare($queryMain);
+        $stmt2->bindValue(':idgrupo', $idGrupo);
         $stmt2->bindValue(':correo', $correo);
         $stmt2->execute();
     } else {

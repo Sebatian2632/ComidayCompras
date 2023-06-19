@@ -116,8 +116,9 @@ async function crearGrupo(nombre, codigo, descripcion, blob) {
         method: "POST",
         body: formData
     })
-        .then((response) => {
+        .then(async (response) => {
             console.log("Se añadió el grupo"); // Mostrar en la consola que se añadió
+            await final();
             // Realizar las acciones adicionales después de añadir el grupo
         })
         .catch((error) => {
@@ -211,4 +212,9 @@ async function obtenerCorreo() {
     const data = await response.json();
     const user = data.correo;
     return user;
+}
+
+async function final() {
+    alert("Se guardó la receta");
+    window.location.href = "./misGrupos.html";
 }

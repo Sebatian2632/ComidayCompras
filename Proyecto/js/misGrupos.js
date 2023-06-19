@@ -36,40 +36,38 @@ async function obtenerCorreo() {
 }
 //Se obtienen todos los datos del grupo
 async function obtenerGrupo() {
-    idList.forEach((id_grupo) => {
-        fetch("../php/insertarDB.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body:
-                'sql=SELECT idgrupo, nombre, clave, descripcion, planeacion_idplaneacion FROM grupo WHERE idgrupo="' +
-                id_grupo +
-                '";'
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                // console.log(data);
-                //nuevamente los nombres vienen en data=[obj{nombre}, obj{nombne}]
-                // console.log(data);
-                data.forEach((obj) => {
-                    // console.log(data);
-                    const grupo = new Grupo();
-                    grupo.setName(obj.nombre);
-                    grupo.setId(obj.idgrupo);
-                    grupo.setCode(obj.clave);
-                    grupo.setDescription(obj.descripcion);
-                    grupo.setPlaneation(obj.pleaneacion_idpleaneacion);
-                    // Agregar la instancia de Receta al array de recetas
-                    Grupos.push(grupo);
-                    llenarGrupos();
-                });
-            })
-            .catch((error) => console.log(error));
-    });
+    try {
+        for (const id_grupo of idList) {
+            const response = await fetch("../php/insertarDB.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: 'sql=SELECT idgrupo, nombre, clave, descripcion, planeacion_idplaneacion FROM grupo WHERE idgrupo="' +
+                    id_grupo +
+                    '";'
+            });
+            const data = await response.json();
+            data.forEach((obj) => {
+                const grupo = new Grupo();
+                grupo.setName(obj.nombre);
+                grupo.setId(obj.idgrupo);
+                grupo.setCode(obj.clave);
+                grupo.setDescription(obj.descripcion);
+                grupo.setPlaneation(obj.pleaneacion_idpleaneacion);
+                Grupos.push(grupo);
+            });
+        }
+        console.log(Grupos);
+        await llenarGrupos();
+    } catch (error) {
+        console.log(error);
+    }
 }
+
 // Para generar las tarjetas
 async function llenarGrupos() {
+    console.log(Grupos);
     const contenedorGrupos = document.getElementById("contenedor-grupos");
     for (const grupo of Grupos) {
         grupo.setImage(await obtenerImg(grupo.getId()));
@@ -155,7 +153,7 @@ async function llenarGrupos() {
 
         const liIntegrantes = document.createElement("li");
         const h3Integrantes = document.createElement("h3");
-        h3Integrantes.textContent = await obtenerIntegrantes();
+        h3Integrantes.textContent = await obtenerIntegrantes(grupo.getId());
         const spanIntegrantes = document.createElement("span");
         spanIntegrantes.textContent = "Integrantes";
 
@@ -211,34 +209,28 @@ async function llenarGrupos() {
 }
 
 //Con el id del grupo se obtiene la cantidad de usuarios que estan en el
-async function obtenerIntegrantes() {
-    const promesas = idList.map((id_grupo) => {
-        return fetch("../php/insertarDB.php", {
+async function obtenerIntegrantes(id) {
+    try {
+        const response = await fetch("../php/insertarDB.php", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            body:
-                'sql=SELECT COUNT(*) AS total_usuarios FROM usuario_has_grupo WHERE id_grupo="' +
-                id_grupo +
+            body: 'sql=SELECT COUNT(*) AS total_usuarios FROM usuario_has_grupo WHERE id_grupo="' +
+                id +
                 '";'
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                const totalUsuarios = data[0].total_usuarios;
-                // console.log(
-                //     "Grupo " + id_grupo + ": " + totalUsuarios + " usuarios"
-                // );
-                return totalUsuarios;
-            })
-            .catch((error) => {
-                console.log(error);
-                return 0; // Maneja el error devolviendo un valor predeterminado
-            });
-    });
-
-    return Promise.all(promesas);
+        });
+        const data = await response.json();
+        const totalUsuarios = data[0].total_usuarios;
+        console.log("Grupo " + id + ": " + totalUsuarios + " usuarios");
+        return totalUsuarios;
+    } catch (error) {
+        console.log(error);
+        return 0; // Maneja el error devolviendo un valor predeterminado
+    }
 }
+
+
 async function obtenerImg(id) {
     try {
         const response = await fetch("../php/misRecetas.php", {
