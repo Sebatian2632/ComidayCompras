@@ -1,7 +1,7 @@
 var btnAgregar = document.getElementById("agregar");
 
     if (btnAgregar.innerText === "Crear") {
-        btnAgregar.setAttribute("onclick", "actionCreate()");
+        btnAgregar.setAttribute("onclick", "actionCreatee()");
     }
     else{
         btnAgregar.innerText = "Actualizar";
@@ -85,7 +85,7 @@ codigoElemento.textContent = generarCodigoAleatorio();
 codigoElementoPreview.textContent = codigoElemento.textContent;
 
 //----------------CREATE----------------- Funciona
-async function actionCreate() {
+async function actionCreatee() {
     // Recuperamos los datos del formulario
     let nombre = document.getElementById("nombreGrupo").value;
     let descripcion = document.getElementById("descripcion").value;
@@ -143,7 +143,7 @@ let grupoCodigo;
 let grupoDescripcion;
 let grupoPlaneacion;
 
-async function actionUpdate(id) {
+async function actionUpdatee(id) {
     var btnAgregar = document.getElementById("agregar");
     if (btnAgregar.innerText === "Crear") {
         btnAgregar.innerText = "Actualizar";

@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "recetasDB";
+$dbname = "recetasdb";
 
 // Conexión a la base de datos
 $conn = mysqli_connect($servername, $username, $password, $dbname);
@@ -13,20 +13,25 @@ if (isset($_POST["idReceta"])) {
   } else {
 	echo "No se recibió el ID de la receta.";
   }
+  session_start();
   
+  $correo = isset($_SESSION['correo']) ? $_SESSION['correo'] : null;
 
 // Obtener los valores actuales de la base de datos
 $resultadonombre = mysqli_query($conn, "SELECT nombre FROM recetas WHERE idRecetas = $idReceta");
 $resultadoduracion = mysqli_query($conn, "SELECT duracion FROM recetas WHERE idRecetas = $idReceta");
 $resultadoporcion = mysqli_query($conn, "SELECT porciones FROM recetas WHERE idRecetas = $idReceta");
 $resultadotc = mysqli_query($conn, "SELECT tiempo_comida FROM recetas WHERE idRecetas = $idReceta");
-$eliminareceta = mysqli_query($conn, "DELETE FROM recetas WHERE idRecetas = $idReceta");
+$resus = mysqli_query($conn, "SELECT nombre FROM usuarios WHERE correo = '$correo'");
+
+//$eliminareceta = mysqli_query($conn, "DELETE FROM recetas WHERE idRecetas = $idReceta");
 
 
 $nombre = mysqli_fetch_assoc($resultadonombre)["nombre"];
 $duracion = mysqli_fetch_assoc($resultadoduracion)["duracion"];
 $porciones = mysqli_fetch_assoc($resultadoporcion)["porciones"];
 $tiempoc = mysqli_fetch_assoc($resultadotc)["tiempo_comida"];
+$usr = mysqli_fetch_assoc($resus)["nombre"];
 
 
 // Cerrar la conexión a la base de datos
@@ -89,7 +94,7 @@ mysqli_close($conn);
 						</div>
 						<div class="profile_info">
 							<span>Bienvenido</span>
-							<h2>Nombre de usuario</h2>
+							<h2><?php echo $usr ?></h2>
 						</div>
 					</div>
 					<!-- /menu profile quick info -->
@@ -157,6 +162,8 @@ mysqli_close($conn);
  
 											</div>
 											<div class="col-md-2 col-sm-2" align="center">
+											<button type="button" class="btn btn-primary" onclick="confirmarEliminacion()">Actualizar receta</button>
+
     <label for="fullname">¿Ya no te interesa?</label>
     <button type="button" class="btn btn-danger" onclick="confirmarEliminacion()">Eliminar receta</button>
 </div>
@@ -328,7 +335,7 @@ mysqli_close($conn);
 
 											<div class="col-md-6 col-sm-6 ">
 												<label class="col-form-label col-md-3 col-sm-3 "></label>
-												<div class="col-md-9 col-sm-9 " align="right">
+												<div class="col-md-6 col-sm-6 " align="right">
 													<button type="button" class="btn btn-success"
 														id="guardarreceta" >Guardar receta</button>
 												</div>
@@ -399,6 +406,7 @@ mysqli_close($conn);
 	<!-- Input de procedimiento para añadir a tabla-->
 	<script type="module" src="../js/receta.js"></script>
 	<!--Para saber si existe la sesion o el correo-->
+	<script type="module" src="../js/grupos.js"></script>
 	<script>
 		//Existe la session iniciada, sino redirigir a que inicie sesion
 		async function session() {

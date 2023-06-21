@@ -21,7 +21,8 @@ if ($conn->connect_error) {
 echo "Entra";
 
 // Verificar si se ha eliminado el registro
-
+$eliminaringredientes = mysqli_query($conn, "DELETE FROM recetas_has_ingredientes WHERE Recetas_idRecetas = $idReceta");
+$eliminarpasos = mysqli_query($conn, "DELETE FROM pasos WHERE Recetas_idRecetas = $idReceta");
 $eliminareceta = mysqli_query($conn, "DELETE FROM recetas WHERE idRecetas = $idReceta");
 // Redireccionar al index
 header("Location: \\ComidayCompras/Proyecto/html/misRecetas.html");

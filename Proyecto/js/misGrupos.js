@@ -113,7 +113,7 @@ async function llenarGrupos() {
             aPencil.setAttribute("data-toggle", "modal");
             aPencil.setAttribute("data-target", "#modal_nuevo_grupo");
             aPencil.setAttribute("align", "right");
-            aPencil.setAttribute("onclick", "actionUpdate(" + grupo.getId() + ")");
+            aPencil.setAttribute("onclick", "actionUpdatee(" + grupo.getId() + ")");
             liPencil.appendChild(aPencil);
             ulWidgetProfileBox.appendChild(liEye);
             ulWidgetProfileBox.appendChild(liImg);

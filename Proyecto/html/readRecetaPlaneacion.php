@@ -103,7 +103,7 @@ mysqli_close($conex);
 								</ul>
 							</li>
 							<li><a href="planeacion.html"><i class="fa fa-list-alt"></i> Planeación de recetas</a></li>
-							<li><a href="#"><i class="fa fa-money"></i> Lista de compras</a></li>
+							<li><a href="listaCompras.html"><i class="fa fa-money"></i> Lista de compras</a></li>
 						</ul>
 					</div>
 				</div>
@@ -310,7 +310,7 @@ mysqli_close($conex);
     <script src="../../gentelella-master/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="../../gentelella-master/build/js/custom.min.js"></script>
-
+	<script type="module" src="../js/grupos.js"></script>
     <!-- Agregar elemento a planeación -->
     <script src="../js/agregarPlaneacion.js"></script>
 	

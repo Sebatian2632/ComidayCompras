@@ -90,6 +90,14 @@
 					<nav class="nav navbar-nav">
 						<ul class=" navbar-right">
 							<li class="nav-item dropdown open" style="padding-left: 15px;">
+								<!-- INGREDIENTES DISPONIBLES -->
+								<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_ingredientes" align="right" onclick="actionRead()">Ingredientes disponibles
+									<samp class="badge bg-warning">
+										<samp id="numero_ingredientes"></samp>
+									</samp>
+									</button>
+									<!-- Alergias -->
+									<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_alergias" align="right" onclick="actionReadAlergia()">Alergias</button>
 								<button type="button" class="btn btn-primary btn-sm">Log out</button>
 							</li>
 						</ul>
@@ -355,5 +363,5 @@
 	<script src="../../gentelella-master/vendors/starrr/dist/starrr.js"></script>
 	<!-- Custom Theme Scripts -->
 	<script src="../../gentelella-master/build/js/custom.min.js"></script>
-
+	<script type="module" src="../js/grupos.js"></script>
 </body></html>

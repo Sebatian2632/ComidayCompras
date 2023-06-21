@@ -415,6 +415,7 @@ mysqli_close($conn);
 	<!-- Custom Theme Scripts -->
 	<script src="../../gentelella-master/build/js/custom.min.js"></script>
 	<script type="module" src="../js/misRecetas.js"></script>
+    <script type="module" src="../js/grupos.js"></script>
 	<!--Para saber si existe la sesion o el correo-->
 	<script>
 		//Existe la session iniciada, sino redirigir a que inicie sesion
